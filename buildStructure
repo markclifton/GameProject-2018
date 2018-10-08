@@ -1,0 +1,6 @@
+for FILE in $(find ./ -type f -name '*.cpp'); do
+    DIR=$(dirname $FILE)
+    if ! [ -d $1$DIR ]; then
+        mkdir -p $1$DIR   
+    fi
+done
