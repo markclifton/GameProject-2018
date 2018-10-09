@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 
-PROG = GameProject
+PROG = $(shell basename $(dir $(abspath $$PWD)))
 BUILD = build/
 BIN = bin/
 
@@ -28,4 +28,6 @@ build : $(OBJECT_FILES)
 post-build: 
 
 clean:
+	@if [ -d "$(BIN)" ]; then rm -r $(BIN); fi
 	@if [ -d "$(BUILD)" ]; then rm -r $(BUILD); fi
+
