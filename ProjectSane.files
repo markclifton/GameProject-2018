@@ -1,0 +1,10 @@
+README.md
+buildStructure
+engine/glew.cpp
+engine/managers/StateManager.cpp
+engine/managers/StateManager.h
+engine/managers/WindowManager.cpp
+engine/managers/WindowManager.h
+engine/states/State.cpp
+engine/states/State.h
+main.cpp
