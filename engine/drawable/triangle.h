@@ -1,13 +1,14 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glm/vec3.hpp>
 
 #include "drawablebasics.h"
 
 class Triangle
 {
 public:
-    Triangle(position center);
+    Triangle(glm::vec3 center);
 
     void draw();
 private:

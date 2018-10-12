@@ -6,7 +6,7 @@ BIN = bin/
 
 CC = g++
 CPPFLAGS = -Wall -std=c++17
-LDFLAGS = -lglfw3 -lGLU -lGL -lglm -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
+LDFLAGS = -lglfw3 -lGLU -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
 
 all: pre-build build post-build
 
@@ -15,7 +15,7 @@ pre-build:
 	@if ! [ -d "$(BUILD)" ]; then mkdir $(BUILD); fi
 	@./buildStructure $(BUILD)
 
-SOURCE_FILES = $(shell find ./ -type f -name '*.cpp')
+SOURCE_FILES = $(shell find ./engine -type f -name '*.cpp') main.cpp
 OBJECT_FILES = $(SOURCE_FILES:.cpp=.o)
 %.o : %.cpp
 	$(CC) $(CPPFLAGS) -c $^ -o $(BUILD)$@

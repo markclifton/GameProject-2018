@@ -12,7 +12,7 @@ void Context::run()
     {
         for(float y=-1; y<=1.f; y+=.5f)
         {
-            Triangle( (position(x,y)) ).draw();
+            Triangle( (glm::vec3(x,y, 0)) ).draw();
         }
     }
 }
