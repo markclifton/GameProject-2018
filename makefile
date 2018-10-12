@@ -5,8 +5,8 @@ BUILD = build/
 BIN = bin/
 
 CC = g++
-CPPFLAGS = -g -Wall -std=c++17
-LDFLAGS = -lglfw3 -lGLU -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
+CPPFLAGS = -Wall -std=c++17
+LDFLAGS = -lglfw3 -lGLU -lGL -lglm -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
 
 all: pre-build build post-build
 
