@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-class State;
+#include "../contexts/context.h"
 
 struct glfwWindowDeleter
 {
@@ -28,19 +28,17 @@ public:
     ~WindowManager();
 
     inline GLFWwindow* getWindow() { return window.get(); }
-    void run();
 
     void setTitle(const std::string& title);
 
-    inline State* getState() { return m_activeState; }
-    void setState(State* state);
+    bool shouldClose();
+    void refresh();
 
 private:
     WindowManager();
 
     bool create();
-    
-    State* m_activeState{nullptr};
+
     std::unique_ptr<GLFWwindow, glfwWindowDeleter> window;
 
     GLuint m_vao;

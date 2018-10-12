@@ -18,12 +18,12 @@ pre-build:
 SOURCE_FILES = $(shell find ./ -type f -name '*.cpp')
 OBJECT_FILES = $(SOURCE_FILES:.cpp=.o)
 %.o : %.cpp
-	$(CC) -c $^ -o $(BUILD)$@
+	$(CC) $(CPPFLAGS) -c $^ -o $(BUILD)$@
 
 COMPILED_FILES = $(shell find ./$(BUILD) -type f -name '*.o')
 
 build : $(OBJECT_FILES)
-	$(CC) $(COMPILED_FILES) $(LDFLAGS) $(LIBS) -o $(BIN)$(PROG)
+	$(CC) $(CPPFLAGS) $(COMPILED_FILES) $(LDFLAGS) $(LIBS) -o $(BIN)$(PROG)
 
 post-build: 
 

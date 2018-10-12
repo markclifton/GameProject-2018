@@ -1,9 +1,9 @@
 #pragma once
 
-class State
+class Context
 {
 public:
-    State();
+    Context();
 
     void run();
 };
