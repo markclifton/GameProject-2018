@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "shaders/shader.h"
+#include "utils/timer.h"
 
 Game::Game()
     : m_contextManager()
@@ -12,11 +13,21 @@ Game::Game()
 
 void Game::run()
 {
+    m_windowManager.toggleVsync(false);
+
     setup();
     Shader s;
 
+    Timer t;
+    int ticks = 0;
     while( !m_windowManager.shouldClose() )
     {
+        if( ticks++ > 100)
+        {
+            std::cerr << 1.0/(t.reset()/ticks) << "\n";
+            ticks = 0;
+        }
+
         m_contextManager.runContext();
         m_windowManager.refresh();
     }

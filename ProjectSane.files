@@ -15,7 +15,11 @@ engine/managers/contextmanager.h
 engine/managers/contextmanager.cpp
 engine/managers/windowmanager.h
 engine/managers/windowmanager.cpp
+engine/renderer/batchrenderer.h
+engine/renderer/batchrenderer.cpp
 engine/shaders/shader.h
 engine/shaders/shader.cpp
+engine/utils/timer.h
+engine/utils/timer.cpp
 main.cpp
 README.md

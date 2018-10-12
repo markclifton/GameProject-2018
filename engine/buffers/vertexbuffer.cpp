@@ -12,6 +12,12 @@ VertexBuffer::~VertexBuffer()
     glDeleteBuffers(1, &m_vbo);
 }
 
+void VertexBuffer::bind()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    setAttribPointers();
+}
+
 void VertexBuffer::buffer(const long& totalSize, void* verts, const unsigned int& drawType)
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -22,6 +28,6 @@ void VertexBuffer::buffer(const long& totalSize, void* verts, const unsigned int
 
 void VertexBuffer::setAttribPointers()
 {
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)(offsetof(vertex, pos)));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)(offsetof(vertex, color)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, pos)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
 }

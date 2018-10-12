@@ -38,9 +38,10 @@ void WindowManager::refresh()
 bool WindowManager::create()
 {
 	if (! glfwInit())
-		return false;
+        return false;
 
-    window.reset(glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr));
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    window.reset(glfwCreateWindow(640, 480, "ProjectSane", nullptr, nullptr));
 	if (!window.get())
 	{
 		glfwTerminate();

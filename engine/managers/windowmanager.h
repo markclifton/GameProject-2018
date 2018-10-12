@@ -25,6 +25,8 @@ public:
 
     void setTitle(const std::string& title);
 
+    inline void toggleVsync(bool enabled) { glfwSwapInterval( enabled ); }
+
     bool shouldClose();
     void refresh();
 

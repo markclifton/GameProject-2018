@@ -32,6 +32,7 @@ void Shader::use()
 
 bool Shader::compile()
 {
+    //TODO: Read this in from a shader file, and switch to newer shaders
     char const * VertexShaderSource = R"GLSL(
         #version 130
         in vec3 position;

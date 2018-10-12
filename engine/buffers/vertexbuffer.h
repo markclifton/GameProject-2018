@@ -6,8 +6,9 @@ class VertexBuffer
 {
 public:
     VertexBuffer();
-    ~VertexBuffer();
+    virtual ~VertexBuffer();
 
+    void bind();
     void buffer(const long& totalSize, void* verts, const unsigned int& drawType = GL_STATIC_DRAW);
 
 protected:

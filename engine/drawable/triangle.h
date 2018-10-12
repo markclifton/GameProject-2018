@@ -11,7 +11,8 @@ public:
     Triangle(glm::vec3 center);
 
     void draw();
-private:
-    vertex m_vertices[3];
+
+    //temp
+    Vertex m_vertices[3];
     GLint m_indices[3];
 };
