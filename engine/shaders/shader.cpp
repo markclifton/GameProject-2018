@@ -25,6 +25,9 @@ void Shader::use()
 
     GLint PositionAttribute = (glGetAttribLocation(m_program, "position"));
     glEnableVertexAttribArray(static_cast<GLuint>(PositionAttribute));
+
+    GLint ColorAttribute = (glGetAttribLocation(m_program, "color"));
+    glEnableVertexAttribArray(static_cast<GLuint>(ColorAttribute));
 }
 
 bool Shader::compile()
@@ -32,18 +35,22 @@ bool Shader::compile()
     char const * VertexShaderSource = R"GLSL(
         #version 130
         in vec3 position;
+        in vec3 color;
+        out vec3 f_color;
         void main()
         {
+            f_color = color;
             gl_Position = vec4(position, 1.0);
         }
     )GLSL";
 
     char const * FragmentShaderSource = R"GLSL(
         #version 130
+        in vec3 f_color;
         out vec4 outColor;
         void main()
         {
-            outColor = vec4(1.0, 1.0, 1.0, 1.0);
+            outColor = vec4(f_color, 1.0);
         }
     )GLSL";
 

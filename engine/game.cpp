@@ -2,13 +2,12 @@
 
 #include <iostream>
 
-#include "managers/windowmanager.h"
 #include "shaders/shader.h"
 
 Game::Game()
     : m_contextManager()
+    , m_windowManager()
 {
-    WindowManager::instance();
 }
 
 void Game::run()
@@ -16,10 +15,10 @@ void Game::run()
     setup();
     Shader s;
 
-    while( !WindowManager::instance().shouldClose() )
+    while( !m_windowManager.shouldClose() )
     {
         m_contextManager.runContext();
-        WindowManager::instance().refresh();
+        m_windowManager.refresh();
     }
 }
 

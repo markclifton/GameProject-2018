@@ -18,11 +18,7 @@ struct glfwWindowDeleter
 class WindowManager
 {
 public:
-    static WindowManager& instance()
-    {
-        static WindowManager instance;
-        return instance;
-    }
+    WindowManager();
     ~WindowManager();
 
     inline GLFWwindow* getWindow() { return window.get(); }
@@ -33,8 +29,6 @@ public:
     void refresh();
 
 private:
-    WindowManager();
-
     bool create();
 
     std::unique_ptr<GLFWwindow, glfwWindowDeleter> window;

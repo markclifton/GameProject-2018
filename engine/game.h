@@ -1,6 +1,7 @@
 #pragma once
 
 #include "managers/contextmanager.h"
+#include "managers/windowmanager.h"
 
 class Game
 {
@@ -15,4 +16,5 @@ protected:
 
 private:
     ContextManager m_contextManager;
+    WindowManager m_windowManager;
 };

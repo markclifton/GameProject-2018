@@ -11,6 +11,6 @@ public:
 
     void draw();
 private:
-    position m_vertices[3];
+    vertex m_vertices[3];
     GLint m_indices[3];
 };
