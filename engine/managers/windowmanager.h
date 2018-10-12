@@ -7,8 +7,6 @@
 #include <memory>
 #include <string>
 
-#include "../contexts/context.h"
-
 struct glfwWindowDeleter
 {
     void operator()(GLFWwindow* ptr){

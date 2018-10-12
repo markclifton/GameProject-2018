@@ -1,9 +1,6 @@
 #include "contextmanager.h"
 
-#include <iostream>
-#include <string>
-
-#include "windowmanager.h"
+#include <memory>
 
 ContextManager::ContextManager()
     : m_nextId(0)

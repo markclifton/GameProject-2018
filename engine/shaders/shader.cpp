@@ -64,6 +64,7 @@ bool Shader::compile()
     glGetShaderiv(m_fragId, GL_COMPILE_STATUS, & Compiled);
     if (!Compiled)
     {
+        glDeleteShader(m_vertId);
         std::cerr << "Failed to compile fragment shader!" << std::endl;
         return false;
     }

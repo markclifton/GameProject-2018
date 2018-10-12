@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "../contexts/context.h"
-
 WindowManager::WindowManager()
 {
     if( !create() )
