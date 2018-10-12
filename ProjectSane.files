@@ -5,6 +5,7 @@ engine/buffers/vertexbuffer.h
 engine/buffers/vertexbuffer.cpp
 engine/contexts/context.h
 engine/contexts/context.cpp
+engine/drawable/drawablebasics.h
 engine/drawable/triangle.h
 engine/drawable/triangle.cpp
 engine/game.h

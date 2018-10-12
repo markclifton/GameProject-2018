@@ -20,5 +20,5 @@ void VertexBuffer::buffer(const long& totalSize, void* verts, const unsigned int
 
 void VertexBuffer::setAttribPointers()
 {
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 }
