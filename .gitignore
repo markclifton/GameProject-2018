@@ -1,2 +1,6 @@
 bin/
 build/
+
+*.20
+
+*.user
