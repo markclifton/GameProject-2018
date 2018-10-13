@@ -3,9 +3,10 @@ SHELL:=/bin/bash
 PROG = $(shell basename $(dir $(abspath $$PWD)))
 BUILD = build/
 BIN = bin/
+RESOURCES = resources/
 
 CC = g++
-CPPFLAGS = -Ofast -Wall -std=c++17
+CPPFLAGS = -Wall -std=c++17
 LDFLAGS = -lglfw3 -lGLU -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
 
 all: pre-build build post-build
@@ -25,7 +26,8 @@ COMPILED_FILES = $(shell find ./$(BUILD) -type f -name '*.o')
 build : $(OBJECT_FILES)
 	$(CC) $(CPPFLAGS) $(COMPILED_FILES) $(LDFLAGS) $(LIBS) -o $(BIN)$(PROG)
 
-post-build: 
+post-build:
+	cp -r $(RESOURCES) $(BIN) 
 
 clean:
 	@if [ -d "$(BIN)" ]; then rm -r $(BIN); fi

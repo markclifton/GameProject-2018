@@ -1,21 +1,24 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
 
 #include <string>
 
 class Shader
 {
 public:
-    Shader();
+    Shader(const std::string& vs, const std::string& fs);
     ~Shader();
-    void use();
+
+    void bind();
+    void enableAttribArray(const std::string& attribName);
+
+    void setUniform(const std::string& uniformName, glm::mat4 matrix);
 
 private:
-    bool compile();
-    void create();
+    bool compile(const std::string& vs, const std::string& fs);
+    void create(const GLuint& vert, const GLuint& frag);
 
-    GLuint m_vertId;
-    GLuint m_fragId;
     GLuint m_program;
 };

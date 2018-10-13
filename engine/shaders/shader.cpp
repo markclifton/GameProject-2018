@@ -1,13 +1,16 @@
 #include "shader.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 
-Shader::Shader()
+#include "../utils/fileloader.h"
+
+Shader::Shader(const std::string& vs, const std::string& fs)
 {
-    if(compile())
+    if( !compile(vs, fs) )
     {
-        create();
-        use();
+        std::cerr << "Failed to compile shader\n";
     }
 }
 
@@ -19,77 +22,72 @@ Shader::~Shader()
     }
 }
 
-void Shader::use()
+void Shader::bind()
 {
     glUseProgram(m_program);
-
-    GLint PositionAttribute = (glGetAttribLocation(m_program, "position"));
-    glEnableVertexAttribArray(static_cast<GLuint>(PositionAttribute));
-
-    GLint ColorAttribute = (glGetAttribLocation(m_program, "color"));
-    glEnableVertexAttribArray(static_cast<GLuint>(ColorAttribute));
 }
 
-bool Shader::compile()
+void Shader::enableAttribArray(const std::string& attribName)
 {
-    //TODO: Read this in from a shader file, and switch to newer shaders
-    char const * VertexShaderSource = R"GLSL(
-        #version 130
-        in vec3 position;
-        in vec3 color;
-        out vec3 f_color;
-        void main()
-        {
-            f_color = color;
-            gl_Position = vec4(position, 1.0);
-        }
-    )GLSL";
+    bind();
+    auto attrib = glGetAttribLocation(m_program, attribName.c_str());
+    if( attrib != -1 )
+    {
+        glEnableVertexAttribArray(static_cast<GLuint>(attrib));
+    }
+}
 
-    char const * FragmentShaderSource = R"GLSL(
-        #version 130
-        in vec3 f_color;
-        out vec4 outColor;
-        void main()
-        {
-            outColor = vec4(f_color, 1.0);
-        }
-    )GLSL";
+void Shader::setUniform(const std::string& uniformName, glm::mat4 matrix)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+}
+
+bool Shader::compile(const std::string& vsPath, const std::string& fsPath)
+{
+    auto vs = utils::loadFile(vsPath);
+    auto vs_cstr = vs.c_str();
+    auto fs = utils::loadFile(fsPath);
+    auto fs_cstr = fs.c_str();
 
     GLint Compiled;
-    m_vertId = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(m_vertId, 1, &VertexShaderSource, nullptr);
-    glCompileShader(m_vertId);
-    glGetShaderiv(m_vertId, GL_COMPILE_STATUS, & Compiled);
-    if (! Compiled)
+    GLuint vert = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vert, 1, &vs_cstr, nullptr);
+    glCompileShader(vert);
+    glGetShaderiv(vert, GL_COMPILE_STATUS, & Compiled);
+    if (!Compiled)
     {
         std::cerr << "Failed to compile vertex shader!" << std::endl;
         return false;
     }
 
-    m_fragId = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(m_fragId, 1, &FragmentShaderSource, nullptr);
-    glCompileShader(m_fragId);
-    glGetShaderiv(m_fragId, GL_COMPILE_STATUS, & Compiled);
+    GLuint frag = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(frag, 1, &fs_cstr, nullptr);
+    glCompileShader(frag);
+    glGetShaderiv(frag, GL_COMPILE_STATUS, & Compiled);
     if (!Compiled)
     {
-        glDeleteShader(m_vertId);
+        glDeleteShader(vert);
         std::cerr << "Failed to compile fragment shader!" << std::endl;
         return false;
     }
 
+    create(vert, frag);
+
+    glDeleteShader(vert);
+    glDeleteShader(frag);
+
     return true;
 }
 
-void Shader::create()
+void Shader::create(const GLuint& vert, const GLuint& frag)
 {
-    m_program = glCreateProgram();
-    glAttachShader(m_program, m_vertId);
-    glAttachShader(m_program, m_fragId);
+    m_program = glCreateProgram(); //Returns a non-zero value
+    glAttachShader(m_program, vert);
+    glAttachShader(m_program, frag);
 
-    glBindFragDataLocation(m_program, 0, "outColor");
     glLinkProgram(m_program);
-
-    glDeleteShader(m_vertId);
-    glDeleteShader(m_fragId);
-
 }

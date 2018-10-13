@@ -19,6 +19,8 @@ engine/renderer/batchrenderer.h
 engine/renderer/batchrenderer.cpp
 engine/shaders/shader.h
 engine/shaders/shader.cpp
+engine/utils/fileloader.h
+engine/utils/fileloader.cpp
 engine/utils/timer.h
 engine/utils/timer.cpp
 main.cpp

@@ -2,12 +2,15 @@
 
 #include <chrono>
 
-class Timer
+namespace utils
 {
-public:
-    Timer();
-    double reset();
+    class Timer
+    {
+    public:
+        Timer();
+        double reset();
 
-private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTick;
-};
+    private:
+        std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTick;
+    };
+}
