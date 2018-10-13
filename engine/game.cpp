@@ -7,6 +7,7 @@
 
 #include "shaders/shader.h"
 #include "utils/keyhandler.h"
+#include "utils/mousehandler.h"
 #include "utils/timer.h"
 
 Game::Game()
@@ -19,7 +20,8 @@ void Game::run()
 {
     m_windowManager.toggleVsync(false);
 
-    m_windowManager.registerKeyHandler(std::make_unique<utils::KeyHandler>());
+    m_windowManager.registerHandler(std::make_unique<utils::KeyHandler>());
+    m_windowManager.registerHandler(std::make_unique<utils::MouseHandler>());
 
     setup();
 
@@ -40,7 +42,7 @@ void Game::run()
     int ticks = 0;
     while( !m_windowManager.shouldClose() )
     {
-        if( ticks++ > 100)
+        if( ticks++ > 500)
         {
             std::cerr << 1.0/(t.reset()/ticks) << "\n";
             ticks = 0;

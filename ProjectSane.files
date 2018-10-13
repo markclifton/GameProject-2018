@@ -23,6 +23,8 @@ engine/utils/fileloader.h
 engine/utils/fileloader.cpp
 engine/utils/keyhandler.h
 engine/utils/keyhandler.cpp
+engine/utils/mousehandler.h
+engine/utils/mousehandler.cpp
 engine/utils/timer.h
 engine/utils/timer.cpp
 main.cpp

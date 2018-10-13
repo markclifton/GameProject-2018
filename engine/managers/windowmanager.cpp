@@ -2,12 +2,27 @@
 
 #include <iostream>
 
+#include "../utils/keyhandler.h"
+#include "../utils/mousehandler.h"
+
 namespace
 {
     void key_forwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
         windowManager->keyHandler(key, scancode, action, mods);
+    }
+
+    void cursor_forwarder(GLFWwindow* window, double xpos, double ypos)
+    {
+        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        windowManager->mouseHandler(xpos,ypos);
+    }
+
+    void mouse_forwarder(GLFWwindow* window, int button, int action, int mods)
+    {
+        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        windowManager->mouseHandler(button, action, mods);
     }
 }
 
@@ -49,11 +64,32 @@ void WindowManager::registerHandler(std::unique_ptr<utils::KeyHandler> handler)
     m_keyHandlers.push_back(std::move(handler));
 }
 
+void WindowManager::registerHandler(std::unique_ptr<utils::MouseHandler> handler)
+{
+    m_mouseHandlers.push_back(std::move(handler));
+}
+
 void WindowManager::keyHandler(int key, int scancode, int action, int mods)
 {
     for(auto& handler : m_keyHandlers)
     {
         handler->process(key, scancode, action, mods);
+    }
+}
+
+void WindowManager::mouseHandler(double xpos, double ypos)
+{
+    for(auto& handler : m_mouseHandlers)
+    {
+        handler->process(xpos, ypos);
+    }
+}
+
+void WindowManager::mouseHandler(int button, int action, int mods)
+{
+    for(auto& handler : m_mouseHandlers)
+    {
+        handler->process(button, action, mods);
     }
 }
 
@@ -70,9 +106,12 @@ bool WindowManager::create()
 		glfwTerminate();
 		return false;
 	}
-    
+
+    // Set Callbacks for input
     glfwSetWindowUserPointer(m_window.get(), this);
     glfwSetKeyCallback(m_window.get(), key_forwarder);
+    glfwSetCursorPosCallback(m_window.get(), cursor_forwarder);
+    glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
 
     glfwMakeContextCurrent(m_window.get());
 
