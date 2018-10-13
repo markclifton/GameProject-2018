@@ -2,6 +2,15 @@
 
 #include <iostream>
 
+namespace
+{
+    void key_forwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
+        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        windowManager->keyHandler(key, scancode, action, mods);
+    }
+}
+
 WindowManager::WindowManager()
 {
     if( !create() )
@@ -21,18 +30,31 @@ WindowManager::~WindowManager()
 
 void WindowManager::setTitle(const std::string& title)
 {
-    glfwSetWindowTitle(window.get(), title.c_str());
+    glfwSetWindowTitle(m_window.get(), title.c_str());
 }
 
 bool WindowManager::shouldClose()
 {
-    return glfwWindowShouldClose(window.get());
+    return glfwWindowShouldClose(m_window.get());
 }
 
 void WindowManager::refresh()
 {
-    glfwSwapBuffers(window.get());
+    glfwSwapBuffers(m_window.get());
     glfwPollEvents();
+}
+
+void WindowManager::registerHandler(std::unique_ptr<utils::KeyHandler> handler)
+{
+    m_keyHandlers.push_back(std::move(handler));
+}
+
+void WindowManager::keyHandler(int key, int scancode, int action, int mods)
+{
+    for(auto& handler : m_keyHandlers)
+    {
+        handler->process(key, scancode, action, mods);
+    }
 }
 
 bool WindowManager::create()
@@ -41,14 +63,18 @@ bool WindowManager::create()
         return false;
 
     glfwWindowHint(GLFW_SAMPLES, 4);
-    window.reset(glfwCreateWindow(640, 480, "ProjectSane", nullptr, nullptr));
-	if (!window.get())
+
+    m_window.reset(glfwCreateWindow(640, 480, "ProjectSane", nullptr, nullptr));
+    if (!m_window.get())
 	{
 		glfwTerminate();
 		return false;
 	}
     
-    glfwMakeContextCurrent(window.get());
+    glfwSetWindowUserPointer(m_window.get(), this);
+    glfwSetKeyCallback(m_window.get(), key_forwarder);
+
+    glfwMakeContextCurrent(m_window.get());
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
@@ -59,4 +85,3 @@ bool WindowManager::create()
 	}
     return true;
 }
-

@@ -6,6 +6,9 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+
+#include "../utils/keyhandler.h"
 
 struct glfwWindowDeleter
 {
@@ -21,7 +24,7 @@ public:
     WindowManager();
     ~WindowManager();
 
-    inline GLFWwindow* getWindow() { return window.get(); }
+    inline GLFWwindow* getWindow() { return m_window.get(); }
 
     void setTitle(const std::string& title);
 
@@ -30,10 +33,15 @@ public:
     bool shouldClose();
     void refresh();
 
+    //Not Thread-safe
+    void registerHandler(std::unique_ptr<utils::KeyHandler> handler);
+    void keyHandler(int key, int scancode, int action, int mods);
+
 private:
     bool create();
 
-    std::unique_ptr<GLFWwindow, glfwWindowDeleter> window;
+    std::unique_ptr<GLFWwindow, glfwWindowDeleter> m_window;
+    std::vector<std::unique_ptr<utils::KeyHandler>> m_keyHandlers;
 
     GLuint m_vao;
 };

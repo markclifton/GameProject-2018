@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "shaders/shader.h"
+#include "utils/keyhandler.h"
 #include "utils/timer.h"
 
 Game::Game()
@@ -17,6 +18,8 @@ Game::Game()
 void Game::run()
 {
     m_windowManager.toggleVsync(false);
+
+    m_windowManager.registerKeyHandler(std::make_unique<utils::KeyHandler>());
 
     setup();
 
