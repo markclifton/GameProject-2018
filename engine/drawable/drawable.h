@@ -2,7 +2,7 @@
 
 #include <glm/matrix.hpp>
 
-#include "../shaders/shader.h"
+#include "shaders/shader.h"
 
 namespace drawable
 {

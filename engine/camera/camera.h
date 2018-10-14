@@ -11,11 +11,11 @@
 #include "../utils/keyhandler.h"
 
 using namespace utils;
-class Camera : public KeyHandler
+class Camera3D : public KeyHandler
 {
 public:
-    Camera() = default;
-    virtual ~Camera() = default;
+    Camera3D() = default;
+    virtual ~Camera3D() = default;
 
     void Reset();
     void Update();

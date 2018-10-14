@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "../utils/fileloader.h"
+#include "utils/fileloader.h"
 
 Shader::Shader(const std::string& vs, const std::string& fs)
 {

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "../shaders/shader.h"
+#include "shaders/shader.h"
 
 namespace managers
 {

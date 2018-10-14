@@ -2,9 +2,9 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../buffers/indexbuffer.h"
-#include "../buffers/vertexbuffers/vb_basic.h"
-#include "../buffers/vertexbuffers/vb_transform.h"
+#include "buffers/indexbuffer.h"
+#include "buffers/vertexbuffers/vb_basic.h"
+#include "buffers/vertexbuffers/vb_transform.h"
 
 namespace drawable
 {

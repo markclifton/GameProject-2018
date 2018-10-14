@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../glad/gl.h"
+#include "glad/gl.h"
 
 #include <vector>
 
-#include "../buffers/indexbuffer.h"
-#include "../buffers/vertexbuffers/vb_basic.h"
+#include "buffers/indexbuffer.h"
+#include "buffers/vertexbuffers/vb_basic.h"
 #include "drawable.h"
 #include "drawablebasics.h"
 

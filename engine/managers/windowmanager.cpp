@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../utils/keyhandler.h"
-#include "../utils/mousehandler.h"
+#include "utils/keyhandler.h"
+#include "utils/mousehandler.h"
 
 namespace
 {

@@ -20,5 +20,5 @@ private:
     managers::ContextManager m_contextManager;
     managers::ShaderManager m_shaderManager;
     std::unique_ptr<managers::WindowManager> m_windowManager;
-    std::unique_ptr<Camera> m_camera;
+    std::unique_ptr<Camera3D> m_camera;
 };

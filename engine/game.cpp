@@ -12,7 +12,7 @@
 Game::Game()
     : m_contextManager()
     , m_windowManager( std::make_unique<managers::WindowManager>())
-    , m_camera(new Camera())
+    , m_camera(new Camera3D())
 {
     m_camera->SetViewport(0, 0, 640, 480);
 

@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include "../contexts/context.h"
+#include "contexts/context.h"
 #include "shadermanager.h"
 
 namespace managers
