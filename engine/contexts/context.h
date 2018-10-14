@@ -1,14 +1,16 @@
 #pragma once
 
-#include "../renderer/batchrenderer.h"
+#include "../drawable/layer.h"
+#include "../managers/shadermanager.h"
 
 class Context
 {
 public:
-    Context();
+    Context(managers::ShaderManager& shaderManager);
 
     void run();
 
 private:
-    BatchRenderer m_batch;
+    managers::ShaderManager& m_shaderManager;
+    drawable::Layer m_stack;
 };

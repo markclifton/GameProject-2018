@@ -8,14 +8,14 @@
 
 namespace drawable
 {
-    class Triangle : public Drawable
+    class Rectangle : public Drawable
     {
     public:
-        Triangle(glm::vec3 center, Shader* shader);
+        Rectangle(glm::vec3 center, Shader* shader);
 
         void draw(glm::mat4 transform = glm::mat4(1.f)) override;
 
-        Vertex m_vertices[3];
-        GLint m_indices[3];
+        Vertex m_vertices[4];
+        GLint m_indices[6];
     };
 }

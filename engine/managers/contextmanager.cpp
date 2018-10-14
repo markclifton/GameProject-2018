@@ -2,52 +2,80 @@
 
 #include <memory>
 
-ContextManager::ContextManager()
-    : m_nextId(0)
+namespace managers
 {
-}
+    contextPair::contextPair(std::string name, std::unique_ptr<Context> context)
+        : name(name)
+        , context( std::move(context) )
+    {}
 
-ContextManager::~ContextManager()
-{
-    for(auto& state : m_contexts)
+    ContextManager::ContextManager()
     {
-        delete state.second;    
     }
-}
 
-bool ContextManager::setContext(const int& id)
-{
-    if(m_contexts.find(id) != m_contexts.end())
+    ContextManager::~ContextManager()
     {
-        m_activeContext = m_contexts[id];
-        return true;
     }
-    return false;
-}
 
-bool ContextManager::addContext(int& id, Context* state)
-{
-    id = m_nextId++;
-    m_contexts.insert(std::make_pair(id, state));
-    return true;
-}
-
-bool ContextManager::removeContext(const int& id)
-{
-    auto state = m_contexts.find(id);
-    if(state != m_contexts.end() && state->second != m_activeContext)
+    Context* ContextManager::find(const std::string& name)
     {
-        delete state->second;
-        m_contexts.erase(state);
-        return true;
+        for(auto& contextpair : m_contexts)
+        {
+            if(contextpair.name.compare(name) == 0)
+            {
+                return contextpair.context.get();
+            }
+        }
+        return nullptr;
     }
-    return false;
-}
 
-void ContextManager::runContext()
-{
-    if(m_activeContext != nullptr)
+    bool ContextManager::setContext(const std::string& name)
     {
-        m_activeContext->run();
+        auto context = find(name);
+        if(context != nullptr)
+        {
+            m_activeContext = context;
+            return true;
+        }
+        return false;
+    }
+
+    bool ContextManager::addContext(const std::string& name, std::unique_ptr<Context> state)
+    {
+        auto context = find(name);
+        if(context == nullptr)
+        {
+            m_contexts.emplace_back(name, std::move(state));
+            return true;
+        }
+        return false;
+    }
+
+    bool ContextManager::removeContext(const std::string& name)
+    {
+        for(size_t i=0; i<m_contexts.size(); i++)
+        {
+            if(m_contexts[i].name.compare(name) == 0)
+            {
+                if(m_contexts[i].context.get() == m_activeContext) //TODO: Not thread-safe
+                {
+                    return false;
+                }
+
+                m_contexts[i].name = m_contexts.back().name;
+                m_contexts[i].context = std::move(m_contexts.back().context);
+                m_contexts.pop_back();
+                return true;
+            }
+        }
+         return false;
+    }
+
+    void ContextManager::runContext()
+    {
+        if(m_activeContext != nullptr)
+        {
+            m_activeContext->run();
+        }
     }
 }

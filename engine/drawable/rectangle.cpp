@@ -1,4 +1,4 @@
-#include "triangle.h"
+#include "rectangle.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -8,25 +8,30 @@
 
 namespace drawable
 {
-    Triangle::Triangle(glm::vec3 center, Shader* shader)
+    Rectangle::Rectangle(glm::vec3 center, Shader* shader)
         : Drawable(shader)
     {
-        float size = .0625f / 4.f;
+        float size = .5f; //.0625f / 4.f;
 
         m_indices[0] = 0;
         m_indices[1] = 1;
         m_indices[2] = 2;
+        m_indices[3] = 0;
+        m_indices[4] = 2;
+        m_indices[5] = 3;
 
         m_vertices[0].pos = glm::vec3(center.x - size, center.y - size, center.z);
-        m_vertices[1].pos = glm::vec3(center.x, center.y + size, center.z);
-        m_vertices[2].pos = glm::vec3(center.x + size, center.y - size, center.z);
+        m_vertices[1].pos = glm::vec3(center.x - size, center.y + size, center.z);
+        m_vertices[2].pos = glm::vec3(center.x + size, center.y + size, center.z);
+        m_vertices[3].pos = glm::vec3(center.x + size, center.y - size, center.z);
 
         m_vertices[0].color = glm::vec3(1,0,0);
         m_vertices[1].color = glm::vec3(0,1,0);
         m_vertices[2].color = glm::vec3(0,0,1);
+        m_vertices[3].color = glm::vec3(1,0,1);
     }
 
-    void Triangle::draw(glm::mat4 transform)
+    void Rectangle::draw(glm::mat4 transform)
     {
         if(m_shader != nullptr)
         {
@@ -42,6 +47,6 @@ namespace drawable
         buffers::BasicVBO v;
         v.buffer(sizeof(m_vertices), reinterpret_cast<void*>(m_vertices));
 
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 }

@@ -2,6 +2,7 @@
 
 #include "camera/camera.h"
 #include "managers/contextmanager.h"
+#include "managers/shadermanager.h"
 #include "managers/windowmanager.h"
 
 class Game
@@ -16,7 +17,8 @@ protected:
     virtual void setup();
 
 private:
-    ContextManager m_contextManager;
-    WindowManager m_windowManager;
+    managers::ContextManager m_contextManager;
+    managers::WindowManager m_windowManager;
+    managers::ShaderManager m_shaderManager;
     std::unique_ptr<Camera> m_camera;
 };

@@ -6,7 +6,6 @@
 #include <iostream>
 
 #include "shaders/shader.h"
-#include "utils/keyhandler.h"
 #include "utils/mousehandler.h"
 #include "utils/timer.h"
 
@@ -18,28 +17,27 @@ Game::Game()
     m_camera->SetViewport(0, 0, 640, 480);
 
     m_windowManager.toggleVsync(false);
-    m_windowManager.registerHandler(std::make_unique<utils::KeyHandler>(m_camera.get()));
-    m_windowManager.registerHandler(std::make_unique<utils::MouseHandler>());
+    m_windowManager.registerHandler(m_camera.get());
 
     setup();
 }
 
 void Game::run()
 {
-    Shader s("resources/basic.vs", "resources/basic.fs");
-    s.enableAttribArray("position");
-    s.enableAttribArray("color");
+    Shader* s = m_shaderManager.getShader("BasicShader");
+    s->enableAttribArray("position");
+    s->enableAttribArray("color");
 
     glm::mat4 p, v;
     m_camera->Update();
     m_camera->GetMatricies(p, v);
-    s.setUniform("projection", p);
+    s->setUniform("projection", p);
 
     utils::Timer t;
     int ticks = 0;
     while( !m_windowManager.shouldClose() )
     {
-        if( ticks++ > 500)
+        if( ticks++ > 1000)
         {
             std::cerr << 1.0/(t.reset()/ticks) << "\n";
             ticks = 0;
@@ -47,7 +45,7 @@ void Game::run()
 
         m_camera->Update();
         m_camera->GetMatricies(p, v);
-        s.setUniform("view", v);
+        s->setUniform("view", v);
 
         m_contextManager.runContext();
         m_windowManager.refresh();
@@ -56,9 +54,10 @@ void Game::run()
 
 void Game::setup()
 {
-    int id;
-    if( !m_contextManager.addContext(id, new Context()) )
+    m_shaderManager.loadShader("BasicShader", "resources/basic.vs", "resources/basic.fs");
+
+    if( !m_contextManager.addContext("BasicContext", std::make_unique<Context>(m_shaderManager)) )
         std::cerr << "Failed to add context\n";
-    if( !m_contextManager.setContext(id) )
+    if( !m_contextManager.setContext("BasicContext") )
         std::cerr << "Failed to set context\n";
 }

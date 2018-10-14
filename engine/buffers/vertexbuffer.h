@@ -2,18 +2,21 @@
 
 #include <GL/glew.h>
 
-class VertexBuffer
+namespace buffers
 {
-public:
-    VertexBuffer();
-    virtual ~VertexBuffer();
+    class VertexBuffer
+    {
+    public:
+        VertexBuffer();
+        virtual ~VertexBuffer();
 
-    void bind();
-    void buffer(const long& totalSize, void* verts, const unsigned int& drawType = GL_STATIC_DRAW);
+        void bind();
+        void buffer(const long& totalSize, void* data, const unsigned int& drawType = GL_STATIC_DRAW);
 
-protected:
-    virtual void setAttribPointers();
+    protected:
+        virtual void setAttribPointers() = 0;
 
-private:
-    GLuint m_vbo;
-};
+    private:
+        GLuint m_vbo;
+    };
+}

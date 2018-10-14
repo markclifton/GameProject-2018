@@ -1,24 +1,37 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 #include "../contexts/context.h"
+#include "shadermanager.h"
 
-class ContextManager
+namespace managers
 {
-public:
-    ContextManager();
-    ~ContextManager();
-    
-    bool setContext(const int& id);
-    bool addContext(int& id, Context* context);
-    bool removeContext(const int& id);
+    struct contextPair
+    {
+        contextPair(std::string name, std::unique_ptr<Context> context);
 
-    void runContext();
+        std::string name;
+        std::unique_ptr<Context> context;
+    };
 
-private:
-    int m_nextId; 
-    std::map<int, Context*> m_contexts;
+    class ContextManager
+    {
+    public:
+        ContextManager();
+        ~ContextManager();
 
-    Context* m_activeContext {nullptr};
-};
+        Context* find(const std::string& name);
+        bool setContext(const std::string& name);
+        bool addContext(const std::string& name , std::unique_ptr<Context> context);
+        bool removeContext(const std::string& name);
+
+        void runContext();
+
+    private:
+        std::vector<contextPair> m_contexts;
+        Context* m_activeContext {nullptr};
+
+    };
+}

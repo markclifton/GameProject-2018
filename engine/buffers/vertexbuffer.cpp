@@ -1,33 +1,28 @@
 #include "vertexbuffer.h"
-
-#include "../drawable/drawablebasics.h"
-
-VertexBuffer::VertexBuffer()
+#include <iostream>
+namespace buffers
 {
-    glGenBuffers(1, & m_vbo);
-}
+    VertexBuffer::VertexBuffer()
+    {
+        glGenBuffers(1, &m_vbo);
+    }
 
-VertexBuffer::~VertexBuffer()
-{
-    glDeleteBuffers(1, &m_vbo);
-}
+    VertexBuffer::~VertexBuffer()
+    {
+        glDeleteBuffers(1, &m_vbo);
+    }
 
-void VertexBuffer::bind()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    setAttribPointers();
-}
+    void VertexBuffer::bind()
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+        setAttribPointers();
+    }
 
-void VertexBuffer::buffer(const long& totalSize, void* verts, const unsigned int& drawType)
-{
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, totalSize, verts, drawType);
+    void VertexBuffer::buffer(const long& totalSize, void* data, const unsigned int& drawType)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+        glBufferData(GL_ARRAY_BUFFER, totalSize, data, drawType);
 
-    setAttribPointers();
-}
-
-void VertexBuffer::setAttribPointers()
-{
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, pos)));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
+        setAttribPointers();
+    }
 }

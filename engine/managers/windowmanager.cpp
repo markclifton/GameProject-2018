@@ -9,119 +9,122 @@ namespace
 {
     void key_forwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
         windowManager->keyHandler(key, scancode, action, mods);
     }
 
     void cursor_forwarder(GLFWwindow* window, double xpos, double ypos)
     {
-        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
         windowManager->mouseHandler(xpos,ypos);
     }
 
     void mouse_forwarder(GLFWwindow* window, int button, int action, int mods)
     {
-        WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+        managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
         windowManager->mouseHandler(button, action, mods);
     }
 }
 
-WindowManager::WindowManager()
+namespace managers
 {
-    if( !create() )
+    WindowManager::WindowManager()
     {
-        std::cout << "Failed to create window\n";
-        return;
+        if( !create() )
+        {
+            std::cout << "Failed to create window\n";
+            return;
+        }
+
+        glGenVertexArrays(1, &m_vao);
+        glBindVertexArray(m_vao);
     }
 
-	glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-}
-
-WindowManager::~WindowManager()
-{
-	glDeleteVertexArrays(1, &m_vao);
-}
-
-void WindowManager::setTitle(const std::string& title)
-{
-    glfwSetWindowTitle(m_window.get(), title.c_str());
-}
-
-bool WindowManager::shouldClose()
-{
-    return glfwWindowShouldClose(m_window.get());
-}
-
-void WindowManager::refresh()
-{
-    glfwSwapBuffers(m_window.get());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glfwPollEvents();
-}
-
-void WindowManager::registerHandler(std::unique_ptr<utils::KeyHandler> handler)
-{
-    m_keyHandlers.push_back(std::move(handler));
-}
-
-void WindowManager::registerHandler(std::unique_ptr<utils::MouseHandler> handler)
-{
-    m_mouseHandlers.push_back(std::move(handler));
-}
-
-void WindowManager::keyHandler(int key, int scancode, int action, int mods)
-{
-    for(auto& handler : m_keyHandlers)
+    WindowManager::~WindowManager()
     {
-        handler->process(key, scancode, action, mods);
+        glDeleteVertexArrays(1, &m_vao);
     }
-}
 
-void WindowManager::mouseHandler(double xpos, double ypos)
-{
-    for(auto& handler : m_mouseHandlers)
+    void WindowManager::setTitle(const std::string& title)
     {
-        handler->process(xpos, ypos);
+        glfwSetWindowTitle(m_window.get(), title.c_str());
     }
-}
 
-void WindowManager::mouseHandler(int button, int action, int mods)
-{
-    for(auto& handler : m_mouseHandlers)
+    bool WindowManager::shouldClose()
     {
-        handler->process(button, action, mods);
+        return glfwWindowShouldClose(m_window.get());
     }
-}
 
-bool WindowManager::create()
-{
-	if (! glfwInit())
-        return false;
+    void WindowManager::refresh()
+    {
+        glfwSwapBuffers(m_window.get());
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glfwPollEvents();
+    }
 
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    void WindowManager::registerHandler(utils::KeyHandler* handler)
+    {
+        m_keyHandlers.push_back(handler);
+    }
 
-    m_window.reset(glfwCreateWindow(640, 480, "ProjectSane", nullptr, nullptr));
-    if (!m_window.get())
-	{
-		glfwTerminate();
-		return false;
-	}
+    void WindowManager::registerHandler(utils::MouseHandler* handler)
+    {
+        m_mouseHandlers.push_back(handler);
+    }
 
-    // Set Callbacks for input
-    glfwSetWindowUserPointer(m_window.get(), this);
-    glfwSetKeyCallback(m_window.get(), key_forwarder);
-    glfwSetCursorPosCallback(m_window.get(), cursor_forwarder);
-    glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
+    void WindowManager::keyHandler(int key, int scancode, int action, int mods)
+    {
+        for(auto& handler : m_keyHandlers)
+        {
+            handler->process(key, scancode, action, mods);
+        }
+    }
 
-    glfwMakeContextCurrent(m_window.get());
+    void WindowManager::mouseHandler(double xpos, double ypos)
+    {
+        for(auto& handler : m_mouseHandlers)
+        {
+            handler->process(xpos, ypos);
+        }
+    }
 
-	GLenum err = glewInit();
-	if (GLEW_OK != err)
-	{
-		std::cerr << "Error: " << glewGetErrorString(err) << std::endl;
-		glfwTerminate();
-		return false;
-	}
-    return true;
+    void WindowManager::mouseHandler(int button, int action, int mods)
+    {
+        for(auto& handler : m_mouseHandlers)
+        {
+            handler->process(button, action, mods);
+        }
+    }
+
+    bool WindowManager::create()
+    {
+        if (! glfwInit())
+            return false;
+
+        glfwWindowHint(GLFW_SAMPLES, 4);
+
+        m_window.reset(glfwCreateWindow(640, 480, "ProjectSane", nullptr, nullptr));
+        if (!m_window.get())
+        {
+            glfwTerminate();
+            return false;
+        }
+
+        // Set Callbacks for input
+        glfwSetWindowUserPointer(m_window.get(), this);
+        glfwSetKeyCallback(m_window.get(), key_forwarder);
+        glfwSetCursorPosCallback(m_window.get(), cursor_forwarder);
+        glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
+
+        glfwMakeContextCurrent(m_window.get());
+
+        GLenum err = glewInit();
+        if (GLEW_OK != err)
+        {
+            std::cerr << "Error: " << glewGetErrorString(err) << std::endl;
+            glfwTerminate();
+            return false;
+        }
+        return true;
+    }
 }
