@@ -56,6 +56,7 @@ bool WindowManager::shouldClose()
 void WindowManager::refresh()
 {
     glfwSwapBuffers(m_window.get());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
 }
 

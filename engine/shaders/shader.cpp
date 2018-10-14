@@ -37,7 +37,7 @@ void Shader::enableAttribArray(const std::string& attribName)
     }
 }
 
-void Shader::setUniform(const std::string& uniformName, glm::mat4 matrix)
+void Shader::setUniform(const std::string& uniformName, const glm::mat4& matrix)
 {
     auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
     if( uniform != -1 )

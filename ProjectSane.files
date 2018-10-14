@@ -3,6 +3,8 @@ engine/buffers/indexbuffer.h
 engine/buffers/indexbuffer.cpp
 engine/buffers/vertexbuffer.h
 engine/buffers/vertexbuffer.cpp
+engine/camera/camera.cpp
+engine/camera/camera.h
 engine/contexts/context.h
 engine/contexts/context.cpp
 engine/drawable/drawablebasics.h
