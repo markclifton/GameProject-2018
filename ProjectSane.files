@@ -21,7 +21,9 @@ engine/drawable/triangle.h
 engine/drawable/triangle.cpp
 engine/game.h
 engine/game.cpp
-engine/glew.cpp
+engine/glad/src/gl.cpp
+engine/glad/include/glad/gl.h
+engine/glad/include/KHR/khrplatform.h
 engine/managers/contextmanager.h
 engine/managers/contextmanager.cpp
 engine/managers/shadermanager.h

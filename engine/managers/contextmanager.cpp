@@ -78,4 +78,10 @@ namespace managers
             m_activeContext->run();
         }
     }
+
+    void ContextManager::reset()
+    {
+        m_activeContext = nullptr; //Not thread-safe
+        m_contexts.clear();
+    }
 }

@@ -9,7 +9,7 @@ class Game
 {
 public:
     Game();
-    virtual ~Game() = default;
+    virtual ~Game();
 
     void run();
 
@@ -18,7 +18,7 @@ protected:
 
 private:
     managers::ContextManager m_contextManager;
-    managers::WindowManager m_windowManager;
     managers::ShaderManager m_shaderManager;
+    std::unique_ptr<managers::WindowManager> m_windowManager;
     std::unique_ptr<Camera> m_camera;
 };

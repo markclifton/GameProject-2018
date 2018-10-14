@@ -8,9 +8,11 @@ namespace drawable
 
     Layer::~Layer()
     {
-        for(auto& child : m_ownedChildren)
+        while( !m_ownedChildren.empty() )
         {
-            delete child;
+            auto back = m_ownedChildren.back();
+            m_ownedChildren.pop_back();
+            delete back;
         }
     }
 

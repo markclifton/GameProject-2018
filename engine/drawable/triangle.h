@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "../glad/gl.h"
 #include <glm/vec3.hpp>
 
 #include "drawable.h"

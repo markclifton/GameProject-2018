@@ -29,6 +29,8 @@ namespace managers
 
         void runContext();
 
+        void reset();
+
     private:
         std::vector<contextPair> m_contexts;
         Context* m_activeContext {nullptr};

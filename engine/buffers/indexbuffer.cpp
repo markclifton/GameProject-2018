@@ -1,5 +1,7 @@
 #include "indexbuffer.h"
 
+#include <iostream>
+
 namespace buffers
 {
     IndexBuffer::IndexBuffer()
@@ -9,6 +11,7 @@ namespace buffers
 
     IndexBuffer::~IndexBuffer()
     {
+        std::cout << "IBO: " << m_ibo << std::endl;
         glDeleteBuffers(1, &m_ibo);
     }
 

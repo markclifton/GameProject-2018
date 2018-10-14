@@ -11,15 +11,22 @@
 
 Game::Game()
     : m_contextManager()
-    , m_windowManager()
+    , m_windowManager( std::make_unique<managers::WindowManager>())
     , m_camera(new Camera())
 {
     m_camera->SetViewport(0, 0, 640, 480);
 
-    m_windowManager.toggleVsync(false);
-    m_windowManager.registerHandler(m_camera.get());
+    m_windowManager->toggleVsync(false);
+    m_windowManager->registerHandler(m_camera.get());
 
     setup();
+}
+
+Game::~Game()
+{
+    m_contextManager.reset();
+    m_shaderManager.reset();
+    m_windowManager = nullptr;
 }
 
 void Game::run()
@@ -35,7 +42,7 @@ void Game::run()
 
     utils::Timer t;
     int ticks = 0;
-    while( !m_windowManager.shouldClose() )
+    while( !m_windowManager->shouldClose() )
     {
         if( ticks++ > 1000)
         {
@@ -48,7 +55,7 @@ void Game::run()
         s->setUniform("view", v);
 
         m_contextManager.runContext();
-        m_windowManager.refresh();
+        m_windowManager->refresh();
     }
 }
 

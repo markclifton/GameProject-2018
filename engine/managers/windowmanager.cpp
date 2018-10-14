@@ -118,11 +118,7 @@ namespace managers
 
         glfwMakeContextCurrent(m_window.get());
 
-        GLenum err = glewInit();
-        if (GLEW_OK != err)
-        {
-            std::cerr << "Error: " << glewGetErrorString(err) << std::endl;
-            glfwTerminate();
+        if (!gladLoadGL(glfwGetProcAddress)) {
             return false;
         }
         return true;

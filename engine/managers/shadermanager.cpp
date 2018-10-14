@@ -32,4 +32,9 @@ namespace managers
         }
         return nullptr;
     }
+
+    void ShaderManager::reset()
+    {
+        m_shaders.clear();
+    }
 }

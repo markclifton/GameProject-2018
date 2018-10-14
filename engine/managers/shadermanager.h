@@ -22,6 +22,8 @@ namespace managers
         bool loadShader(const std::string& name, const std::string& vsPath, const std::string& fsPath);
         Shader* getShader(const std::string& name);
 
+        void reset();
+
     private:
         std::vector<shaderPair> m_shaders; //Vector for efficiency
     };
