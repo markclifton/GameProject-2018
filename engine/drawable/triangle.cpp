@@ -4,7 +4,6 @@
 
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffers/vb_basic.h"
-#include "buffers/vertexbuffers/vb_transform.h"
 
 namespace drawable
 {

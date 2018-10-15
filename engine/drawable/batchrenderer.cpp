@@ -3,7 +3,6 @@
 #include "layer.h"
 
 #include <glm/gtc/type_ptr.hpp>
-#include "../buffers/vertexbuffers/vb_transform.h"
 
 namespace drawable
 {
