@@ -44,13 +44,13 @@ void Game::run()
 
     s->setUniform("myTexture", 1);
 
-    utils::Timer t;
+    utils::Timer timer;
     int ticks = 0;
     while( !m_windowManager->shouldClose() )
     {
         if( ticks++ > 1000)
         {
-            std::cerr << 1.0/(t.reset()/ticks) << "\n";
+            std::cerr << 1.0/(timer.reset()/ticks) << "\n";
             ticks = 0;
         }
 

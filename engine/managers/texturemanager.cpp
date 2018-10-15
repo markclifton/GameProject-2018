@@ -6,6 +6,10 @@ namespace managers
 {
     TextureManager::TextureManager()
     {
+        for(int i=0; i<16; i++)
+        {
+
+        }
     }
 
     TextureManager::~TextureManager()

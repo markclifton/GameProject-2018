@@ -12,7 +12,7 @@ namespace buffers
         {
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(offsetof(drawable::Vertex, pos)));
             glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(offsetof(drawable::Vertex, color)));
-            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(offsetof(drawable::Vertex, uv)));
+            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(offsetof(drawable::Vertex, uv)));
         }
     };
 }
