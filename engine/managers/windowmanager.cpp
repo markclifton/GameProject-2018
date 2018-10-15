@@ -57,6 +57,7 @@ namespace managers
 
     void WindowManager::refresh()
     {
+        glClearColor(.2f,.3f,.8f,1.f);
         glfwSwapBuffers(m_window.get());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwPollEvents();
@@ -118,9 +119,14 @@ namespace managers
 
         glfwMakeContextCurrent(m_window.get());
 
+
         if (!gladLoadGL(glfwGetProcAddress)) {
             return false;
         }
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         return true;
     }
 }

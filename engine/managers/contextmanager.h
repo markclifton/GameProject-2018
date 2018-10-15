@@ -8,14 +8,6 @@
 
 namespace managers
 {
-    struct contextPair
-    {
-        contextPair(std::string name, std::unique_ptr<Context> context);
-
-        std::string name;
-        std::unique_ptr<Context> context;
-    };
-
     class ContextManager
     {
     public:
@@ -32,7 +24,7 @@ namespace managers
         void reset();
 
     private:
-        std::vector<contextPair> m_contexts;
+        std::vector<std::pair<std::string, std::unique_ptr<Context>>> m_contexts;
         Context* m_activeContext {nullptr};
 
     };

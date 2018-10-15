@@ -26,6 +26,7 @@ Game::~Game()
 {
     m_contextManager.reset();
     m_shaderManager.reset();
+    m_textureManager.reset();
     m_windowManager = nullptr;
 }
 
@@ -34,11 +35,14 @@ void Game::run()
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->enableAttribArray("position");
     s->enableAttribArray("color");
+    s->enableAttribArray("uv");
 
     glm::mat4 p, v;
     m_camera->Update();
     m_camera->GetMatricies(p, v);
     s->setUniform("projection", p);
+
+    s->setUniform("myTexture", 1);
 
     utils::Timer t;
     int ticks = 0;
@@ -61,7 +65,11 @@ void Game::run()
 
 void Game::setup()
 {
-    m_shaderManager.loadShader("BasicShader", "resources/basic.vs", "resources/basic.fs");
+    m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
+    if( !m_textureManager.load("Smile", "resources/images/smile.tif") )
+    {
+        std::cerr << "Failed to load image\n";
+    }
 
     if( !m_contextManager.addContext("BasicContext", std::make_unique<Context>(m_shaderManager)) )
         std::cerr << "Failed to add context\n";

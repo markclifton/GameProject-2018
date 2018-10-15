@@ -7,13 +7,6 @@
 
 namespace managers
 {
-    struct shaderPair
-    {
-        shaderPair(std::unique_ptr<Shader> shader, std::string name);
-        std::unique_ptr<Shader> shader {nullptr};
-        std::string name;
-    };
-
     class ShaderManager
     {
     public:
@@ -25,6 +18,6 @@ namespace managers
         void reset();
 
     private:
-        std::vector<shaderPair> m_shaders; //Vector for efficiency
+        std::vector<std::pair<std::string, std::unique_ptr<Shader>>> m_shaders; //Vector for efficiency
     };
 }

@@ -4,11 +4,6 @@
 
 namespace managers
 {
-    contextPair::contextPair(std::string name, std::unique_ptr<Context> context)
-        : name(name)
-        , context( std::move(context) )
-    {}
-
     ContextManager::ContextManager()
     {
     }
@@ -21,9 +16,9 @@ namespace managers
     {
         for(auto& contextpair : m_contexts)
         {
-            if(contextpair.name.compare(name) == 0)
+            if(contextpair.first.compare(name) == 0)
             {
-                return contextpair.context.get();
+                return contextpair.second.get();
             }
         }
         return nullptr;
@@ -55,15 +50,16 @@ namespace managers
     {
         for(size_t i=0; i<m_contexts.size(); i++)
         {
-            if(m_contexts[i].name.compare(name) == 0)
+            if(m_contexts[i].first.compare(name) == 0)
             {
-                if(m_contexts[i].context.get() == m_activeContext) //TODO: Not thread-safe
+                if(m_contexts[i].second.get() == m_activeContext) //TODO: Not thread-safe
                 {
                     return false;
                 }
 
-                m_contexts[i].name = m_contexts.back().name;
-                m_contexts[i].context = std::move(m_contexts.back().context);
+                //TODO: fix me, gross...
+                m_contexts[i].first = m_contexts.back().first;
+                m_contexts[i].second = std::move(m_contexts.back().second);
                 m_contexts.pop_back();
                 return true;
             }
@@ -81,7 +77,7 @@ namespace managers
 
     void ContextManager::reset()
     {
-        m_activeContext = nullptr; //Not thread-safe
+        m_activeContext = nullptr; //TODO: not thread-safe
         m_contexts.clear();
     }
 }

@@ -28,6 +28,8 @@ engine/managers/contextmanager.h
 engine/managers/contextmanager.cpp
 engine/managers/shadermanager.h
 engine/managers/shadermanager.cpp
+engine/managers/texturemanager.h
+engine/managers/texturemanager.cpp
 engine/managers/windowmanager.h
 engine/managers/windowmanager.cpp
 engine/shaders/shader.h

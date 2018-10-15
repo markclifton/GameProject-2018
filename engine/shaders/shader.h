@@ -15,6 +15,7 @@ public:
     void enableAttribArray(const std::string& attribName);
 
     void setUniform(const std::string& uniformName, const glm::mat4& matrix);
+    void setUniform(const std::string& uniformName, const float& value);
 
 private:
     bool compile(const std::string& vs, const std::string& fs);

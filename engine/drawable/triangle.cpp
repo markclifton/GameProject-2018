@@ -21,9 +21,9 @@ namespace drawable
         m_vertices[1].pos = glm::vec3(center.x, center.y + size, center.z);
         m_vertices[2].pos = glm::vec3(center.x + size, center.y - size, center.z);
 
-        m_vertices[0].color = glm::vec3(1,0,0);
-        m_vertices[1].color = glm::vec3(0,1,0);
-        m_vertices[2].color = glm::vec3(0,0,1);
+        m_vertices[0].color = glm::vec4(1,0,0,1);
+        m_vertices[1].color = glm::vec4(0,1,0,1);
+        m_vertices[2].color = glm::vec4(0,0,1,1);
     }
 
     void Triangle::draw(glm::mat4 transform)

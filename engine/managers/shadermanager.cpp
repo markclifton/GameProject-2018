@@ -2,11 +2,6 @@
 
 namespace managers
 {
-    shaderPair::shaderPair(std::unique_ptr<Shader> shader, std::string name)
-        : shader( std::move(shader))
-        , name(name)
-    {}
-
     ShaderManager::ShaderManager()
     {
     }
@@ -15,7 +10,7 @@ namespace managers
     {
         if( getShader( name ) == nullptr )
         {
-            m_shaders.emplace_back(std::make_unique<Shader>(vsPath, fsPath), name);
+            m_shaders.emplace_back(name, std::make_unique<Shader>(vsPath, fsPath));
             return true;
         }
         return false;
@@ -25,9 +20,9 @@ namespace managers
     {
         for( auto& shader: m_shaders )
         {
-            if(shader.name.compare(name) == 0)
+            if(shader.first.compare(name) == 0)
             {
-                return shader.shader.get();
+                return shader.second.get();
             }
         }
         return nullptr;

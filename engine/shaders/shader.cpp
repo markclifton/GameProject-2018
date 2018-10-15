@@ -46,6 +46,15 @@ void Shader::setUniform(const std::string& uniformName, const glm::mat4& matrix)
     }
 }
 
+void Shader::setUniform(const std::string& uniformName, const float& value)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniform1f(uniform, value);
+    }
+}
+
 bool Shader::compile(const std::string& vsPath, const std::string& fsPath)
 {
     auto vs = utils::loadFile(vsPath);
