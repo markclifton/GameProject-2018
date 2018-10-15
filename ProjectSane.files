@@ -4,7 +4,6 @@ engine/buffers/indexbuffer.cpp
 engine/buffers/vertexbuffer.h
 engine/buffers/vertexbuffer.cpp
 engine/buffers/vertexbuffers/vb_basic.h
-engine/buffers/vertexbuffers/vb_transform.h
 engine/camera/camera.cpp
 engine/camera/camera.h
 engine/contexts/context.h
