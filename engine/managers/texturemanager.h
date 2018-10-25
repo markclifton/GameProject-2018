@@ -4,11 +4,22 @@
 #include <FreeImage.h>
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace managers
 {
+    //TODO: not thread-safe
+    struct TextureHandle
+    {
+        TextureHandle(std::string name, int position)
+            : name(name), position(position)
+        {}
+        std::string name;
+        int position {-1};
+    };
+
     // TODO: not thread-safe
     class TextureManager
     {
@@ -23,10 +34,11 @@ namespace managers
                          GLint level = 0,
                          GLint border = 0);
 
-        bool bind(const std::string& name);
-        bool unload(const std::string& name);
+        std::weak_ptr<TextureHandle> bind(const std::string& name);
         void reset();
 
+    private:
+        bool unload(const std::string& name);
         GLuint find(const std::string& name);
 
     protected:
@@ -34,5 +46,6 @@ namespace managers
         TextureManager& operator=(const TextureManager& tm) = delete;
 
         std::vector<std::pair<std::string, GLuint>> m_textures;
+        std::vector<std::shared_ptr<TextureHandle>> m_enabledTextures; //Could be more than 16 textures at some point in the future...
     };
 }

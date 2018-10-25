@@ -21,7 +21,7 @@ namespace drawable
         if(m_shader != nullptr)
         {
             m_shader->bind();
-            m_shader->setUniform("model", transform);
+            m_shader->setUniform("transform", transform);
         }
 
         for(auto& child : m_children)

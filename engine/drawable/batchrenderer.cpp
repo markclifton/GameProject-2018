@@ -30,12 +30,41 @@ namespace drawable
         }
     }
 
+    std::function<void()> BatchRenderer::submit(DrawableObject* object)
+    {
+        m_objects.push_back(std::make_pair(object, m_vertices.size()));
+        submit(static_cast<int>(object->m_vertices.size()), &object->m_vertices.front(), static_cast<int>(object->m_indices.size()), &object->m_indices.front());
+
+        //Update Lambda (Refactor maybe??)
+        auto fn = [this, object](){
+            for(size_t i=0; i<m_objects.size(); i++)
+            {
+                if(m_objects[i].first == object)
+                {
+                    for(size_t j=0; j<object->m_vertices.size(); j++)
+                    {
+                        m_vertices[m_objects[i].second + j] = object->m_vertices[j];
+                    }
+                    m_changed = true;
+                    break;
+                }
+            }
+        };
+        return fn;
+    }
+
     void BatchRenderer::draw(glm::mat4 transform)
     {
         if(m_shader != nullptr)
         {
             m_shader->bind();
-            m_shader->setUniform("model", transform * m_transform);
+            m_shader->setUniform("transform", transform * m_transform);
+        }
+
+        //Bind Textures
+        for(uint i = 0; i < m_textures.size(); ++i)
+        {
+            m_textures[i]->bind(i);
         }
 
         if(m_changed)

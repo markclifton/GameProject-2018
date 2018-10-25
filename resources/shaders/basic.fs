@@ -5,16 +5,16 @@ out vec4 finalColor;
 in vec4 fs_color;
 in vec3 fs_uv;
 
-uniform sampler2D myTexture;
+uniform sampler2D myTextures[16];
 
 void main()
 {
-    if( fs_uv.z != 0.f )    
+    if( fs_uv.z < 0.f )
     {
-        finalColor = texture2D(myTexture, fs_uv.xy);
+        finalColor = fs_color;
     }   
     else
     {
-        finalColor = fs_color;
+        finalColor = texture2D(myTextures[int(fs_uv.z - .5)], fs_uv.xy);
     }
 }

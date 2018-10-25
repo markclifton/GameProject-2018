@@ -32,17 +32,21 @@ Game::~Game()
 
 void Game::run()
 {
+    //TODO: REFACTOR ME
     Shader* s = m_shaderManager.getShader("BasicShader");
+    s->bind();
     s->enableAttribArray("position");
     s->enableAttribArray("color");
     s->enableAttribArray("uv");
+    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(4);
+    glEnableVertexAttribArray(5);
+    glEnableVertexAttribArray(6);
 
     glm::mat4 p, v;
     m_camera->Update();
     m_camera->GetMatricies(p, v);
     s->setUniform("projection", p);
-
-    s->setUniform("myTexture", 1);
 
     utils::Timer timer;
     int ticks = 0;
@@ -66,12 +70,8 @@ void Game::run()
 void Game::setup()
 {
     m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
-    if( !m_textureManager.load("Smile", "resources/images/smile.tif") )
-    {
-        std::cerr << "Failed to load image\n";
-    }
 
-    if( !m_contextManager.addContext("BasicContext", std::make_unique<Context>(m_shaderManager)) )
+    if( !m_contextManager.addContext("BasicContext", std::make_unique<Context>(m_shaderManager, m_textureManager)) )
         std::cerr << "Failed to add context\n";
     if( !m_contextManager.setContext("BasicContext") )
         std::cerr << "Failed to set context\n";

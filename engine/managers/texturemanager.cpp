@@ -53,29 +53,62 @@ namespace managers
         }
 
 
+        int position = static_cast<int>(m_enabledTextures.size());
+        m_enabledTextures.push_back(std::make_shared<TextureHandle>(name, position));
+
         GLuint gl_texID = 0;
         glGenTextures(1, &gl_texID);
-        glActiveTexture(GL_TEXTURE0);
+
+        glActiveTexture(GL_TEXTURE0 + m_textures.size());
         glBindTexture(GL_TEXTURE_2D, gl_texID);
+        m_textures.emplace_back(name, gl_texID);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, level, internal_format, static_cast<int>(width), static_cast<int>(height), border, image_format, GL_UNSIGNED_BYTE, bits);
 
+
         FreeImage_Unload(dib);
         return true;
     }
 
-    bool TextureManager::bind(const std::string& name)
+    std::weak_ptr<TextureHandle> TextureManager::bind(const std::string& name)
     {
         auto id = find(name);
         if( id != 0)
         {
+            for(size_t i=0; i<m_enabledTextures.size(); i++)
+            {
+                if(m_enabledTextures[i]->name.compare(name) == 0)
+                {
+                    return std::weak_ptr<TextureHandle>(m_enabledTextures[i]);
+                }
+            }
+
+            if(m_enabledTextures.size() == 15)
+            {
+                std::cerr << "Too many textures in use\n";
+                return std::weak_ptr<TextureHandle>();
+            }
+
+            int position = static_cast<int>(m_enabledTextures.size() + 1); //0 will be used for loading?
+            m_enabledTextures.push_back(std::make_shared<TextureHandle>(name, position));
+            glActiveTexture(GL_TEXTURE0 + static_cast<unsigned int>(position));
             glBindTexture(GL_TEXTURE_2D, id);
-            return true;
+            return std::weak_ptr<TextureHandle>(m_enabledTextures.back());;
         }
-        return false;
+        return std::weak_ptr<TextureHandle>();
+    }
+
+    void TextureManager::reset()
+    {
+        for(auto& texture : m_textures)
+        {
+            unload(texture.first);
+        }
+        m_textures.clear();
+        m_enabledTextures.clear();
     }
 
     bool TextureManager::unload(const std::string& name)
@@ -91,15 +124,6 @@ namespace managers
             }
         }
         return false;
-    }
-
-    void TextureManager::reset()
-    {
-        for(auto& texture : m_textures)
-        {
-            unload(texture.first);
-        }
-        m_textures.clear();
     }
 
     GLuint TextureManager::find(const std::string& name)

@@ -16,6 +16,8 @@ public:
 
     void setUniform(const std::string& uniformName, const glm::mat4& matrix);
     void setUniform(const std::string& uniformName, const float& value);
+    void setUniform(const std::string& uniformName, const int& size, const int* data);
+    void setUniform(const std::string& uniformName, const int& size, const GLuint* data);
 
 private:
     bool compile(const std::string& vs, const std::string& fs);

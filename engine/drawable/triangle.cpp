@@ -30,7 +30,7 @@ namespace drawable
         if(m_shader != nullptr)
         {
             m_shader->bind();
-            m_shader->setUniform("model", transform * m_transform);
+            m_shader->setUniform("transform", transform);
         }
 
         // TODO: FIX ME (Not Needed)

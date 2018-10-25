@@ -55,6 +55,24 @@ void Shader::setUniform(const std::string& uniformName, const float& value)
     }
 }
 
+void Shader::setUniform(const std::string& uniformName, const int& size, const int* data)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniform1iv(uniform, size, data);
+    }
+}
+
+void Shader::setUniform(const std::string& uniformName, const int& size, const GLuint* data)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniform1uiv(uniform, size, data);
+    }
+}
+
 bool Shader::compile(const std::string& vsPath, const std::string& fsPath)
 {
     auto vs = utils::loadFile(vsPath);

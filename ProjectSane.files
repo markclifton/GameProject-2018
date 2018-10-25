@@ -11,6 +11,8 @@ engine/contexts/context.cpp
 engine/drawable/batchrenderer.h
 engine/drawable/batchrenderer.cpp
 engine/drawable/drawable.h
+engine/drawable/drawableobject.h
+engine/drawable/drawableobject.cpp
 engine/drawable/drawablebasics.h
 engine/drawable/layer.h
 engine/drawable/layer.cpp
@@ -33,6 +35,8 @@ engine/managers/windowmanager.h
 engine/managers/windowmanager.cpp
 engine/shaders/shader.h
 engine/shaders/shader.cpp
+engine/textures/texture.h
+engine/textures/texture.cpp
 engine/utils/fileloader.h
 engine/utils/fileloader.cpp
 engine/utils/keyhandler.h
@@ -42,3 +46,7 @@ engine/utils/timer.h
 engine/utils/timer.cpp
 main.cpp
 README.md
+
+resources/shaders/basic.vs
+resources/shaders/basic.fs
+
