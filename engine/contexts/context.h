@@ -12,11 +12,7 @@ class Context
 {
 public:
     Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager);
-
     void run();
-
-    //TEMP
-    std::vector<std::unique_ptr<Texture>> textures;
 
 private:
     managers::ShaderManager& m_shaderManager;

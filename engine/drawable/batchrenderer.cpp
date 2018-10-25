@@ -33,7 +33,18 @@ namespace drawable
     std::function<void()> BatchRenderer::submit(DrawableObject* object)
     {
         m_objects.push_back(std::make_pair(object, m_vertices.size()));
+
+        // This is dumb, FIX ME
+        object->setTextureIndex(static_cast<int>(m_textures.size()) + 1 );
+
         submit(static_cast<int>(object->m_vertices.size()), &object->m_vertices.front(), static_cast<int>(object->m_indices.size()), &object->m_indices.front());
+
+        auto objectTextures = object->getTextures();
+        for(auto& texture : objectTextures)
+        {
+            //TODO: There is a good chance there will be duplicates
+            m_textures.push_back(texture);
+        }
 
         //Update Lambda (Refactor maybe??)
         auto fn = [this, object](){
@@ -59,12 +70,6 @@ namespace drawable
         {
             m_shader->bind();
             m_shader->setUniform("transform", transform * m_transform);
-        }
-
-        //Bind Textures
-        for(uint i = 0; i < m_textures.size(); ++i)
-        {
-            m_textures[i]->bind(i);
         }
 
         if(m_changed)

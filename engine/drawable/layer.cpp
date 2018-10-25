@@ -2,36 +2,43 @@
 
 namespace drawable
 {
-    Layer::Layer(Shader* shader)
-        : Drawable(shader)
-    {}
+    Layer::Layer(managers::ShaderManager& sm, managers::TextureManager& tm)
+        : m_sm(sm), m_tm(tm)
+    {
+        m_allChildren.emplace_back();
+        m_allChildren.emplace_back();
+    }
 
     Layer::~Layer()
     {
-        while( !m_ownedChildren.empty() )
+        while( !m_allChildren[1].empty() )
         {
-            auto back = m_ownedChildren.back();
-            m_ownedChildren.pop_back();
+            auto back = m_allChildren[1].back();
+            m_allChildren[1].pop_back();
             delete back;
         }
     }
 
     void Layer::draw(glm::mat4 transform)
     {
-        if(m_shader != nullptr)
+        for(auto& setOfChildren : m_allChildren)
         {
-            m_shader->bind();
-            m_shader->setUniform("transform", transform);
-        }
+            for(auto& child : setOfChildren)
+            {
+                //bind shader
+                auto shader = child->getShader();
+                shader->bind();
 
-        for(auto& child : m_children)
-        {
-            child->draw(transform * m_transform);
-        }
+                //bind texture
+                auto textures = child->getTextures();
+                for(size_t i = 0; i<textures.size(); i++)
+                {
+                    m_tm.bind(textures[i], static_cast<uint>(i));
+                }
 
-        for(auto& child : m_ownedChildren)
-        {
-            child->draw(transform * m_transform);
+                //draw
+                child->draw(transform);
+            }
         }
     }
 
@@ -39,11 +46,11 @@ namespace drawable
     {
         if( ownThis )
         {
-            m_ownedChildren.push_back(drawable);
+            m_allChildren[1].push_back(drawable);
         }
         else
         {
-            m_children.push_back(drawable);
+            m_allChildren[0].push_back(drawable);
         }
     }
 }

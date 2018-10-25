@@ -13,6 +13,7 @@ namespace drawable
     public:
         DrawableObject(Shader* shader);
 
+        inline void setTextureName( const std::string& name) { m_textures.clear(); m_textures.push_back(name); }
         inline void setTextureIndex ( int index )
         {
             m_activeTexture = index;

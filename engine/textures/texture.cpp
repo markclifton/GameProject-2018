@@ -2,30 +2,13 @@
 
 #include <string.h>
 
-Texture::Texture(const std::string& path)
-{
-    load(path.c_str());
-}
-
-Texture::~Texture()
-{
-    glDeleteTextures(1, &m_textureID);
-}
-
-bool Texture::bind(const uint& index)
-{
-    glActiveTexture(GL_TEXTURE0 + index);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
-    return true; //NOT USED YET
-}
-
-bool Texture::load(const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
+Texture::Texture(const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
 {
     FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(filename, 0);
     if(fif == FIF_UNKNOWN)
         fif = FreeImage_GetFIFFromFilename(filename);
     if(fif == FIF_UNKNOWN)
-        return false;
+        return;
 
     //check that the plugin has reading capabilities and load the file
     FIBITMAP *dib = nullptr;
@@ -36,7 +19,7 @@ bool Texture::load(const char* filename, GLenum image_format, GLint internal_for
 
     if(!dib)
     {
-        return false;
+        return;
     }
 
     //retrieve the image data
@@ -45,7 +28,7 @@ bool Texture::load(const char* filename, GLenum image_format, GLint internal_for
     unsigned int height = FreeImage_GetHeight(dib);
     if((bits == nullptr) || (width == 0) || (height == 0))
     {
-        return false;
+        return;
     }
 
     glGenTextures(1, &m_textureID);
@@ -61,6 +44,15 @@ bool Texture::load(const char* filename, GLenum image_format, GLint internal_for
     FreeImage_Unload(dib);
 
     glBindTexture(GL_TEXTURE_2D, 0);
+}
 
-    return true;
+Texture::~Texture()
+{
+    glDeleteTextures(1, &m_textureID);
+}
+
+void Texture::bind(const uint& index)
+{
+    glActiveTexture(GL_TEXTURE0 + index);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
 }
