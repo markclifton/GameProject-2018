@@ -13,16 +13,16 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
 {
     drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
     int totalObjs = 0;
-    for(float x=-2; x<=2.f; x+=.0625f/2.f)
+    for(float x=-52; x<=52.f; x+=.0625f/2.f)
     {
-        for(float y=-2; y<=2.f; y+=.0625f/2.f)
+        for(float y=-52; y<=52.f; y+=.0625f/2.f)
         {
             drawable::Triangle t( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") );
             batch->submit(3, t.m_vertices, 3, t.m_indices);
             totalObjs++;
         }
     }
-    //std::cout << "Total Triangles: " << totalObjs << "\n";
+    std::cout << "Total Triangles: " << totalObjs << "\n";
 
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
 

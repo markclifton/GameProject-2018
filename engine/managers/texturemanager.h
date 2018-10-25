@@ -32,7 +32,7 @@ namespace managers
 
     private:
         bool unload(const std::string& name);
-        std::weak_ptr<Texture> find(const std::string& name);
+        std::weak_ptr<Texture> find(const std::string& name); //TODO: no real need for sp yet, ever?
 
     protected:
         TextureManager(const TextureManager& tm) = delete;

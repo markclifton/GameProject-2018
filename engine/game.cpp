@@ -32,7 +32,7 @@ Game::~Game()
 
 void Game::run()
 {
-    //TODO: REFACTOR ME
+    //TODO: REFACTOR ME, not every shader needs this information
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->bind();
     s->enableAttribArray("position");
@@ -52,9 +52,10 @@ void Game::run()
     int ticks = 0;
     while( !m_windowManager->shouldClose() )
     {
-        if( ticks++ > 1000)
+        if( ticks++ > 10)
         {
-            std::cerr << 1.0/(timer.reset()/ticks) << "\n";
+            auto time = timer.reset();
+            std::cerr << 1.0/(time/ticks) <<  " latency: " << time/ticks * 1000 <<  "ms \n";
             ticks = 0;
         }
 
