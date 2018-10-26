@@ -30,21 +30,40 @@ namespace drawable
         }
     }
 
-    std::function<void()> BatchRenderer::submit(DrawableObject* object)
+    bool BatchRenderer::submit(DrawableObject* object)
     {
+        Texture* objectTexture = object->getTexture();
+        if(objectTexture)
+        {
+            bool found = false;
+            for(size_t i = 0; i < m_textures.size(); i++)
+            {
+                if(m_textures[i] == objectTexture)
+                {
+                    object->setTextureId(static_cast<int>(i));
+                    found = true;
+                    break;
+                }
+            }
+
+            if( !found )
+            {
+                if(m_textures.size() < 16)
+                {
+                    m_textures.push_back(objectTexture);
+                    object->setTextureId(static_cast<int>(m_textures.size()));
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
+
         m_objects.push_back(std::make_pair(object, m_vertices.size()));
 
-        // This is dumb, FIX ME
-        object->setTextureIndex(static_cast<int>(m_textures.size()) + 1 );
-
-        submit(static_cast<int>(object->m_vertices.size()), &object->m_vertices.front(), static_cast<int>(object->m_indices.size()), &object->m_indices.front());
-
-        auto objectTextures = object->getTextures();
-        for(auto& texture : objectTextures)
-        {
-            //TODO: There is a good chance there will be duplicates
-            m_textures.push_back(texture);
-        }
+        submit(object->numVerts(), object->verts(), object->numIndices(), object->indices());
 
         //Update Lambda (Refactor maybe??)
         auto fn = [this, object](){
@@ -52,16 +71,17 @@ namespace drawable
             {
                 if(m_objects[i].first == object)
                 {
-                    for(size_t j=0; j<object->m_vertices.size(); j++)
+                    for(int j=0; j<object->numVerts(); j++)
                     {
-                        m_vertices[m_objects[i].second + j] = object->m_vertices[j];
+                        m_vertices[m_objects[i].second + j] = object->verts()[j];
                     }
                     m_changed = true;
                     break;
                 }
             }
         };
-        return fn;
+        object->setUpdateFunc(fn);
+        return true;
     }
 
     void BatchRenderer::draw(glm::mat4 transform)
@@ -70,6 +90,11 @@ namespace drawable
         {
             m_shader->bind();
             m_shader->setUniform("transform", transform * m_transform);
+        }
+
+        for(size_t i = 0; i<m_textures.size(); i++)
+        {
+            m_textures[i]->bind(static_cast<uint>(i));
         }
 
         if(m_changed)

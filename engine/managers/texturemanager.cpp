@@ -17,8 +17,20 @@ namespace managers
     {
         if(find(name) == nullptr)
         {
-            m_textures.push_back(std::make_pair(name, std::make_unique<Texture>(filename, image_format, internal_format, level, border)));
+            m_textures.push_back(std::make_unique<Texture>(name, filename, image_format, internal_format, level, border));
         }
+    }
+
+    Texture* TextureManager::find(const std::string& name)
+    {
+        for(auto& texture : m_textures)
+        {
+            if(texture->name().compare(name) == 0)
+            {
+                return texture.get();
+            }
+        }
+        return nullptr;
     }
 
     bool TextureManager::bind(const std::string& name, uint position)
@@ -36,7 +48,7 @@ namespace managers
     {
         for(auto& texture : m_textures)
         {
-            unload(texture.first);
+            unload(texture->name());
         }
         m_textures.clear();
     }
@@ -45,7 +57,7 @@ namespace managers
     {
         for(size_t i=0; i<m_textures.size(); i++)
         {
-            if(m_textures[i].first.compare(name) == 0)
+            if(m_textures[i]->name().compare(name) == 0)
             {
                 m_textures[i] = std::move(m_textures.back());
                 m_textures.pop_back();
@@ -53,17 +65,5 @@ namespace managers
             }
         }
         return false;
-    }
-
-    Texture* TextureManager::find(const std::string& name)
-    {
-        for(auto& texture : m_textures)
-        {
-            if(texture.first.compare(name) == 0)
-            {
-                return texture.second.get();
-            }
-        }
-        return nullptr;
     }
 }

@@ -10,8 +10,6 @@ namespace drawable
     Rectangle::Rectangle(glm::vec3 center, Shader* shader)
         : DrawableObject (shader)
     {
-        float size = .5f;
-
         m_indices.push_back(0);
         m_indices.push_back(1);
         m_indices.push_back(2);
@@ -19,6 +17,7 @@ namespace drawable
         m_indices.push_back(2);
         m_indices.push_back(3);
 
+        float size = .5f;
         Vertex v1, v2, v3, v4;
         v1.color = glm::vec4(1,0,0,1);
         v1.pos = glm::vec3(center.x - size, center.y - size, center.z);
@@ -48,6 +47,11 @@ namespace drawable
         {
             m_shader->bind();
             m_shader->setUniform("transform", transform);
+        }
+
+        if(m_texture)
+        {
+            m_texture->bind(0);
         }
 
         // TODO: FIX ME (Not Needed)

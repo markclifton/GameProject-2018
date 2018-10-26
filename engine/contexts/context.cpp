@@ -11,25 +11,20 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
     , m_textureManager(textureManager)
     , m_stack(shaderManager, textureManager)
 {
+    loadResources();
+
     drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
-    int totalObjs = 0;
-    for(float x=-2; x<=2.f; x+=.0625f/2.f)
+    for(float x=-1; x<=1.f; x+=.0625f/2.f)
     {
-        for(float y=-2; y<=2.f; y+=.0625f/2.f)
+        for(float y=-1; y<=1.f; y+=.0625f/2.f)
         {
-            drawable::Triangle t( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") );
-            batch->submit(3, t.m_vertices, 3, t.m_indices);
-            totalObjs++;
+            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") )); //Memory Leak
         }
     }
-    //std::cout << "Total Triangles: " << totalObjs << "\n";
 
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
 
     m_stack.submit(batch);
-
-    m_textureManager.load("smile", "resources/images/smile.tif");
-    m_textureManager.load("smile2", "resources/images/smile2.tif");
 
     // Horrible assumptions are made... FIX ME
     auto shader = m_shaderManager.getShader("BasicShader");
@@ -38,21 +33,24 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
     int data [2] {0, 1};
     shader->setUniform("myTextures", 2, data);
 
-    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), shader);
-    r->setTextureName("smile");
+    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), shader); //Memory Leak
+    r->setTexture(m_textureManager.find("smile"));
     r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
     batch->submit(r);
 
-    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), shader);
-    r2->setTextureName("smile2");
-    auto fn = batch->submit(r2);
-
-    // TEST
+    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), shader); //Memory Leak
+    r2->setTexture(m_textureManager.find("smile2"));
+    batch->submit(r2);
     r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
-    fn();
 }
 
 void Context::run()
 {
     m_stack.draw();
+}
+
+void Context::loadResources()
+{
+    m_textureManager.load("smile", "resources/images/smile.tif");
+    m_textureManager.load("smile2", "resources/images/smile2.tif");
 }

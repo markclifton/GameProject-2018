@@ -25,11 +25,9 @@ namespace drawable
         }
 
         inline Shader* getShader() { return m_shader; }
-        inline const std::vector<std::string>& getTextures() { return m_textures; }
 
     protected:
         Shader* m_shader;
         glm::mat4 m_transform {1.f};
-        std::vector<std::string> m_textures;
     };
 }

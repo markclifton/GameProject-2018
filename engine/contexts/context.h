@@ -13,6 +13,7 @@ class Context
 public:
     Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager);
     void run();
+    void loadResources();
 
 private:
     managers::ShaderManager& m_shaderManager;

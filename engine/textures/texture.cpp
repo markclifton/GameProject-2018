@@ -2,11 +2,12 @@
 
 #include <string.h>
 
-Texture::Texture(const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
+Texture::Texture(const std::string& name, const std::string& filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
+    : m_name(name)
 {
-    FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(filename, 0);
+    FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(filename.c_str(), 0);
     if(fif == FIF_UNKNOWN)
-        fif = FreeImage_GetFIFFromFilename(filename);
+        fif = FreeImage_GetFIFFromFilename(filename.c_str());
     if(fif == FIF_UNKNOWN)
         return;
 
@@ -14,7 +15,7 @@ Texture::Texture(const char* filename, GLenum image_format, GLint internal_forma
     FIBITMAP *dib = nullptr;
     if(FreeImage_FIFSupportsReading(fif))
     {
-        dib = FreeImage_Load(fif, filename);
+        dib = FreeImage_Load(fif, filename.c_str());
     }
 
     if(!dib)

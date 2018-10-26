@@ -27,17 +27,17 @@ namespace managers
                          GLint level = 0,
                          GLint border = 0);
 
+        Texture* find(const std::string& name);
         bool bind(const std::string& name, uint position = 0);
         void reset();
 
     private:
         bool unload(const std::string& name);
-        Texture* find(const std::string& name);
 
     protected:
         TextureManager(const TextureManager& tm) = delete;
         TextureManager& operator=(const TextureManager& tm) = delete;
 
-        std::vector<std::pair<std::string, std::unique_ptr<Texture>>> m_textures;
+        std::vector<std::unique_ptr<Texture>> m_textures;
     };
 }

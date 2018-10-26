@@ -25,18 +25,9 @@ namespace drawable
         {
             for(auto& child : setOfChildren)
             {
-                //bind shader
                 auto shader = child->getShader();
                 shader->bind();
 
-                //bind texture
-                auto textures = child->getTextures();
-                for(size_t i = 0; i<textures.size(); i++)
-                {
-                    m_tm.bind(textures[i], static_cast<uint>(i));
-                }
-
-                //draw
                 child->draw(transform);
             }
         }
@@ -44,13 +35,6 @@ namespace drawable
 
     void Layer::submit(Drawable* drawable, bool ownThis)
     {
-        if( ownThis )
-        {
-            m_allChildren[1].push_back(drawable);
-        }
-        else
-        {
-            m_allChildren[0].push_back(drawable);
-        }
+        m_allChildren[ownThis ? 1 : 0].push_back(drawable);
     }
 }
