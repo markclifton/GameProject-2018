@@ -18,12 +18,6 @@ namespace buffers
             glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(1 * sizeof(glm::vec4) + offsetof(drawable::Vertex, model)));
             glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(2 * sizeof(glm::vec4) + offsetof(drawable::Vertex, model)));
             glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(drawable::Vertex), reinterpret_cast<void*>(3 * sizeof(glm::vec4) + offsetof(drawable::Vertex, model)));
-
-            //TODO: Look into instancing more...
-            //glVertexAttribDivisor(3, 1);
-            //glVertexAttribDivisor(4, 1);
-            //glVertexAttribDivisor(5, 1);
-            //glVertexAttribDivisor(6, 1);
         }
     };
 }

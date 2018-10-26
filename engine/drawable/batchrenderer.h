@@ -37,6 +37,5 @@ namespace drawable
 
         glm::mat4 m_tranform {1.f};
         bool m_changed { true };
-
     };
 }

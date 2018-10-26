@@ -32,7 +32,7 @@ namespace managers
         void reset();
 
     private:
-        bool unload(const std::string& name);
+        bool unload(const std::string& name); //TODO: Needs tested...
 
     protected:
         TextureManager(const TextureManager& tm) = delete;

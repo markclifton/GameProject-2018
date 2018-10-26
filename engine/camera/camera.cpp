@@ -62,34 +62,34 @@ void Camera3D::process(int key, int scancode, int action, int mods)
     switch (key)
     {
     case GLFW_KEY_W:
-        camera_position_delta += camera_direction * .01f;
+        camera_position_delta += camera_direction * .05f;
         break;
     case GLFW_KEY_S:
-        camera_position_delta -= camera_direction * .01f;
+        camera_position_delta -= camera_direction * .05f;
         break;
     case GLFW_KEY_A:
-        camera_position_delta -= glm::cross(camera_direction, camera_up) * .01f;
+        camera_position_delta -= glm::cross(camera_direction, camera_up) * .05f;
         break;
     case GLFW_KEY_D:
-        camera_position_delta += glm::cross(camera_direction, camera_up) * .01f;
+        camera_position_delta += glm::cross(camera_direction, camera_up) * .05f;
         break;
     case GLFW_KEY_E:
-        camera_position_delta += camera_up * .01f;
+        camera_position_delta += camera_up * .025f;
         break;
     case GLFW_KEY_Q:
-        camera_position_delta -= camera_up * .01f;
+        camera_position_delta -= camera_up * .025f;
         break;
     case GLFW_KEY_UP:
-        ChangePitch(.01f);
+        ChangePitch(.025f);
         break;
     case GLFW_KEY_DOWN:
-        ChangePitch(-.01f);
+        ChangePitch(-.025f);
         break;
     case GLFW_KEY_LEFT:
-        ChangeHeading(-.01f);
+        ChangeHeading(-.025f);
         break;
     case GLFW_KEY_RIGHT:
-        ChangeHeading(.01f);
+        ChangeHeading(.025f);
         break;
     }
 }

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "glad/gl.h"
+#include <FreeImage.h>
 
 #include <string>
-
-#include <FreeImage.h>
 
 class Texture
 {
@@ -18,6 +17,6 @@ public:
 
 private:
     //TODO: replace std::string being used for the name with some other type
-    std::string m_name;
+    std::string m_name {""};
     GLuint m_textureID {0};
 };

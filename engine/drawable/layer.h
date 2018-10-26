@@ -18,7 +18,6 @@ namespace drawable
         void submit(Drawable* drawable, bool ownThis = true);
 
     private:
-        //Todo: consider ordering
         std::vector<std::vector<Drawable*>> m_allChildren;
 
         managers::ShaderManager& m_sm;

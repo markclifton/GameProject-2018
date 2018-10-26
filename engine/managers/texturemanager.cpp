@@ -46,10 +46,6 @@ namespace managers
 
     void TextureManager::reset()
     {
-        for(auto& texture : m_textures)
-        {
-            unload(texture->name());
-        }
         m_textures.clear();
     }
 
@@ -59,7 +55,10 @@ namespace managers
         {
             if(m_textures[i]->name().compare(name) == 0)
             {
-                m_textures[i] = std::move(m_textures.back());
+                if(i != m_textures.size() - 1)
+                {
+                    m_textures[i] = std::move(m_textures.back());
+                }
                 m_textures.pop_back();
                 return true;
             }

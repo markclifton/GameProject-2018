@@ -118,7 +118,7 @@ namespace managers
         glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
 
         glfwMakeContextCurrent(m_window.get());
-
+        glfwSwapInterval( 1 );
 
         if (!gladLoadGL(glfwGetProcAddress)) {
             return false;
@@ -126,6 +126,9 @@ namespace managers
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
 
         return true;
     }

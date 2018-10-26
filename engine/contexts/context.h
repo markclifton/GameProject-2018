@@ -1,12 +1,9 @@
 #pragma once
 
 #include "drawable/layer.h"
+#include "drawable/model.h" //TEMP
 #include "managers/shadermanager.h"
 #include "managers/texturemanager.h"
-
-//TEMP
-#include <vector>
-#include "textures/texture.h"
 
 class Context
 {
@@ -19,4 +16,6 @@ private:
     managers::ShaderManager& m_shaderManager;
     managers::TextureManager& m_textureManager;
     drawable::Layer m_stack;
+
+    drawable::Model* m;
 };

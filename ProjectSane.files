@@ -16,6 +16,8 @@ engine/drawable/drawableobject.cpp
 engine/drawable/drawablebasics.h
 engine/drawable/layer.h
 engine/drawable/layer.cpp
+engine/drawable/model.h
+engine/drawable/model.cpp
 engine/drawable/rectangle.h
 engine/drawable/rectangle.cpp
 engine/drawable/triangle.h
@@ -47,6 +49,6 @@ engine/utils/timer.cpp
 main.cpp
 README.md
 
+resources/models/teapot.obj
 resources/shaders/basic.vs
 resources/shaders/basic.fs
-

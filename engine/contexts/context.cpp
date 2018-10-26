@@ -24,6 +24,8 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
 
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
 
+    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.f,0,0)));
+    m_stack.submit(m);
     m_stack.submit(batch);
 
     // Horrible assumptions are made... FIX ME
@@ -53,4 +55,6 @@ void Context::loadResources()
 {
     m_textureManager.load("smile", "resources/images/smile.tif");
     m_textureManager.load("smile2", "resources/images/smile2.tif");
+
+    m = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
 }
