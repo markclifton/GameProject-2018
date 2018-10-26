@@ -32,12 +32,12 @@ namespace managers
 
     private:
         bool unload(const std::string& name);
-        std::weak_ptr<Texture> find(const std::string& name);
+        Texture* find(const std::string& name);
 
     protected:
         TextureManager(const TextureManager& tm) = delete;
         TextureManager& operator=(const TextureManager& tm) = delete;
 
-        std::vector<std::pair<std::string, std::shared_ptr<Texture>>> m_textures;
+        std::vector<std::pair<std::string, std::unique_ptr<Texture>>> m_textures;
     };
 }

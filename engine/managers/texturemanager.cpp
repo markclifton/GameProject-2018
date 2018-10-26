@@ -6,10 +6,6 @@ namespace managers
 {
     TextureManager::TextureManager()
     {
-        for(int i=0; i<16; i++)
-        {
-
-        }
     }
 
     TextureManager::~TextureManager()
@@ -19,21 +15,18 @@ namespace managers
 
     void TextureManager::load(const std::string& name, const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
     {
-        if(find(name).lock())
+        if(find(name) == nullptr)
         {
-            //Already loaded texture
-            return;
+            m_textures.push_back(std::make_pair(name, std::make_unique<Texture>(filename, image_format, internal_format, level, border)));
         }
-
-        m_textures.push_back(std::make_pair(name, std::make_shared<Texture>(filename, image_format, internal_format, level, border)));
     }
 
     bool TextureManager::bind(const std::string& name, uint position)
     {
-        auto wpTexture = find(name);
-        if( auto spTexture = wpTexture.lock() )
+        Texture* texture = find(name);
+        if( texture )
         {
-            spTexture->bind(position);
+            texture->bind(position);
             return true;
         }
         return false;
@@ -54,7 +47,7 @@ namespace managers
         {
             if(m_textures[i].first.compare(name) == 0)
             {
-                m_textures[i] = m_textures.back();
+                m_textures[i] = std::move(m_textures.back());
                 m_textures.pop_back();
                 return true;
             }
@@ -62,15 +55,15 @@ namespace managers
         return false;
     }
 
-    std::weak_ptr<Texture> TextureManager::find(const std::string& name)
+    Texture* TextureManager::find(const std::string& name)
     {
         for(auto& texture : m_textures)
         {
             if(texture.first.compare(name) == 0)
             {
-                return texture.second;
+                return texture.second.get();
             }
         }
-        return std::weak_ptr<Texture>();
+        return nullptr;
     }
 }
