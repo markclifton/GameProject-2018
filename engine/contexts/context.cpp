@@ -73,6 +73,21 @@ void Context::loadResources()
     drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
 
+    auto cobble = new drawable::Model("resources/models/cobble.obj", m_shaderManager.getShader("BasicShader"));
+    //Scaling Model
+    auto bbox = cobble->calculateBBox();
+    float width = bbox.max.x - bbox.min.x;
+    float depth = bbox.max.z - bbox.min.z;
+    cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.1f,-1.5f,0.f)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
+
+    //Texture Model
+    m_textureManager.load("cobble", "resources/images/BrickRound0105_5_SPEC.png");
+    cobble->setTexture(m_textureManager.find("cobble"));
+
+    // Texture Required Triangle Fan
+    cobble->setTriangleFan();
+    m_stack.submit(cobble);
+
     for(float x=-1; x<=1.f; x+=.0625f/2.f)
     {
         for(float y=-1; y<=1.f; y+=.0625f/2.f)

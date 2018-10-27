@@ -49,7 +49,7 @@ namespace drawable
             m_vertexBuffer.buffer(static_cast<long>(m_vertices.size()*sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
         }
 
-        glDrawElements(GL_TRIANGLES, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(m_drawType, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr);
     }
 
     void Model::loadModel()
@@ -80,34 +80,34 @@ namespace drawable
                 }
                 else if(ls.size() > 3 && ls.front().compare("f") == 0)
                 {
-                    auto v1 = split(ls[1], '/');
-                    auto v2 = split(ls[2], '/');
-                    auto v3 = split(ls[3], '/');
+                    auto vertInfo1 = split(ls[1], '/');
+                    auto vertInfo2 = split(ls[2], '/');
+                    auto vertInfo3 = split(ls[3], '/');
 
                     int vertex1{-1};
                     int vertex2{-1};
                     int vertex3{-1};
-                    if(v1.size() > 0)
+                    if(vertInfo1.size() > 0)
                     {
-                        m_indices.push_back(vertex1 = stoi(v1[0]) -1);
-                        m_indices.push_back(vertex2 = stoi(v2[0]) -1);
-                        m_indices.push_back(vertex3 = stoi(v3[0]) -1);
+                        m_indices.push_back(vertex1 = stoi(vertInfo1[0]) -1);
+                        m_indices.push_back(vertex2 = stoi(vertInfo2[0]) -1);
+                        m_indices.push_back(vertex3 = stoi(vertInfo3[0]) -1);
                     }
 
                     //Tex Coords
-                    if(v1.size() > 2 && strcmp(v1[1].c_str(), "") != 0)
+                    if(vertInfo1.size() > 1 && strcmp(vertInfo1[1].c_str(), "") != 0 && uv.size() > 0)
                     {
-                        m_vertices[static_cast<size_t>(vertex1)].uv = uv[static_cast<size_t>(stoi(v1[1]))-1];
-                        m_vertices[static_cast<size_t>(vertex2)].uv = uv[static_cast<size_t>(stoi(v2[1]))-1];
-                        m_vertices[static_cast<size_t>(vertex3)].uv = uv[static_cast<size_t>(stoi(v3[1]))-1];
+                        m_vertices[static_cast<size_t>(vertex1)].uv = uv[static_cast<size_t>(stoi(vertInfo1[1]))-1];
+                        m_vertices[static_cast<size_t>(vertex2)].uv = uv[static_cast<size_t>(stoi(vertInfo2[1]))-1];
+                        m_vertices[static_cast<size_t>(vertex3)].uv = uv[static_cast<size_t>(stoi(vertInfo3[1]))-1];
                     }
 
                     //Normals
-                    if(v1.size() > 2 && strcmp(v1[2].c_str(), "") != 0)
+                    if(vertInfo1.size() > 2 && strcmp(vertInfo1[2].c_str(), "") != 0 && normals.size() > 0)
                     {
-                        m_vertices[static_cast<size_t>(vertex1)].normal = normals[static_cast<size_t>(stoi(v1[2]))-1];
-                        m_vertices[static_cast<size_t>(vertex2)].normal = normals[static_cast<size_t>(stoi(v2[2]))-1];
-                        m_vertices[static_cast<size_t>(vertex3)].normal = normals[static_cast<size_t>(stoi(v3[2]))-1];
+                        m_vertices[static_cast<size_t>(vertex1)].normal = normals[static_cast<size_t>(stoi(vertInfo1[2]))-1];
+                        m_vertices[static_cast<size_t>(vertex2)].normal = normals[static_cast<size_t>(stoi(vertInfo2[2]))-1];
+                        m_vertices[static_cast<size_t>(vertex3)].normal = normals[static_cast<size_t>(stoi(vertInfo3[2]))-1];
                     }
                 }
                 else

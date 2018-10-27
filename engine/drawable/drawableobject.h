@@ -12,6 +12,12 @@
 //REFACTOR SOON : Move to cpp
 namespace drawable
 {
+    struct bbox
+    {
+        glm::vec3 min {0};
+        glm::vec3 max {0};
+    };
+
     class DrawableObject : public drawable::Drawable
     {
     public:
@@ -61,6 +67,21 @@ namespace drawable
             }
         }
 
+        const bbox& calculateBBox()
+        {
+            for(auto& vertex : m_vertices)
+            {
+                m_bbox.min.x = std::min(m_bbox.min.x, vertex.pos.x);
+                m_bbox.min.y = std::min(m_bbox.min.y, vertex.pos.y);
+                m_bbox.min.z = std::min(m_bbox.min.z, vertex.pos.z);
+                m_bbox.max.x = std::max(m_bbox.max.x, vertex.pos.x);
+                m_bbox.max.y = std::max(m_bbox.max.y, vertex.pos.y);
+                m_bbox.max.z = std::max(m_bbox.max.z, vertex.pos.z);
+            }
+
+            return m_bbox;
+        }
+
     protected:
         std::vector<Vertex> m_vertices;
         std::vector<GLint> m_indices;
@@ -71,5 +92,7 @@ namespace drawable
         bool m_changed { true };
 
         std::function<void()> m_updateFunc;
+
+        bbox m_bbox;
     };
 }
