@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "utils/timer.h"
+
 namespace utils
 {
     class KeyHandler;
@@ -35,11 +37,13 @@ namespace managers
 
         inline void toggleVsync(bool enabled) { glfwSwapInterval( enabled ); }
 
+        void close();
         bool shouldClose();
         void refresh();
 
+        inline double latency() { return m_latency; }
+
     //Input Handlers
-        //Not Thread-safe
         void registerHandler(utils::KeyHandler* handler);
         void registerHandler(utils::MouseHandler* handler);
 
@@ -56,6 +60,8 @@ namespace managers
         std::vector<utils::KeyHandler*> m_keyHandlers;
         std::vector<utils::MouseHandler*> m_mouseHandlers;
 
+        double m_latency {0.0};
+        utils::Timer m_timer;
         GLuint m_vao;
     };
 }

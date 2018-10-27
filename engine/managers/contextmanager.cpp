@@ -67,7 +67,7 @@ namespace managers
          return false;
     }
 
-    void ContextManager::runContext()
+    void ContextManager::run()
     {
         if(m_activeContext != nullptr)
         {

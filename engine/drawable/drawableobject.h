@@ -33,7 +33,7 @@ namespace drawable
             }
             update();
         }
-        void setTexture( Texture* texture ) { m_texture = texture; update(); }
+        void setTexture( Texture* texture ) { m_texture = texture; setTextureId(0); }
         Texture* getTexture() { return m_texture; }
 
         Vertex* verts() { return &m_vertices.front(); }

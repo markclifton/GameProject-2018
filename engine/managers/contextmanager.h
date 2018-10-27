@@ -19,7 +19,7 @@ namespace managers
         bool addContext(const std::string& name , std::unique_ptr<Context> context);
         bool removeContext(const std::string& name);
 
-        void runContext();
+        void run();
 
         void reset();
 

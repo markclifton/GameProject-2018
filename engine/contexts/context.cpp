@@ -6,55 +6,77 @@
 #include "../drawable/rectangle.h"
 #include "../drawable/batchrenderer.h"
 
-Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager)
+Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
     : m_shaderManager(shaderManager)
     , m_textureManager(textureManager)
+    , m_windowManager(windowManager)
     , m_stack(shaderManager, textureManager)
 {
+    m_camera.SetViewport(0, 0, 640, 480);
+    m_windowManager.registerHandler(&m_camera);
     loadResources();
-
-    drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
-    for(float x=-1; x<=1.f; x+=.0625f/2.f)
-    {
-        for(float y=-1; y<=1.f; y+=.0625f/2.f)
-        {
-            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") )); //Memory Leak
-        }
-    }
-
-    batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
-
-    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.f,0,0)));
-    m_stack.submit(m);
-    m_stack.submit(batch);
-
-    // Horrible assumptions are made... FIX ME
-    auto shader = m_shaderManager.getShader("BasicShader");
-    shader->bind();
-
-    int data [2] {0, 1};
-    shader->setUniform("myTextures", 2, data);
-
-    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), shader); //Memory Leak
-    r->setTexture(m_textureManager.find("smile"));
-    r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
-    batch->submit(r);
-
-    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), shader); //Memory Leak
-    r2->setTexture(m_textureManager.find("smile2"));
-    batch->submit(r2);
-    r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
 }
 
 void Context::run()
 {
+    glm::mat4 p, v;
+    m_camera.Update();
+    m_camera.GetMatricies(p, v);
+
+    Shader* s = m_shaderManager.getShader("BasicShader");
+    s->setUniform("view", v);
+
     m_stack.draw();
 }
 
 void Context::loadResources()
 {
+    m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
+
+    Shader* s = m_shaderManager.getShader("BasicShader");
+    s->bind();
+    s->enableAttribArray("position");
+    s->enableAttribArray("color");
+    s->enableAttribArray("uv");
+    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(4);
+    glEnableVertexAttribArray(5);
+    glEnableVertexAttribArray(6);
+
+    glm::mat4 p, v;
+    m_camera.Update();
+    m_camera.GetMatricies(p, v);
+    s->setUniform("projection", p);
+
     m_textureManager.load("smile", "resources/images/smile.tif");
     m_textureManager.load("smile2", "resources/images/smile2.tif");
 
+
+//START TEST CODE
     m = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
+    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.1f,0,-5.f)));
+    m_stack.submit(m);
+
+    drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
+    batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
+    for(float x=-1; x<=1.f; x+=.0625f/2.f)
+    {
+        for(float y=-1; y<=1.f; y+=.0625f/2.f)
+        {
+            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") ));
+        }
+    }
+    m_stack.submit(batch);
+
+    auto shader = m_shaderManager.getShader("BasicShader");
+    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), shader);
+    r->setTexture(m_textureManager.find("smile"));
+    r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
+    m_stack.submit(r);
+
+    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), shader);
+    r2->setTexture(m_textureManager.find("smile2"));
+    r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
+    m_stack.submit(r2);
+//END TEST CODE
 }

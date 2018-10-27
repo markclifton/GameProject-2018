@@ -11,14 +11,8 @@
 
 Game::Game()
     : m_contextManager()
-    , m_windowManager( std::make_unique<managers::WindowManager>())
-    , m_camera(new Camera3D())
 {
-    m_camera->SetViewport(0, 0, 640, 480);
-
-    m_windowManager->toggleVsync(false);
-    m_windowManager->registerHandler(m_camera.get());
-
+    m_windowManager.toggleVsync(true);
     setup();
 }
 
@@ -27,52 +21,29 @@ Game::~Game()
     m_contextManager.reset();
     m_shaderManager.reset();
     m_textureManager.reset();
-    m_windowManager = nullptr;
+    m_windowManager.close();
 }
 
 void Game::run()
 {
-    //TODO: REFACTOR ME
-    Shader* s = m_shaderManager.getShader("BasicShader");
-    s->bind();
-    s->enableAttribArray("position");
-    s->enableAttribArray("color");
-    s->enableAttribArray("uv");
-    glEnableVertexAttribArray(3);
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-    glEnableVertexAttribArray(6);
-
-    glm::mat4 p, v;
-    m_camera->Update();
-    m_camera->GetMatricies(p, v);
-    s->setUniform("projection", p);
-
-    utils::Timer timer;
     int ticks = 0;
-    while( !m_windowManager->shouldClose() )
+    while( !m_windowManager.shouldClose() )
     {
-        if( ticks++ > 1000)
+        if( ticks++ > 10)
         {
-            std::cerr << 1.0/(timer.reset()/ticks) << "\n";
+            std::cerr << m_windowManager.latency()*1000 << "ms \n";
             ticks = 0;
         }
 
-        m_camera->Update();
-        m_camera->GetMatricies(p, v);
-        s->setUniform("view", v);
-
-        m_contextManager.runContext();
-        m_windowManager->refresh();
+        m_contextManager.run();
+        m_windowManager.refresh();
     }
 }
 
 void Game::setup()
 {
-    m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
-
-    if( !m_contextManager.addContext("BasicContext", std::make_unique<Context>(m_shaderManager, m_textureManager)) )
+    if( !m_contextManager.addContext("Sandbox", std::make_unique<Context>(m_shaderManager, m_textureManager, m_windowManager)) )
         std::cerr << "Failed to add context\n";
-    if( !m_contextManager.setContext("BasicContext") )
+    if( !m_contextManager.setContext("Sandbox") )
         std::cerr << "Failed to set context\n";
 }

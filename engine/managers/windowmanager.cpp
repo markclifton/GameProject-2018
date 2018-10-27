@@ -42,12 +42,26 @@ namespace managers
 
     WindowManager::~WindowManager()
     {
-        glDeleteVertexArrays(1, &m_vao);
+        close();
     }
 
     void WindowManager::setTitle(const std::string& title)
     {
         glfwSetWindowTitle(m_window.get(), title.c_str());
+    }
+
+    void WindowManager::close()
+    {
+        if(m_vao != 0)
+        {
+            glDeleteVertexArrays(1, &m_vao);
+            m_vao = 0;
+        }
+
+        if(m_window)
+        {
+            m_window = nullptr;
+        }
     }
 
     bool WindowManager::shouldClose()
@@ -61,6 +75,8 @@ namespace managers
         glfwSwapBuffers(m_window.get());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwPollEvents();
+
+        m_latency = (59*m_latency+m_timer.reset())/60.;
     }
 
     void WindowManager::registerHandler(utils::KeyHandler* handler)

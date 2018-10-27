@@ -1,6 +1,5 @@
 #pragma once
 
-#include "camera/camera.h"
 #include "managers/contextmanager.h"
 #include "managers/shadermanager.h"
 #include "managers/texturemanager.h"
@@ -21,7 +20,5 @@ private:
     managers::ContextManager m_contextManager;
     managers::ShaderManager m_shaderManager;
     managers::TextureManager m_textureManager;
-    std::unique_ptr<managers::WindowManager> m_windowManager;
-
-    std::unique_ptr<Camera3D> m_camera;
+    managers::WindowManager m_windowManager;
 };
