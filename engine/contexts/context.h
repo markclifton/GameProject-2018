@@ -2,7 +2,6 @@
 
 #include "camera/camera.h"
 #include "drawable/layer.h"
-#include "drawable/model.h" //TEMP
 #include "managers/shadermanager.h"
 #include "managers/texturemanager.h"
 #include "managers/windowmanager.h"
@@ -21,6 +20,4 @@ private:
     drawable::Layer m_stack;
 
     Camera3D m_camera;
-
-    drawable::Model* m;
 };

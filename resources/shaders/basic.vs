@@ -7,10 +7,13 @@ layout (location = 3) in mat4 model;
 
 out vec4 fs_color;
 out vec3 fs_uv;
+out vec4 fs_position;
+out vec4 fs_camera;
 
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 transform;
+uniform vec4 camera;
 
 void main()
 {
@@ -18,4 +21,6 @@ void main()
 
     fs_color = color;
     fs_uv = uv;
+    fs_position = gl_Position;
+    fs_camera = camera;
 }

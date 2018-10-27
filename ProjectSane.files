@@ -49,6 +49,5 @@ engine/utils/timer.cpp
 main.cpp
 README.md
 
-resources/models/teapot.obj
 resources/shaders/basic.vs
 resources/shaders/basic.fs

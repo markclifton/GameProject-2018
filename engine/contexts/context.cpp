@@ -2,9 +2,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../drawable/triangle.h"
-#include "../drawable/rectangle.h"
-#include "../drawable/batchrenderer.h"
+#include "drawable/triangle.h"
+#include "drawable/model.h"
+#include "drawable/rectangle.h"
+#include "drawable/batchrenderer.h"
 
 Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
     : m_shaderManager(shaderManager)
@@ -25,6 +26,7 @@ void Context::run()
 
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->setUniform("view", v);
+    s->setUniform("camera", glm::vec4(0,0,0,0));
 
     m_stack.draw();
 }
@@ -51,14 +53,22 @@ void Context::loadResources()
     m_textureManager.load("smile", "resources/images/smile.tif");
     m_textureManager.load("smile2", "resources/images/smile2.tif");
 
-
 //START TEST CODE
-    m = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
+    auto m = new drawable::Model("resources/models/cube.obj", m_shaderManager.getShader("BasicShader"));
     m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.1f,0,-5.f)));
     m_stack.submit(m);
 
+    auto m2 = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
+    m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,0,-10.f)));
+    m_stack.submit(m2);
+
+    auto m3 = new drawable::Model("resources/models/monkey.obj", m_shaderManager.getShader("BasicShader"));
+    m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.1f,0,-5.f)));
+    m_stack.submit(m3);
+
     drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
+
     for(float x=-1; x<=1.f; x+=.0625f/2.f)
     {
         for(float y=-1; y<=1.f; y+=.0625f/2.f)

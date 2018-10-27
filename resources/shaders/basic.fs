@@ -4,6 +4,8 @@ out vec4 finalColor;
 
 in vec4 fs_color;
 in vec3 fs_uv;
+in vec4 fs_position;
+in vec4 fs_camera;
 
 uniform sampler2D myTextures[16];
 

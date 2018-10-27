@@ -15,6 +15,7 @@ public:
     void enableAttribArray(const std::string& attribName);
 
     void setUniform(const std::string& uniformName, const glm::mat4& matrix);
+    void setUniform(const std::string& uniformName, const glm::vec4& vec);
     void setUniform(const std::string& uniformName, const float& value);
     void setUniform(const std::string& uniformName, const int& size, const int* data);
     void setUniform(const std::string& uniformName, const int& size, const GLuint* data);

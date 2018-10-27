@@ -10,6 +10,30 @@
 #include "buffers/vertexbuffers/vb_basic.h"
 #include "drawableobject.h"
 
+/*
+ * v 0 0 0
+ * v 1 0 0
+ * v 1 1 0
+ *
+ * vn
+ * vt
+ *
+ * //
+ * f 1 2 3
+ *
+ * //
+ * f 1/1 2/2 3/3
+ *
+ * //
+ * f 1//1 2//2 3//3
+ *
+ * //
+ * f 1/1/1 2/2/2 3/3/3
+ *
+ */
+
+
+
 namespace drawable
 {
     class Model : public DrawableObject
@@ -47,6 +71,8 @@ namespace drawable
         //TODO: Make more robust
         void loadModel()
         {
+            int faceOffset = std::numeric_limits<int>::max();
+
             std::ifstream ifs(m_path);
             if (ifs.is_open())
             {
@@ -60,13 +86,20 @@ namespace drawable
                         {
                             Vertex v;
                             v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
+                            v.color = glm::vec4(v.pos, 1);
                             m_vertices.push_back(v);
                         }
                         else if(ls.front().compare("f") == 0)
                         {
-                            m_indices.push_back(stoi(ls[1]));
-                            m_indices.push_back(stoi(ls[2]));
-                            m_indices.push_back(stoi(ls[3]));
+                            auto v1 = split(ls[1], '/');
+                            auto v2 = split(ls[2], '/');
+                            auto v3 = split(ls[3], '/');
+
+                            faceOffset = std::min(stoi(v1[0]), faceOffset); //TODO: Improve this
+
+                            m_indices.push_back(stoi(v1[0]));
+                            m_indices.push_back(stoi(v2[0]));
+                            m_indices.push_back(stoi(v3[0]));
                         }
                         else
                         {
@@ -79,6 +112,14 @@ namespace drawable
             else
             {
                 //Failed to open
+            }
+
+            if(faceOffset > 0)
+            {
+                for(auto& ind : m_indices)
+                {
+                    ind -= faceOffset;
+                }
             }
         }
 
