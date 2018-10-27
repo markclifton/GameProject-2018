@@ -82,6 +82,25 @@ namespace drawable
             return m_bbox;
         }
 
+        void calculateNormals()
+        {
+            for(size_t i = 0; i<m_indices.size(); i+=3)
+            {
+                auto& vert1 = m_vertices[static_cast<size_t>(m_indices[i+0])];
+                auto& vert2 = m_vertices[static_cast<size_t>(m_indices[i+1])];
+                auto& vert3 = m_vertices[static_cast<size_t>(m_indices[i+2])];
+
+                auto edge1 = vert2.pos - vert1.pos;
+                auto edge2 = vert3.pos - vert1.pos;
+
+                auto normal = glm::normalize(glm::cross(edge1, edge2));
+
+                vert1.normal += normal;
+                vert2.normal += normal;
+                vert3.normal += normal;
+            }
+        }
+
     protected:
         std::vector<Vertex> m_vertices;
         std::vector<GLint> m_indices;

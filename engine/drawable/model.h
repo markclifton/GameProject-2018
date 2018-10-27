@@ -1,8 +1,5 @@
 #pragma once
 
-// V x y z
-// F v1 v2 v3
-
 #include <fstream>
 #include <string>
 
