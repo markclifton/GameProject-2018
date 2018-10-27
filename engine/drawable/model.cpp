@@ -54,7 +54,8 @@ namespace drawable
 
     void Model::loadModel()
     {
-        int faceOffset = std::numeric_limits<int>::max();
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec3> uv;
 
         std::ifstream ifs(m_path);
         if (ifs.is_open())
@@ -63,31 +64,56 @@ namespace drawable
             while ( getline (ifs, line) )
             {
                 std::vector<std::string> ls = split(line, ' ');
-                if(ls.size() > 3)
+                if(ls.size() > 3 && ls.front().compare("v") == 0)
                 {
-                    if(ls.front().compare("v") == 0)
-                    {
-                        Vertex v;
-                        v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
-                        v.color = glm::vec4(v.pos, 1);
-                        m_vertices.push_back(v);
-                    }
-                    else if(ls.front().compare("f") == 0)
-                    {
-                        auto v1 = split(ls[1], '/');
-                        auto v2 = split(ls[2], '/');
-                        auto v3 = split(ls[3], '/');
+                    Vertex v;
+                    v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
+                    v.color = glm::vec4(v.pos, 1);
+                    m_vertices.push_back(v);
+                }
+                else if(ls.size() > 3 && ls.front().compare("vn") == 0)
+                {
+                    normals.emplace_back(stof(ls[1]), stof(ls[2]), stof(ls[3]));
+                }
+                else if(ls.size() > 2 && ls.front().compare("vt") == 0)
+                {
+                    uv.emplace_back(stof(ls[1]), stof(ls[2]), 0);
+                }
+                else if(ls.size() > 3 && ls.front().compare("f") == 0)
+                {
+                    auto v1 = split(ls[1], '/');
+                    auto v2 = split(ls[2], '/');
+                    auto v3 = split(ls[3], '/');
 
-                        faceOffset = std::min(stoi(v1[0]), faceOffset); //TODO: Improve this
-
-                        m_indices.push_back(stoi(v1[0]));
-                        m_indices.push_back(stoi(v2[0]));
-                        m_indices.push_back(stoi(v3[0]));
-                    }
-                    else
+                    int vertex1{-1};
+                    int vertex2{-1};
+                    int vertex3{-1};
+                    if(v1.size() > 0)
                     {
-                        //Not handling yet
+                        m_indices.push_back(vertex1 = stoi(v1[0]) -1);
+                        m_indices.push_back(vertex2 = stoi(v2[0]) -1);
+                        m_indices.push_back(vertex3 = stoi(v3[0]) -1);
                     }
+
+                    //Tex Coords
+                    if(v1.size() > 2 && strcmp(v1[1].c_str(), "") != 0)
+                    {
+                        m_vertices[static_cast<size_t>(vertex1)].uv = uv[static_cast<size_t>(stoi(v1[1]))-1];
+                        m_vertices[static_cast<size_t>(vertex2)].uv = uv[static_cast<size_t>(stoi(v2[1]))-1];
+                        m_vertices[static_cast<size_t>(vertex3)].uv = uv[static_cast<size_t>(stoi(v3[1]))-1];
+                    }
+
+                    //Normals
+                    if(v1.size() > 2 && strcmp(v1[2].c_str(), "") != 0)
+                    {
+                        m_vertices[static_cast<size_t>(vertex1)].normal = normals[static_cast<size_t>(stoi(v1[2]))-1];
+                        m_vertices[static_cast<size_t>(vertex2)].normal = normals[static_cast<size_t>(stoi(v2[2]))-1];
+                        m_vertices[static_cast<size_t>(vertex3)].normal = normals[static_cast<size_t>(stoi(v3[2]))-1];
+                    }
+                }
+                else
+                {
+                    //Not handling yet
                 }
             }
             ifs.close();
@@ -95,14 +121,6 @@ namespace drawable
         else
         {
             //Failed to open
-        }
-
-        if(faceOffset > 0)
-        {
-            for(auto& ind : m_indices)
-            {
-                ind -= faceOffset;
-            }
         }
     }
 }

@@ -40,10 +40,11 @@ void Context::loadResources()
     s->enableAttribArray("position");
     s->enableAttribArray("color");
     s->enableAttribArray("uv");
-    glEnableVertexAttribArray(3);
+    s->enableAttribArray("normal");
     glEnableVertexAttribArray(4);
     glEnableVertexAttribArray(5);
     glEnableVertexAttribArray(6);
+    glEnableVertexAttribArray(7);
 
     glm::mat4 p, v;
     m_camera.Update();

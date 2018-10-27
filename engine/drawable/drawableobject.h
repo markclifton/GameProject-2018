@@ -48,12 +48,16 @@ namespace drawable
         {
             m_updateFunc = fn;
         }
+
         void update()
         {
-            m_changed = true;
             if(m_updateFunc)
             {
                 m_updateFunc();
+            }
+            else
+            {
+                m_changed = true;
             }
         }
 
@@ -62,10 +66,10 @@ namespace drawable
         std::vector<GLint> m_indices;
         Texture* m_texture {nullptr};
 
-        std::function<void()> m_updateFunc;
-
-        bool m_changed { true };
         buffers::BasicVBO m_vertexBuffer;
         buffers::IndexBuffer m_indicesBuffer;
+        bool m_changed { true };
+
+        std::function<void()> m_updateFunc;
     };
 }
