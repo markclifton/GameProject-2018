@@ -7,9 +7,17 @@
 void Camera3D::Update() {
     m_projection = glm::perspective(m_fov, m_aspect, static_cast<double>(m_clippingPlanes.x), static_cast<double>(m_clippingPlanes.y));
 
+    // Calculate XYZ movement delta
     m_cameraPositionDelta = m_cameraDirection * m_cameraInputDelta.x;
     m_cameraPositionDelta -= glm::cross(m_cameraDirection, m_cameraUp) * m_cameraInputDelta.y;
     m_cameraPositionDelta += m_cameraUp * m_cameraInputDelta.z;
+
+    // Ensure XYZ movement doesn't exceed movement speed
+    if( glm::length(m_cameraPositionDelta) > 0 )
+    {
+        m_cameraPositionDelta = glm::normalize(m_cameraPositionDelta);
+    }
+    m_cameraPositionDelta *= m_movementSpeed;
 
     m_cameraDirection = glm::normalize(m_cameraLookAt - m_cameraPosition);
 
