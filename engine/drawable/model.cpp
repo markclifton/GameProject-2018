@@ -68,7 +68,6 @@ namespace drawable
                 {
                     Vertex v;
                     v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
-                    v.color = glm::vec4(v.pos, 1);
                     m_vertices.push_back(v);
                 }
                 else if(ls.size() > 3 && ls.front().compare("vn") == 0)

@@ -11,11 +11,11 @@ namespace drawable
         : DrawableObject (shader)
     {
         m_indices.push_back(0);
+        m_indices.push_back(2);
         m_indices.push_back(1);
-        m_indices.push_back(2);
         m_indices.push_back(0);
-        m_indices.push_back(2);
         m_indices.push_back(3);
+        m_indices.push_back(2);
 
         float size = .5f;
         Vertex v1, v2, v3, v4;

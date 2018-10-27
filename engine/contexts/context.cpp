@@ -66,7 +66,7 @@ void Context::loadResources()
     for(int i =0 ; i<10; i++)
     {
         auto m3 = new drawable::Model("resources/models/monkey.obj", m_shaderManager.getShader("BasicShader"));
-        m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.1f,2*i,-5.f)));
+        m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,-5 + 2*i,-5.f)));
         m_stack.submit(m3);
     }
 

@@ -146,6 +146,8 @@ namespace managers
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
 
+        glEnable(GL_CULL_FACE);
+
         return true;
     }
 }

@@ -86,10 +86,10 @@ void Camera3D::process(int key, int scancode, int action, int mods)
         ChangePitch(-.025f);
         break;
     case GLFW_KEY_LEFT:
-        ChangeHeading(-.025f);
+        ChangeHeading(.025f);
         break;
     case GLFW_KEY_RIGHT:
-        ChangeHeading(.025f);
+        ChangeHeading(-.025f);
         break;
     }
 }

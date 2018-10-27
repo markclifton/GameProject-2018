@@ -11,8 +11,8 @@ namespace drawable
         : DrawableObject (shader)
     {
         m_indices.push_back(0);
-        m_indices.push_back(1);
         m_indices.push_back(2);
+        m_indices.push_back(1);
 
         float size = .0625f / 4.f;
         Vertex v1, v2, v3;
