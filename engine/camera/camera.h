@@ -8,7 +8,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../utils/keyhandler.h"
+#include "utils/keyhandler.h"
 
 using namespace utils;
 class Camera3D : public KeyHandler

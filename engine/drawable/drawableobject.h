@@ -3,11 +3,13 @@
 #include <functional>
 #include <vector>
 
+#include "buffers/indexbuffer.h"
+#include "buffers/vertexbuffers/vb_basic.h"
 #include "drawable.h"
 #include "drawablebasics.h"
 #include "textures/texture.h"
 
-//REFACTOR SOON
+//REFACTOR SOON : Move to cpp
 namespace drawable
 {
     class DrawableObject : public drawable::Drawable
@@ -48,6 +50,7 @@ namespace drawable
         }
         void update()
         {
+            m_changed = true;
             if(m_updateFunc)
             {
                 m_updateFunc();
@@ -60,5 +63,9 @@ namespace drawable
         Texture* m_texture {nullptr};
 
         std::function<void()> m_updateFunc;
+
+        bool m_changed { true };
+        buffers::BasicVBO m_vertexBuffer;
+        buffers::IndexBuffer m_indicesBuffer;
     };
 }

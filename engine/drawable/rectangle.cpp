@@ -54,13 +54,14 @@ namespace drawable
             m_texture->bind(0);
         }
 
-        // TODO: FIX ME (Not Needed)
-        buffers::IndexBuffer i;
-        i.buffer(static_cast<long>(m_indices.size()*sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
-
-        // TODO: FIX ME (Not Needed)
-        buffers::BasicVBO v;
-        v.buffer(static_cast<long>(m_vertices.size()*sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
+        m_indicesBuffer.bind();
+        m_vertexBuffer.bind();
+        if(m_changed)
+        {
+            m_changed = false;
+            m_indicesBuffer.buffer(static_cast<long>(m_indices.size()*sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
+            m_vertexBuffer.buffer(static_cast<long>(m_vertices.size()*sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
+        }
 
         glDrawElements(GL_TRIANGLES, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr);
     }

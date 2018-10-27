@@ -1,8 +1,5 @@
 #pragma once
 
-#include "glad/gl.h"
-#include <glm/vec3.hpp>
-
 #include "drawablebasics.h"
 #include "drawableobject.h"
 
