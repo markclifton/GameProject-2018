@@ -13,9 +13,7 @@ out vec3 pos_w;
 out vec3 normal_c;
 out vec3 eye_c;
 out vec3 light_c;
-
 out vec3 light_w;
-out mat4 mv;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -28,17 +26,16 @@ void main()
 
     pos_w = (transform * model * vec4(position, 1)).xyz;
 
-    vec3 vertexPosition_cameraspace = ( view * transform * model * vec4(position,1)).xyz;
-    eye_c = camera.xyz - vertexPosition_cameraspace;
+    vec3 pos_c = ( view * transform * model * vec4(position,1)).xyz;
+    eye_c = vec3(0,0,0) - pos_c;
 
     vec3 LightPosition_cameraspace = ( view * camera).xyz;
     light_c = LightPosition_cameraspace + eye_c;
 
-    normal_c = (view * transform * model * vec4(normal,0)).xyz;
+    normal_c = ( view * transform * model * vec4(normal,0)).xyz;
 
     fs_color = color;
     fs_uv = uv;
 
     light_w = camera.xyz;
-    mv = view * transform * model;
 }

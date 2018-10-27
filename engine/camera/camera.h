@@ -32,6 +32,7 @@ public:
     //TODO: Improve these
     void process(int key, int scancode, int action, int mods) override;
 
+    inline const glm::vec3& GetPosition() { return camera_position; }
 private:
     int viewport_x;
     int viewport_y;

@@ -9,9 +9,7 @@ in vec3 pos_w;
 in vec3 normal_c;
 in vec3 eye_c;
 in vec3 light_c;
-
 in vec3 light_w;
-in mat4 mv;
 
 uniform sampler2D myTextures[16];
 

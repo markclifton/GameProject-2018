@@ -26,7 +26,7 @@ void Context::run()
 
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->setUniform("view", v);
-    s->setUniform("camera", glm::vec4(0,0,0,0));
+    s->setUniform("camera", glm::vec4(m_camera.GetPosition(), 1));
 
     m_stack.draw();
 }
@@ -63,9 +63,12 @@ void Context::loadResources()
     m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,0,-10.f)));
     m_stack.submit(m2);
 
-    auto m3 = new drawable::Model("resources/models/monkey.obj", m_shaderManager.getShader("BasicShader"));
-    m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.1f,0,-5.f)));
-    m_stack.submit(m3);
+    for(int i =0 ; i<10; i++)
+    {
+        auto m3 = new drawable::Model("resources/models/monkey.obj", m_shaderManager.getShader("BasicShader"));
+        m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.1f,2*i,-5.f)));
+        m_stack.submit(m3);
+    }
 
     drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
