@@ -22,3 +22,13 @@ ProjectSane is a game engine being developed in a Linux environment and making u
 * Advanced Lighting
 * Shadows
 * Networking
+
+### Development Environment
+* Linux Mint 19
+* QtCreator 4.8
+* Modern OpenGL
+* GLSL 450
+* FreeImage
+* GLFW
+* GLM
+* GLAD
