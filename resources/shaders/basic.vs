@@ -6,14 +6,13 @@ layout (location = 2) in vec3 uv;
 layout (location = 3) in vec3 normal;
 layout (location = 4) in mat4 model;
 
-out vec4 fs_color;
-out vec3 fs_uv;
-
-out vec3 pos_w;
-out vec3 normal_c;
-out vec3 eye_c;
-out vec3 light_c;
-out vec3 light_w;
+out FSData {
+    vec4 color;
+    vec3 uv;
+    float distance_w;
+    vec3 pos_c;
+    vec3 normal_c;
+} fs;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -24,18 +23,11 @@ void main()
 {
     gl_Position = projection * view * transform * model * vec4(position, 1);
 
-    pos_w = (transform * model * vec4(position, 1)).xyz;
+    fs.pos_c = ( view * transform * model * vec4(position,1)).xyz;
+    fs.normal_c = ( view * transform * model * vec4(normal,0)).xyz;
 
-    vec3 pos_c = ( view * transform * model * vec4(position,1)).xyz;
-    eye_c = vec3(0,0,0) - pos_c;
+    fs.color = color;
+    fs.uv = uv;
 
-    vec3 LightPosition_cameraspace = ( view * camera).xyz;
-    light_c = LightPosition_cameraspace + eye_c;
-
-    normal_c = ( view * transform * model * vec4(normal,0)).xyz;
-
-    fs_color = color;
-    fs_uv = uv;
-
-    light_w = camera.xyz;
+    fs.distance_w = length(camera.xyz - (transform * model * vec4(position, 1)).xyz);
 }

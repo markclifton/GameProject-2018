@@ -2,53 +2,53 @@
 
 out vec4 finalColor;
 
-in vec4 fs_color;
-in vec3 fs_uv;
+in FSData {
+    vec4 color;
+    vec3 uv;
+    float distance_w;
+    vec3 pos_c;
+    vec3 normal_c;
+} fs;
 
-in vec3 pos_w;
-in vec3 normal_c;
-in vec3 eye_c;
-in vec3 light_c;
-in vec3 light_w;
+uniform sampler2D textures[16];
 
-uniform sampler2D myTextures[16];
+struct Light
+{
+    vec3 color;
+    float intensity;
+};
+
+vec4 calculateLight( Light light, vec3 normal, vec3 direction, float distance )
+{
+    vec3 n = normalize( normal );
+    vec3 l = normalize( direction );
+    vec3 r = reflect(-l,n);
+
+    float cosTheta = clamp( dot( normal,l ), 0,1 );
+    float cosAlpha = clamp( dot( l,r ), 0,1 );
+
+    return vec4( light.color * cosTheta / (distance*distance)
+               + light.color * pow(cosAlpha,5) / (distance*distance), 1.f )
+               * light.intensity ;
+}
 
 void main()
 {
-    if( fs_uv.z < 0.f )
+    finalColor = fs.color;
+    if( fs.uv.z >= 0.f )
     {
-        finalColor = fs_color;
-    }
-    else
-    {
-        finalColor = texture2D(myTextures[int(fs_uv.z - .5)], fs_uv.xy);
+        finalColor = texture2D(textures[int(fs.uv.z - .5)], fs.uv.xy);
     }
 
-    if(normal_c.x == 0 && normal_c.y == 0 && normal_c.z == 0)
+    if(length(fs.normal_c) > 0)
     {
-        return;
+        Light light;
+        light.color = vec3(1,1,1);
+        light.intensity = 50.f;
+
+        float alpha = finalColor.a;
+        finalColor *= .1;
+        finalColor += calculateLight( light, fs.normal_c, -fs.pos_c, fs.distance_w ) * finalColor;
+        finalColor.a = alpha;
     }
-
-    vec3 LightColor = vec3(1,1,1);
-    float LightPower = 50.0f;
-
-    // Material properties
-    vec3 MaterialDiffuseColor = finalColor.rgb;
-    vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-    vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
-
-    float distance = length( light_w - pos_w );
-
-    vec3 n = normalize( normal_c );
-    vec3 l = normalize( light_c );
-    float cosTheta = clamp( dot( n,l ), 0,1 );
-
-    vec3 E = normalize(eye_c);
-    vec3 R = reflect(-l,n);
-    float cosAlpha = clamp( dot( E,R ), 0,1 );
-
-    finalColor = vec4(
-            MaterialAmbientColor +
-            MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
-            MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance), finalColor.a);
 }

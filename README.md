@@ -15,7 +15,7 @@ ProjectSane is a game engine being developed in a Linux environment and making u
 
 ### Things to do:
 * Level Loading
-* Text Management
+* Text System
 * Audio Handling
 * Interaction System
 * Physics System

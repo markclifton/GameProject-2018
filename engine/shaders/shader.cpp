@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include "utils/fileloader.h"
 
@@ -96,7 +97,14 @@ bool Shader::compile(const std::string& vsPath, const std::string& fsPath)
     glGetShaderiv(vert, GL_COMPILE_STATUS, & Compiled);
     if (!Compiled)
     {
-        std::cerr << "Failed to compile vertex shader!" << std::endl;
+        GLint log_length;
+        glGetShaderiv(vert, GL_INFO_LOG_LENGTH, &log_length);
+        std::vector<char> v(static_cast<size_t>(log_length));
+        glGetShaderInfoLog(vert, log_length, nullptr, v.data());
+        std::string err(begin(v), end(v));
+
+        glDeleteShader(vert);
+        std::cerr << "Failed to compile vertex shader: " << err << std::endl;
         return false;
     }
 
@@ -106,8 +114,14 @@ bool Shader::compile(const std::string& vsPath, const std::string& fsPath)
     glGetShaderiv(frag, GL_COMPILE_STATUS, & Compiled);
     if (!Compiled)
     {
+        GLint log_length;
+        glGetShaderiv(frag, GL_INFO_LOG_LENGTH, &log_length);
+        std::vector<char> v(static_cast<size_t>(log_length));
+        glGetShaderInfoLog(frag, log_length, nullptr, v.data());
+        std::string err(begin(v), end(v));
+
         glDeleteShader(vert);
-        std::cerr << "Failed to compile fragment shader!" << std::endl;
+        std::cerr << "Failed to compile fragment shader: " << err << std::endl;
         return false;
     }
 
