@@ -1,7 +1,7 @@
 # ProjectSane
 
 ## What is Project Sane?
-ProjectSane is a game engine being developed in a Linux environment and making use of C++ and OpenGL. The goal of the project is to write a game engine that can be used to write a game(s).
+ProjectSane is a game engine being developed in a Linux environment and making use of C++ and OpenGL. This could be expanded to other operating systems in the future, but the focus will be linux. The goal of the project is to write a game engine that can be used to write a game(s).
   
 ### Things completed (mostly):
 * 2D Rendering (Rectangle, Triangles, other simple shapes)
