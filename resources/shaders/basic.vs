@@ -10,9 +10,12 @@ out FSData {
     vec4 color;
     vec3 uv;
     float distance_w;
+    vec3 pos_w;
     vec3 pos_c;
     vec3 normal_c;
 } fs;
+
+out mat4 tform;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -23,6 +26,7 @@ void main()
 {
     gl_Position = projection * view * transform * model * vec4(position, 1);
 
+    fs.pos_w = (view * transform * model * vec4(position, 1)).xyz;
     fs.pos_c = ( view * transform * model * vec4(position,1)).xyz;
     fs.normal_c = ( view * transform * model * vec4(normal,0)).xyz;
 
@@ -30,4 +34,6 @@ void main()
     fs.uv = uv;
 
     fs.distance_w = length(camera.xyz - (transform * model * vec4(position, 1)).xyz);
+
+    tform = view * transform;
 }

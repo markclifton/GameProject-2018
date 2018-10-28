@@ -56,8 +56,8 @@ void Context::loadResources()
 
 //START TEST CODE
     auto m = new drawable::Model("resources/models/cube.obj", m_shaderManager.getShader("BasicShader"));
-    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.1f,0,-5.f)));
-    m->calculateNormals();
+    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.f,0,-5.f)));
+    //m->calculateNormals();
     m_stack.submit(m);
 
     auto m2 = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
