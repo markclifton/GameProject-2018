@@ -10,8 +10,9 @@
 
 #include "utils/keyhandler.h"
 
-using namespace utils;
-class Camera3D : public KeyHandler
+//TODO: Connect Camera to a timer, Movement occurs every frame otherwise
+
+class Camera3D : public utils::KeyHandler
 {
 public:
     Camera3D() = default;
