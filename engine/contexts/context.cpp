@@ -80,7 +80,7 @@ void Context::loadResources()
     auto bbox = cobble->calculateBBox();
     float width = bbox.max.x - bbox.min.x;
     float depth = bbox.max.z - bbox.min.z;
-    cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.1f,-1.5f,0.f)) * glm::scale(glm::mat4(1.f), glm::vec3(10/width, 1, 10/depth)));
+    cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.1f,-4.f,0.f)) * glm::scale(glm::mat4(1.f), glm::vec3(10/width, 1, 10/depth)));
 
     //Texture Model
     m_textureManager.load("cobble", "resources/images/BrickRound0105_5_SPEC.png");

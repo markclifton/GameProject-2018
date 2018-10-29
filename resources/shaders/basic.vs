@@ -7,12 +7,11 @@ layout (location = 3) in vec3 normal;
 layout (location = 4) in mat4 model;
 
 out FSData {
+    vec3 pos;
     vec4 color;
     vec3 uv;
-    float distance_w;
-    vec3 pos_w;
-    vec3 pos_c;
-    vec3 normal_c;
+    vec3 normal;
+    float distance;
 } fs;
 
 out mat4 tform;
@@ -26,14 +25,11 @@ void main()
 {
     gl_Position = projection * view * transform * model * vec4(position, 1);
 
-    fs.pos_w = (view * transform * model * vec4(position, 1)).xyz;
-    fs.pos_c = ( view * transform * model * vec4(position,1)).xyz;
-    fs.normal_c = ( view * transform * model * vec4(normal,0)).xyz;
-
+    fs.pos = ( view * transform * model * vec4(position,1)).xyz;
     fs.color = color;
     fs.uv = uv;
-
-    fs.distance_w = length(camera.xyz - (transform * model * vec4(position, 1)).xyz);
+    fs.normal = ( view * transform * model * vec4(normal,0)).xyz;
+    fs.distance = length(camera.xyz - (transform * model * vec4(position, 1)).xyz);
 
     tform = view * transform;
 }
