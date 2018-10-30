@@ -5,7 +5,7 @@
 #include "drawable/triangle.h"
 #include "drawable/model.h"
 #include "drawable/rectangle.h"
-#include "drawable/batchrenderer.h"
+#include "drawable/renderers/batch.h"
 
 Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
     : m_shaderManager(shaderManager)
@@ -60,6 +60,12 @@ void Context::loadResources()
     //m->calculateNormals();
     m_stack.submit(m);
 
+    auto m4 = new drawable::Model("resources/models/cube.obj", m_shaderManager.getShader("BasicShader"));
+    m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,-.5f,-10.5f)));
+    m4->setColor(glm::vec4(1,0,1,1));
+    //m->calculateNormals();
+    m_stack.submit(m4);
+
     auto m2 = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
     m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,0,-10.f)));
     m2->calculateNormals();
@@ -72,23 +78,26 @@ void Context::loadResources()
         m_stack.submit(m3);
     }
 
-    drawable::BatchRenderer* batch = new drawable::BatchRenderer(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
+    drawable::renderer::Batch* batch = new drawable::renderer::Batch(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
     batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
 
-    auto cobble = new drawable::Model("resources/models/cobble.obj", m_shaderManager.getShader("BasicShader"));
-    //Scaling Model
-    auto bbox = cobble->calculateBBox();
-    float width = bbox.max.x - bbox.min.x;
-    float depth = bbox.max.z - bbox.min.z;
-    cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.1f,-4.f,0.f)) * glm::scale(glm::mat4(1.f), glm::vec3(10/width, 1, 10/depth)));
-
-    //Texture Model
     m_textureManager.load("cobble", "resources/images/BrickRound0105_5_SPEC.png");
-    cobble->setTexture(m_textureManager.find("cobble"));
+    for(float x=-1.f; x<=1.f; x+=1.f)
+    {
+        for(float z=-1.f; z<=1.f; z+=1.f)
+        {
+            auto cobble = new drawable::Model("resources/models/cobble.obj", m_shaderManager.getShader("BasicShader"));
 
-    // Texture Required Triangle Fan
-    cobble->setTriangleFan();
-    m_stack.submit(cobble);
+            auto bbox = cobble->calculateBBox();
+            float width = bbox.max.x - bbox.min.x;
+            float depth = bbox.max.z - bbox.min.z;
+            cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(x,-2,z-2)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
+            cobble->setTexture(m_textureManager.find("cobble"));
+            cobble->calculateNormals();
+            cobble->setDrawType(GL_TRIANGLE_FAN);
+            m_stack.submit(cobble);
+        }
+    }
 
     for(float x=-1; x<=1.f; x+=.0625f/2.f)
     {
@@ -97,7 +106,6 @@ void Context::loadResources()
             batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") ));
         }
     }
-
     m_stack.submit(batch);
 
     auto shader = m_shaderManager.getShader("BasicShader");

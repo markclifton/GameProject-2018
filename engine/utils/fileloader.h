@@ -4,5 +4,5 @@
 
 namespace utils
 {
-    std::string loadFile(const std::string& path);
+std::string loadFile(const std::string& path);
 }

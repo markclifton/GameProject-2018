@@ -19,7 +19,7 @@ Shader::~Shader()
 {
     if(m_program != 0)
     {
-         glDeleteProgram(m_program);
+        glDeleteProgram(m_program);
     }
 }
 

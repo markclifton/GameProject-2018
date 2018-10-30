@@ -2,9 +2,10 @@
 
 namespace utils
 {
-    class KeyHandler
-    {
-    public:
-        virtual void process(int key, int scancode, int action, int mods) = 0;
-    };
+class KeyHandler
+{
+public:
+    virtual ~KeyHandler() = default;
+    virtual void process(int key, int scancode, int action, int mods) = 0;
+};
 }

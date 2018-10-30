@@ -4,65 +4,65 @@
 
 namespace managers
 {
-    TextureManager::TextureManager()
-    {
-    }
+TextureManager::TextureManager()
+{
+}
 
-    TextureManager::~TextureManager()
-    {
-        reset();
-    }
+TextureManager::~TextureManager()
+{
+    reset();
+}
 
-    void TextureManager::load(const std::string& name, const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
+void TextureManager::load(const std::string& name, const char* filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
+{
+    if(find(name) == nullptr)
     {
-        if(find(name) == nullptr)
+        m_textures.push_back(std::make_unique<Texture>(name, filename, image_format, internal_format, level, border));
+    }
+}
+
+Texture* TextureManager::find(const std::string& name)
+{
+    for(auto& texture : m_textures)
+    {
+        if(texture->name().compare(name) == 0)
         {
-            m_textures.push_back(std::make_unique<Texture>(name, filename, image_format, internal_format, level, border));
+            return texture.get();
         }
     }
+    return nullptr;
+}
 
-    Texture* TextureManager::find(const std::string& name)
+bool TextureManager::bind(const std::string& name, uint position)
+{
+    Texture* texture = find(name);
+    if( texture )
     {
-        for(auto& texture : m_textures)
+        texture->bind(position);
+        return true;
+    }
+    return false;
+}
+
+void TextureManager::reset()
+{
+    m_textures.clear();
+}
+
+bool TextureManager::unload(const std::string& name)
+{
+    for(size_t i=0; i<m_textures.size(); i++)
+    {
+        if(m_textures[i]->name().compare(name) == 0)
         {
-            if(texture->name().compare(name) == 0)
+            if(i != m_textures.size() - 1)
             {
-                return texture.get();
+                m_textures[i] = std::move(m_textures.back());
             }
-        }
-        return nullptr;
-    }
-
-    bool TextureManager::bind(const std::string& name, uint position)
-    {
-        Texture* texture = find(name);
-        if( texture )
-        {
-            texture->bind(position);
+            m_textures.pop_back();
             return true;
         }
-        return false;
     }
-
-    void TextureManager::reset()
-    {
-        m_textures.clear();
-    }
-
-    bool TextureManager::unload(const std::string& name)
-    {
-        for(size_t i=0; i<m_textures.size(); i++)
-        {
-            if(m_textures[i]->name().compare(name) == 0)
-            {
-                if(i != m_textures.size() - 1)
-                {
-                    m_textures[i] = std::move(m_textures.back());
-                }
-                m_textures.pop_back();
-                return true;
-            }
-        }
-        return false;
-    }
+    return false;
+}
 }

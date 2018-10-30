@@ -112,11 +112,12 @@ void main()
         totalLight += calculateLight( light, fs.normal, -fs.pos, fs.distance );
         totalLight += calculatePLight(plight, fs.normal);
 
+        plight.pos_w = (tform * vec4(1,0,-10,1)).xyz;
         plight.light.color = vec3(1,0,1);
         SpotLight s;
         s.light = plight;
         s.cutoff = 0.5f;
-        s.direction = (tform * vec4(0,0,-1,0)).xyz;
+        s.direction = (tform * vec4(-1,0,0,0)).xyz;
         totalLight += calculateSpotLight(s, fs.normal);
 
         float alpha = finalColor.a;

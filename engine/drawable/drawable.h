@@ -25,9 +25,11 @@ namespace drawable
         }
 
         inline Shader* getShader() { return m_shader; }
+        inline void setDrawType(const uint& type) { m_drawType = type; }
 
     protected:
         Shader* m_shader;
         glm::mat4 m_transform {1.f};
+        uint m_drawType {GL_TRIANGLES};
     };
 }

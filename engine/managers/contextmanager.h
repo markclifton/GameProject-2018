@@ -8,24 +8,24 @@
 
 namespace managers
 {
-    class ContextManager
-    {
-    public:
-        ContextManager();
-        ~ContextManager();
+class ContextManager
+{
+public:
+    ContextManager();
+    ~ContextManager();
 
-        Context* find(const std::string& name);
-        bool setContext(const std::string& name);
-        bool addContext(const std::string& name , std::unique_ptr<Context> context);
-        bool removeContext(const std::string& name);
+    Context* find(const std::string& name);
+    bool setContext(const std::string& name);
+    bool addContext(const std::string& name , std::unique_ptr<Context> context);
+    bool removeContext(const std::string& name);
 
-        void run();
+    void run();
 
-        void reset();
+    void reset();
 
-    private:
-        std::vector<std::pair<std::string, std::unique_ptr<Context>>> m_contexts;
-        Context* m_activeContext {nullptr};
+private:
+    std::vector<std::pair<std::string, std::unique_ptr<Context>>> m_contexts;
+    Context* m_activeContext {nullptr};
 
-    };
+};
 }

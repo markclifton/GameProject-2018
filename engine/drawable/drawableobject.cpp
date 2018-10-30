@@ -2,7 +2,7 @@
 
 namespace drawable
 {
-    DrawableObject::DrawableObject(Shader* shader) : Drawable( shader )
-    {
-    }
+DrawableObject::DrawableObject(Shader* shader) : Drawable( shader )
+{
+}
 }
