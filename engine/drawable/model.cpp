@@ -58,6 +58,7 @@ void Model::loadModel()
 {
     std::vector<glm::vec3> normals;
     std::vector<glm::vec3> uv;
+    std::vector<Vertex> vertices;
 
     std::ifstream ifs(m_path);
     if (ifs.is_open())
@@ -70,7 +71,7 @@ void Model::loadModel()
             {
                 Vertex v;
                 v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
-                m_vertices.push_back(v);
+                vertices.push_back(v);
             }
             else if(ls.size() > 3 && ls.front().compare("vn") == 0)
             {
@@ -86,30 +87,46 @@ void Model::loadModel()
                 auto vertInfo2 = split(ls[2], '/');
                 auto vertInfo3 = split(ls[3], '/');
 
-                int vertex1{-1};
-                int vertex2{-1};
-                int vertex3{-1};
-                if(vertInfo1.size() > 0)
-                {
-                    m_indices.push_back(vertex1 = stoi(vertInfo1[0]) -1);
-                    m_indices.push_back(vertex2 = stoi(vertInfo2[0]) -1);
-                    m_indices.push_back(vertex3 = stoi(vertInfo3[0]) -1);
-                }
+                int vertex1 = stoi(vertInfo1[0]) -1;
+                int vertex2 = stoi(vertInfo2[0]) -1;
+                int vertex3 = stoi(vertInfo3[0]) -1;
+
+                // Vertices need resolved in order to use with ibo
+
+                Vertex v1 = vertices[static_cast<size_t>(vertex1)];
+                Vertex v2 = vertices[static_cast<size_t>(vertex2)];
+                Vertex v3 = vertices[static_cast<size_t>(vertex3)];
 
                 //Tex Coords
                 if(vertInfo1.size() > 1 && strcmp(vertInfo1[1].c_str(), "") != 0 && uv.size() > 0)
                 {
-                    m_vertices[static_cast<size_t>(vertex1)].uv = uv[static_cast<size_t>(stoi(vertInfo1[1]))-1];
-                    m_vertices[static_cast<size_t>(vertex2)].uv = uv[static_cast<size_t>(stoi(vertInfo2[1]))-1];
-                    m_vertices[static_cast<size_t>(vertex3)].uv = uv[static_cast<size_t>(stoi(vertInfo3[1]))-1];
+                    v1.uv = uv[static_cast<size_t>(stoi(vertInfo1[1]))-1];
+                    v2.uv = uv[static_cast<size_t>(stoi(vertInfo2[1]))-1];
+                    v3.uv = uv[static_cast<size_t>(stoi(vertInfo3[1]))-1];
                 }
 
                 //Normals
                 if(vertInfo1.size() > 2 && strcmp(vertInfo1[2].c_str(), "") != 0 && normals.size() > 0)
                 {
-                    m_vertices[static_cast<size_t>(vertex1)].normal = normals[static_cast<size_t>(stoi(vertInfo1[2]))-1];
-                    m_vertices[static_cast<size_t>(vertex2)].normal = normals[static_cast<size_t>(stoi(vertInfo2[2]))-1];
-                    m_vertices[static_cast<size_t>(vertex3)].normal = normals[static_cast<size_t>(stoi(vertInfo3[2]))-1];
+                    v1.normal = normals[static_cast<size_t>(stoi(vertInfo1[2]))-1];
+                    v2.normal = normals[static_cast<size_t>(stoi(vertInfo2[2]))-1];
+                    v3.normal = normals[static_cast<size_t>(stoi(vertInfo3[2]))-1];
+                }
+
+                if(vertInfo1.size() > 0)
+                {
+                    m_vertices.push_back(v1);
+                    vertex1 = m_vertices.size() - 1;
+
+                    m_vertices.push_back(v2);
+                    vertex2 = m_vertices.size() - 1;
+
+                    m_vertices.push_back(v3);
+                    vertex3 = m_vertices.size() - 1;
+
+                    m_indices.push_back(vertex1);
+                    m_indices.push_back(vertex2);
+                    m_indices.push_back(vertex3);
                 }
             }
             else

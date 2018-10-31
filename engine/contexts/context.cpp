@@ -49,31 +49,29 @@ void Context::loadResources()
 
     m_textureManager.load("smile", "resources/images/smile.tif");
     m_textureManager.load("smile2", "resources/images/smile2.tif");
+    m_textureManager.load("dirt", "resources/images/dirt.tif");
 
 //START TEST CODE
     //Light Representation
     auto m = new drawable::Model("resources/models/cube.obj", s);
-    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.f,0,-5.f)));
+    m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,0,-5.5f)));
     m_stack.submit(m);
 
     auto m4 = new drawable::Model("resources/models/cube.obj", s);
-    m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,-.5f,-10.5f)));
+    m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.f,-.5f,-10.5f)));
     m4->setColor(glm::vec4(1,0,1,1));
     m_stack.submit(m4);
 
     //Model 1
     auto m2 = new drawable::Model("resources/models/teapot.obj", s);
-    m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,0,-10.f)));
+    m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,-1,-10.f)));
     m2->calculateNormals();
     m_stack.submit(m2);
 
     // Model 2
-    for(int i =0 ; i<10; i++)
-    {
-        auto m3 = new drawable::Model("resources/models/monkey.obj", s);
-        m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,-5 + 2*i,-5.f)));
-        m_stack.submit(m3);
-    }
+    auto m3 = new drawable::Model("resources/models/monkey.obj", s);
+    m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,1,-5.f)));
+    m_stack.submit(m3);
 
     // Floor
     auto instanced = new drawable::renderer::Instanced(s);
@@ -95,20 +93,18 @@ void Context::loadResources()
     //    }
     //}
 
-    auto cube = new drawable::Model("resources/models/cube.obj", s);
+    auto cube = new drawable::Model("resources/models/cube2.obj", s);
     auto bbox = cube->calculateBBox();
     float width = bbox.max.x - bbox.min.x;
     float depth = bbox.max.z - bbox.min.z;
-    //cube->calculateNormals();
+    cube->calculateNormals();
+    cube->setTexture(m_textureManager.find("dirt"));
     instanced->submit(cube);
-    for(int x=-4; x<4; x++)
+    for(int x=-10; x<10; x++)
     {
-        for(int z=-4; z<4; z++)
+        for(int z=-10; z<10; z++)
         {
-            for(int y= -4; y<4; y++)
-            {
-                instanced->submit(glm::translate(glm::mat4(1.f), glm::vec3(x, y-5, z)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
-            }
+            instanced->submit(glm::translate(glm::mat4(1.f), glm::vec3(x, -2, z-8)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
         }
     }
 
