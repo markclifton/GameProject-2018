@@ -1,10 +1,7 @@
 #pragma once
 
-#include <fstream>
 #include <string>
 
-#include "buffers/indexbuffer.h"
-#include "buffers/vertexbuffers/vb_basic.h"
 #include "drawableobject.h"
 
 namespace drawable

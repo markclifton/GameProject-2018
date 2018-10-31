@@ -7,6 +7,9 @@
 #include "drawable/rectangle.h"
 #include "drawable/renderers/batch.h"
 
+//TEST
+#include "drawable/renderers/instanced.h"
+
 Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
     : m_shaderManager(shaderManager)
     , m_textureManager(textureManager)
@@ -33,18 +36,11 @@ void Context::run()
 
 void Context::loadResources()
 {
-    m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
+    std::cout << "Loading Resources!\n" << std::endl;
 
+    m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->bind();
-    s->enableAttribArray("position");
-    s->enableAttribArray("color");
-    s->enableAttribArray("uv");
-    s->enableAttribArray("normal");
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-    glEnableVertexAttribArray(6);
-    glEnableVertexAttribArray(7);
 
     glm::mat4 p, v;
     m_camera.Update();
@@ -55,66 +51,88 @@ void Context::loadResources()
     m_textureManager.load("smile2", "resources/images/smile2.tif");
 
 //START TEST CODE
-    auto m = new drawable::Model("resources/models/cube.obj", m_shaderManager.getShader("BasicShader"));
+    //Light Representation
+    auto m = new drawable::Model("resources/models/cube.obj", s);
     m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.f,0,-5.f)));
-    //m->calculateNormals();
     m_stack.submit(m);
 
-    auto m4 = new drawable::Model("resources/models/cube.obj", m_shaderManager.getShader("BasicShader"));
+    auto m4 = new drawable::Model("resources/models/cube.obj", s);
     m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,-.5f,-10.5f)));
     m4->setColor(glm::vec4(1,0,1,1));
-    //m->calculateNormals();
     m_stack.submit(m4);
 
-    auto m2 = new drawable::Model("resources/models/teapot.obj", m_shaderManager.getShader("BasicShader"));
+    //Model 1
+    auto m2 = new drawable::Model("resources/models/teapot.obj", s);
     m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,0,-10.f)));
     m2->calculateNormals();
     m_stack.submit(m2);
 
+    // Model 2
     for(int i =0 ; i<10; i++)
     {
-        auto m3 = new drawable::Model("resources/models/monkey.obj", m_shaderManager.getShader("BasicShader"));
+        auto m3 = new drawable::Model("resources/models/monkey.obj", s);
         m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,-5 + 2*i,-5.f)));
         m_stack.submit(m3);
     }
 
-    drawable::renderer::Batch* batch = new drawable::renderer::Batch(m_shaderManager.getShader("BasicShader"), glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
-    batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
+    // Floor
+    auto instanced = new drawable::renderer::Instanced(s);
 
-    m_textureManager.load("cobble", "resources/images/BrickRound0105_5_SPEC.png");
-    for(float x=-1.f; x<=1.f; x+=1.f)
+    //m_textureManager.load("cobble", "resources/images/BrickRound0105_5_SPEC.png");
+    //auto cobble = new drawable::Model("resources/models/cobble.obj", s);
+    //auto bbox = cobble->calculateBBox();
+    //float width = bbox.max.x - bbox.min.x;
+    //float depth = bbox.max.z - bbox.min.z;
+    //cobble->setTexture(m_textureManager.find("cobble"));
+    //cobble->calculateNormals();
+    //instanced->submit(cobble);
+    //instanced->setDrawType(GL_TRIANGLE_FAN);
+    //for(int x=-4; x<4; x++)
+    //{
+    //    for(int z=-4; z<4; z++)
+    //    {
+    //        instanced->submit(glm::translate(glm::mat4(1.f), glm::vec3(x, -2, z-8)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
+    //    }
+    //}
+
+    auto cube = new drawable::Model("resources/models/cube.obj", s);
+    auto bbox = cube->calculateBBox();
+    float width = bbox.max.x - bbox.min.x;
+    float depth = bbox.max.z - bbox.min.z;
+    //cube->calculateNormals();
+    instanced->submit(cube);
+    for(int x=-4; x<4; x++)
     {
-        for(float z=-1.f; z<=1.f; z+=1.f)
+        for(int z=-4; z<4; z++)
         {
-            auto cobble = new drawable::Model("resources/models/cobble.obj", m_shaderManager.getShader("BasicShader"));
-
-            auto bbox = cobble->calculateBBox();
-            float width = bbox.max.x - bbox.min.x;
-            float depth = bbox.max.z - bbox.min.z;
-            cobble->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(x,-2,z-2)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
-            cobble->setTexture(m_textureManager.find("cobble"));
-            cobble->calculateNormals();
-            cobble->setDrawType(GL_TRIANGLE_FAN);
-            m_stack.submit(cobble);
+            for(int y= -4; y<4; y++)
+            {
+                instanced->submit(glm::translate(glm::mat4(1.f), glm::vec3(x, y-5, z)) * glm::scale(glm::mat4(1.f), glm::vec3(1/width, 1, 1/depth)));
+            }
         }
     }
 
+    m_stack.submit(instanced);
+
+    //Triangle Wall
+    drawable::renderer::Batch* batch = new drawable::renderer::Batch(s, glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
+    batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
     for(float x=-1; x<=1.f; x+=.0625f/2.f)
     {
         for(float y=-1; y<=1.f; y+=.0625f/2.f)
         {
-            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), m_shaderManager.getShader("BasicShader") ));
+            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), s ));
         }
     }
     m_stack.submit(batch);
 
-    auto shader = m_shaderManager.getShader("BasicShader");
-    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), shader);
+    // Textured Faces
+    drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), s);
     r->setTexture(m_textureManager.find("smile"));
     r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
     m_stack.submit(r);
 
-    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), shader);
+    drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
     r2->setTexture(m_textureManager.find("smile2"));
     r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
     m_stack.submit(r2);

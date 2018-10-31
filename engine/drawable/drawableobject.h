@@ -4,12 +4,11 @@
 #include <vector>
 
 #include "buffers/indexbuffer.h"
-#include "buffers/vertexbuffers/vb_basic.h"
+#include "buffers/vertexbuffer.h"
 #include "drawable.h"
 #include "drawablebasics.h"
 #include "textures/texture.h"
 
-//REFACTOR SOON : Move to cpp
 namespace drawable
 {
 struct bbox
@@ -23,24 +22,9 @@ class DrawableObject : public drawable::Drawable
 public:
     DrawableObject(Shader* shader);
 
-    void setTransform(glm::mat4 transform) override
-    {
-        m_transform = transform;
-        for(auto& vert : m_vertices)
-        {
-            vert.model = m_transform;
-        }
-        update();
-    }
+    void setTransform(glm::mat4 transform) override;
 
-    void setTextureId(const int& id)
-    {
-        for(auto& vert : m_vertices)
-        {
-            vert.uv.z = id;
-        }
-        update();
-    }
+    void setTextureId(const int& id);
     void setTexture( Texture* texture ) { m_texture = texture; setTextureId(0); }
     Texture* getTexture() { return m_texture; }
 
@@ -50,72 +34,22 @@ public:
     GLint* indices() { return &m_indices.front(); }
     int numIndices() { return static_cast<int>(m_indices.size()); }
 
-    void setUpdateFunc(std::function<void()> fn)
-    {
-        m_updateFunc = fn;
-    }
+    void setColor(const glm::vec4& color);
 
-    void update()
-    {
-        if(m_updateFunc)
-        {
-            m_updateFunc();
-        }
-        else
-        {
-            m_changed = true;
-        }
-    }
+    void setUpdateFunc(std::function<void()> fn);
+    void update();
 
-    void setColor(const glm::vec4& color)
-    {
-        for(auto& vertex : m_vertices)
-        {
-            vertex.color = color;
-        }
-        update();
-    }
+    const bbox& calculateBBox();
+    void calculateNormals();
 
-    const bbox& calculateBBox()
-    {
-        for(auto& vertex : m_vertices)
-        {
-            m_bbox.min.x = std::min(m_bbox.min.x, vertex.pos.x);
-            m_bbox.min.y = std::min(m_bbox.min.y, vertex.pos.y);
-            m_bbox.min.z = std::min(m_bbox.min.z, vertex.pos.z);
-            m_bbox.max.x = std::max(m_bbox.max.x, vertex.pos.x);
-            m_bbox.max.y = std::max(m_bbox.max.y, vertex.pos.y);
-            m_bbox.max.z = std::max(m_bbox.max.z, vertex.pos.z);
-        }
-
-        return m_bbox;
-    }
-
-    void calculateNormals()
-    {
-        for(size_t i = 0; i<m_indices.size(); i+=3)
-        {
-            auto& vert1 = m_vertices[static_cast<size_t>(m_indices[i+0])];
-            auto& vert2 = m_vertices[static_cast<size_t>(m_indices[i+1])];
-            auto& vert3 = m_vertices[static_cast<size_t>(m_indices[i+2])];
-
-            auto edge1 = vert2.pos - vert1.pos;
-            auto edge2 = vert3.pos - vert1.pos;
-
-            auto normal = glm::normalize(glm::cross(edge1, edge2));
-
-            vert1.normal += normal;
-            vert2.normal += normal;
-            vert3.normal += normal;
-        }
-    }
+    void setInstanced();
 
 protected:
     std::vector<Vertex> m_vertices;
     std::vector<GLint> m_indices;
     Texture* m_texture {nullptr};
 
-    buffers::BasicVBO m_vertexBuffer;
+    buffers::VertexBuffer m_vertexBuffer;
     buffers::IndexBuffer m_indicesBuffer;
     bool m_changed { true };
 

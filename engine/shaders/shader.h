@@ -12,7 +12,7 @@ public:
     ~Shader();
 
     void bind();
-    void enableAttribArray(const std::string& attribName);
+    int getAttribLocation(const std::string& attribName);
 
     void setUniform(const std::string& uniformName, const glm::mat4& matrix);
     void setUniform(const std::string& uniformName, const glm::vec4& vec);

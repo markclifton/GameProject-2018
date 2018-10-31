@@ -12,6 +12,40 @@ Batch::Batch(Shader* shader, glm::mat4 transform)
     : Drawable(shader)
     , m_tranform(transform)
 {
+    shader->bind();
+
+    int position = shader->getAttribLocation("position");
+    if(position >= 0)
+    {
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, pos));
+    }
+
+    int color = shader->getAttribLocation("color");
+    if(color >= 0)
+    {
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, color));
+    }
+
+    int uv = shader->getAttribLocation("uv");
+    if(uv >= 0)
+    {
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, uv));
+    }
+
+    int normal = shader->getAttribLocation("normal");
+    if(normal >= 0)
+    {
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, normal));
+    }
+
+    int model = shader->getAttribLocation("model");
+    if(model >= 0)
+    {
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(Vertex), 1 * sizeof(glm::vec4) + offsetof(Vertex, model));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(Vertex), 2 * sizeof(glm::vec4) + offsetof(Vertex, model));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(Vertex), 3 * sizeof(glm::vec4) + offsetof(Vertex, model));
+    }
 }
 
 void Batch::submit(const int& numVerts, Vertex* vertices, const int& numIndices, GLint* indices)
@@ -103,7 +137,7 @@ void Batch::draw(glm::mat4 transform)
 
     if(m_shader != nullptr && data.size() > 0)
     {
-        m_shader->setUniform("myTextures", static_cast<int>(m_textures.size()), &data.front());
+        m_shader->setUniform("textures", static_cast<int>(m_textures.size()), &data.front());
     }
 
     if(m_changed)

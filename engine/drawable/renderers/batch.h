@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "buffers/indexbuffer.h"
-#include "buffers/vertexbuffers/vb_basic.h"
+#include "buffers/vertexbuffer.h"
 #include "drawable/drawable.h"
 #include "drawable/drawablebasics.h"
 #include "drawable/drawableobject.h"
@@ -34,7 +34,7 @@ private:
     std::vector<std::pair<DrawableObject*, size_t>> m_objects; //TODO: Enable remove of objects
     std::vector<Texture*> m_textures;
 
-    buffers::BasicVBO m_vbo;
+    buffers::VertexBuffer m_vbo;
     buffers::IndexBuffer m_ibo;
 
     glm::mat4 m_tranform {1.f};

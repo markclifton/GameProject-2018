@@ -28,14 +28,10 @@ void Shader::bind()
     glUseProgram(m_program);
 }
 
-void Shader::enableAttribArray(const std::string& attribName)
+int Shader::getAttribLocation(const std::string& attribName)
 {
     bind();
-    auto attrib = glGetAttribLocation(m_program, attribName.c_str());
-    if( attrib != -1 )
-    {
-        glEnableVertexAttribArray(static_cast<GLuint>(attrib));
-    }
+    return glGetAttribLocation(m_program, attribName.c_str());
 }
 
 void Shader::setUniform(const std::string& uniformName, const glm::mat4& matrix)
