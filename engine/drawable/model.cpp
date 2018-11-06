@@ -91,7 +91,10 @@ void Model::loadModel()
                 int vertex2 = stoi(vertInfo2[0]) -1;
                 int vertex3 = stoi(vertInfo3[0]) -1;
 
-                // Vertices need resolved in order to use with ibo
+                //TODO: Refactor this to reuse vertices when possible.
+                // Currently, recreating a new vertex for each indice
+                // which ultimately causes issues with lighting (normals)
+                // and general performance (although minor)
 
                 Vertex v1 = vertices[static_cast<size_t>(vertex1)];
                 Vertex v2 = vertices[static_cast<size_t>(vertex2)];
@@ -116,13 +119,13 @@ void Model::loadModel()
                 if(vertInfo1.size() > 0)
                 {
                     m_vertices.push_back(v1);
-                    vertex1 = m_vertices.size() - 1;
+                    vertex1 = static_cast<int>(m_vertices.size() - 1);
 
                     m_vertices.push_back(v2);
-                    vertex2 = m_vertices.size() - 1;
+                    vertex2 = static_cast<int>(m_vertices.size() - 1);
 
                     m_vertices.push_back(v3);
-                    vertex3 = m_vertices.size() - 1;
+                    vertex3 = static_cast<int>(m_vertices.size() - 1);
 
                     m_indices.push_back(vertex1);
                     m_indices.push_back(vertex2);
