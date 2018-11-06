@@ -1,5 +1,25 @@
 #version 450 core
 
+struct Light
+{
+    vec3 color;
+    float intensity;
+};
+
+struct PointLight
+{
+    Light light;
+    vec3 elc;
+    vec3 pos_w;
+};
+
+struct SpotLight
+{
+    PointLight plight;
+    vec3 direction;
+    float cutoff;
+};
+
 out vec4 finalColor;
 
 in FSData {
@@ -14,27 +34,11 @@ in mat4 tform;
 
 uniform sampler2D textures[16];
 
-struct Light
-{
-    vec3 color;
-    float intensity;
-};
+uniform int spotlightCount;
+uniform SpotLight spotlights[8];
 
-struct PointLight
-{
-    Light light;
-    float e;
-    float l;
-    float c;
-    vec3 pos_w;
-};
-
-struct SpotLight
-{
-    PointLight light;
-    vec3 direction;
-    float cutoff;
-};
+uniform int pointlightCount;
+uniform PointLight pointlights[8];
 
 vec4 calculateLight( Light light, vec3 normal, vec3 direction, float distance )
 {
@@ -66,20 +70,20 @@ vec4 calculatePLight(PointLight plight, vec3 normal)
 
     vec4 color = calculateLight(plight.light, normal, -direction, distance);
 
-    plight.c += 0.0001;
-    float attenuation = (plight.e * distance * distance) + (plight.l * distance) + plight.c;
+    plight.elc.z += 0.0001;
+    float attenuation = (plight.elc.x * distance * distance) + (plight.elc.y * distance) + plight.elc.z;
     return color / attenuation;
 }
 
 vec4 calculateSpotLight(SpotLight slight, vec3 normal)
 {
-    vec3 direction = normalize(fs.pos - slight.light.pos_w);
+    vec3 direction = normalize(fs.pos - slight.plight.pos_w);
     float spotFactor = dot(direction, slight.direction);
 
     vec4 color = vec4(0,0,0,0);
     if( spotFactor > slight.cutoff)
     {
-        color = calculatePLight(slight.light, normal);
+        color = calculatePLight(slight.plight, normal);
         color *= (1.0 - (1.0 - spotFactor) / (1.0 - slight.cutoff));
     }
 
@@ -100,25 +104,18 @@ void main()
         light.color = vec3(1,1,1);
         light.intensity = 5.f;
 
-        PointLight plight;
-        plight.light.color = vec3(1,1,1);
-        plight.light.intensity = 25.f;
-        plight.pos_w = (tform * vec4(-1,0,-5,1)).xyz;
-        plight.e = 1;
-        plight.l = 0;
-        plight.c = 0;
-
         vec4 totalLight = vec4(.05,.05,.05,1);
         totalLight += calculateLight( light, fs.normal, -fs.pos, fs.distance );
-        totalLight += calculatePLight(plight, fs.normal);
 
-        plight.pos_w = (tform * vec4(1,0,-10,1)).xyz;
-        plight.light.color = vec3(1,0,1);
-        SpotLight s;
-        s.light = plight;
-        s.cutoff = 0.5f;
-        s.direction = (tform * vec4(-1,0,0,0)).xyz;
-        totalLight += calculateSpotLight(s, fs.normal);
+        for(int i=0; i<pointlightCount; i++)
+        {
+            totalLight += calculatePLight(pointlights[i], fs.normal);
+        }
+
+        for(int i=0; i<spotlightCount; i++)
+        {
+            totalLight += calculateSpotLight(spotlights[i], fs.normal);
+        }
 
         float alpha = finalColor.a;
         finalColor *= totalLight;

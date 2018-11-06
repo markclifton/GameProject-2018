@@ -40,6 +40,11 @@ void VertexBuffer::enableVertexAttribs()
             glVertexAttribDivisor(attrib.vertexPosition, 1);
         }
     }
+
+    for(auto& divisor : m_vertexAttribDivisors)
+    {
+        glVertexAttribDivisor(divisor, 1);
+    }
 }
 
 void VertexBuffer::useVertexAttrib(uint32_t vertexPosition, int count, uint32_t type, bool normalized, int stride, uint32_t offset, bool instanced)
@@ -69,6 +74,11 @@ void VertexBuffer::useVertexAttrib(uint32_t vertexPosition, int count, uint32_t 
     va.instanced = instanced;
 
     m_vertexAttribs.push_back(va);
+}
+
+void VertexBuffer::useVertexAttribDivisor(uint32_t vertexPosition)
+{
+    m_vertexAttribDivisors.push_back(vertexPosition);
 }
 
 }

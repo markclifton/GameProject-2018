@@ -43,12 +43,30 @@ void Shader::setUniform(const std::string& uniformName, const glm::mat4& matrix)
     }
 }
 
+void Shader::setUniform(const std::string& uniformName, const glm::vec3& vec)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniform3fv(uniform, 1, glm::value_ptr(vec));
+    }
+}
+
 void Shader::setUniform(const std::string& uniformName, const glm::vec4& vec)
 {
     auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
     if( uniform != -1 )
     {
         glUniform4fv(uniform, 1, glm::value_ptr(vec));
+    }
+}
+
+void Shader::setUniform(const std::string& uniformName, const int& value)
+{
+    auto uniform = glGetUniformLocation(m_program, uniformName.c_str());
+    if( uniform != -1 )
+    {
+        glUniform1i(uniform, value);
     }
 }
 

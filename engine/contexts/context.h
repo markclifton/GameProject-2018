@@ -6,6 +6,9 @@
 #include "managers/texturemanager.h"
 #include "managers/windowmanager.h"
 
+#include "lights/point.h"
+#include "lights/spot.h"
+
 class Context
 {
 public:
@@ -20,4 +23,7 @@ private:
     drawable::renderer::Layer m_stack;
 
     Camera3D m_camera;
+
+    std::vector<lights::PointLight> m_pointlights;
+    std::vector<lights::SpotLight> m_spotlights;
 };

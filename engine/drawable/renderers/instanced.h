@@ -33,12 +33,12 @@ private:
     std::vector<std::pair<DrawableObject*, size_t>> m_objects; //TODO: Enable remove of objects
     std::vector<Texture*> m_textures;
 
+    buffers::VertexBuffer m_vboTransforms;
     buffers::VertexBuffer m_vbo;
     buffers::IndexBuffer m_ibo;
 
     glm::mat4 m_tranform {1.f};
     std::vector<glm::mat4> m_transforms;
-    GLuint test; // TEMP
     bool m_changed { true };
 };
 

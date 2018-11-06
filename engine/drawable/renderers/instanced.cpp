@@ -41,10 +41,15 @@ Instanced::Instanced(Shader* shader, glm::mat4 transform)
     int model = shader->getAttribLocation("model");
     if(model >= 0)
     {
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(Vertex), 1 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(Vertex), 2 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(Vertex), 3 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
+        m_vboTransforms.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), 0 * sizeof(glm::vec4), true);
+        m_vboTransforms.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), 1 * sizeof(glm::vec4), true);
+        m_vboTransforms.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), 2 * sizeof(glm::vec4), true);
+        m_vboTransforms.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), 3 * sizeof(glm::vec4), true);
+
+        m_vboTransforms.useVertexAttribDivisor(static_cast<uint32_t>(model + 0));
+        m_vboTransforms.useVertexAttribDivisor(static_cast<uint32_t>(model + 1));
+        m_vboTransforms.useVertexAttribDivisor(static_cast<uint32_t>(model + 2));
+        m_vboTransforms.useVertexAttribDivisor(static_cast<uint32_t>(model + 3));
     }
 }
 
@@ -127,47 +132,15 @@ void Instanced::draw(glm::mat4 transform)
     {
         m_ibo.buffer(static_cast<long>(m_indices.size() * sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
         m_vbo.buffer(static_cast<long>(m_vertices.size() * sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
+        m_vboTransforms.buffer(static_cast<long>(m_transforms.size() * sizeof(glm::mat4)), &m_transforms.front());
         m_changed = false;
-
-        glGenBuffers(1, &test);
-        glBindBuffer(GL_ARRAY_BUFFER, test);
-        glBufferData(GL_ARRAY_BUFFER, m_transforms.size() * static_cast<long>(sizeof(glm::mat4)), &m_transforms[0], GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(4);
-        glEnableVertexAttribArray(5);
-        glEnableVertexAttribArray(6);
-        glEnableVertexAttribArray(7);
-
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(0 * sizeof(glm::vec4)));
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(1 * sizeof(glm::vec4)));
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(2 * sizeof(glm::vec4)));
-        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(3 * sizeof(glm::vec4)));
-
-        glVertexAttribDivisor(4, 1);
-        glVertexAttribDivisor(5, 1);
-        glVertexAttribDivisor(6, 1);
-        glVertexAttribDivisor(7, 1);
     }
 
     m_ibo.bind();
     m_vbo.bind();
-    glBindBuffer(GL_ARRAY_BUFFER, test);
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-    glEnableVertexAttribArray(6);
-    glEnableVertexAttribArray(7);
+    m_vboTransforms.bind();
 
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(0 * sizeof(glm::vec4)));
-    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(1 * sizeof(glm::vec4)));
-    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(2 * sizeof(glm::vec4)));
-    glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), reinterpret_cast<void*>(3 * sizeof(glm::vec4)));
-
-    glVertexAttribDivisor(4, 1);
-    glVertexAttribDivisor(5, 1);
-    glVertexAttribDivisor(6, 1);
-    glVertexAttribDivisor(7, 1);
-
-    glDrawElementsInstanced(m_drawType, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr, m_transforms.size());
+    glDrawElementsInstanced(m_drawType, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr, static_cast<int>(m_transforms.size()));
 }
 
 void Instanced::submit(const glm::mat4& transform)

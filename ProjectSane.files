@@ -28,6 +28,10 @@ engine/game.cpp
 engine/glad/gl.cpp
 engine/glad/gl.h
 engine/glad/KHR/khrplatform.h
+engine/lights/point.h
+engine/lights/point.cpp
+engine/lights/spot.h
+engine/lights/spot.cpp
 engine/managers/contextmanager.h
 engine/managers/contextmanager.cpp
 engine/managers/shadermanager.h
