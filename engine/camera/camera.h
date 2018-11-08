@@ -18,11 +18,10 @@ public:
     Camera3D() = default;
     virtual ~Camera3D() = default;
 
-    void Reset();
     void Update();
 
-    void ChangePitch(float degrees);
-    void ChangeHeading(float degrees);
+    void ChangePitch(float radians);
+    void ChangeHeading(float radians);
 
     void SetFOV(double fov);
     void SetViewport(int loc_x, int loc_y, int width, int height);
@@ -33,6 +32,18 @@ public:
     void process(int key, int scancode, int action, int mods) override;
 
     inline const glm::vec3& GetPosition() { return m_cameraPosition; }
+
+    inline void setPosition(glm::vec3 positionDelta)
+    {
+        auto old = m_movementSpeed;
+        m_movementSpeed = glm::length(positionDelta);
+        m_cameraInputDelta += positionDelta;
+        Update();
+        m_movementSpeed = old;
+        m_cameraInputDelta *= 0;
+    }
+    inline void setPitch(float radians) { ChangePitch(radians); Update(); m_cameraPitch = 0; }
+    inline void setHeading(float radians) { ChangeHeading(radians); Update(); m_cameraHeading = 0; }
 private:
     int m_viewportX;
     int m_viewportY;
@@ -48,11 +59,11 @@ private:
     float m_cameraHeading {0.f};
     float m_cameraPitch {0.f};
 
-    glm::vec3 m_cameraDirection {0,0,0};
+    glm::vec3 m_cameraDirection {0.f};
     glm::vec3 m_cameraInputDelta {0.f};
-    glm::vec3 m_cameraLookAt {0,0,0};
+    glm::vec3 m_cameraLookAt {0.f};
     glm::vec3 m_cameraPosition {0,0,1};
-    glm::vec3 m_cameraPositionDelta {0,0,0};
+    glm::vec3 m_cameraPositionDelta {0.f};
     glm::vec3 m_cameraUp {0,1,0};
 
     float m_movementSpeed {.085f};

@@ -78,7 +78,7 @@ bool Instanced::submit(DrawableObject* object)
     {
         m_textures.clear();
         m_textures.push_back(objectTexture);
-        object->setTextureId(static_cast<int>(m_textures.size()));
+        object->setTextureId(static_cast<int>(m_textures.size()) - 1);
     }
 
     m_objects.clear();
@@ -112,7 +112,7 @@ void Instanced::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-        m_shader->bind();
+        //m_shader->bind();
         m_shader->setUniform("transform", transform * m_transform);
     }
 

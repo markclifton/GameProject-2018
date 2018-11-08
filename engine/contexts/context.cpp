@@ -22,11 +22,14 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
 
 void Context::run()
 {
+    m_fbo->bindColor();
+
     glm::mat4 p, v;
     m_camera.Update();
     m_camera.GetMatricies(p, v);
 
     Shader* s = m_shaderManager.getShader("BasicShader");
+    s->bind();
     s->setUniform("view", v);
     s->setUniform("camera", glm::vec4(m_camera.GetPosition(), 1));
 
@@ -34,11 +37,23 @@ void Context::run()
     lights::setLights(m_spotlights, s, v);
 
     m_stack.draw();
+
+    m_fbo->unbind();
+
+    s = m_shaderManager.getShader("FBO");
+    s->bind();
+    s->setUniform("projection",  glm::ortho(-1., 1., -1., 1.));
+    drawable::Rectangle r(glm::vec3(0,0,0), s);
+    r.setTextureId(0);
+    m_fbo->bindAsTexture();
+    r.draw();
 }
 
 void Context::loadResources()
 {
     std::cout << "Loading Resources!\n" << std::endl;
+
+    m_shaderManager.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs");
 
     m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
     Shader* s = m_shaderManager.getShader("BasicShader");
@@ -53,19 +68,18 @@ void Context::loadResources()
     m_textureManager.load("smile2", "resources/images/smile2.tif");
     m_textureManager.load("dirt", "resources/images/dirt.tif");
 
-
     //START TEST CODE
     //Light Representation
     {
         auto m = new drawable::Model("resources/models/cube.obj", s);
-        m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,0,-5.5f)));
+        m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,10,-5.5f)));
         m_stack.submit(m);
 
         lights::PointLight plight;
         plight.color = glm::vec3(1,1,1);
         plight.elc = glm::vec3(1,0,0);
-        plight.intensity = 25;
-        plight.pos_w = glm::vec3(-1,0,-5);
+        plight.intensity = 10000;
+        plight.pos_w = glm::vec3(-1,10,-5);
         m_pointlights.push_back(plight);
 
         auto m4 = new drawable::Model("resources/models/cube.obj", s);
@@ -146,6 +160,8 @@ void Context::loadResources()
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
         m_stack.submit(r2);
     }
+
+    m_fbo = std::make_unique<buffers::FrameBufferObject>(640, 480);
 
     //END TEST CODE
 }

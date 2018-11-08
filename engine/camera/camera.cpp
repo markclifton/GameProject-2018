@@ -8,9 +8,9 @@ void Camera3D::Update() {
     m_projection = glm::perspective(m_fov, m_aspect, static_cast<double>(m_clippingPlanes.x), static_cast<double>(m_clippingPlanes.y));
 
     // Calculate XYZ movement delta
-    m_cameraPositionDelta = m_cameraDirection * m_cameraInputDelta.x;
-    m_cameraPositionDelta -= glm::cross(m_cameraDirection, m_cameraUp) * m_cameraInputDelta.y;
-    m_cameraPositionDelta += m_cameraUp * m_cameraInputDelta.z;
+    m_cameraPositionDelta = m_cameraDirection * m_cameraInputDelta.z;
+    m_cameraPositionDelta -= glm::cross(m_cameraDirection, m_cameraUp) * m_cameraInputDelta.x;
+    m_cameraPositionDelta += m_cameraUp * m_cameraInputDelta.y;
 
     // Ensure XYZ movement doesn't exceed movement speed
     if( glm::length(m_cameraPositionDelta) > 0 )
@@ -51,12 +51,12 @@ void Camera3D::SetClipping(float near_clip_distance, float far_clip_distance) {
     m_clippingPlanes.y = far_clip_distance;
 }
 
-void Camera3D::ChangePitch(float degrees) {
-    m_cameraPitch = fmod(m_cameraPitch + degrees,360.f);
+void Camera3D::ChangePitch(float radians) {
+    m_cameraPitch = fmod(m_cameraPitch + radians, static_cast<float>(2 * M_PI));
 }
 
-void Camera3D::ChangeHeading(float degrees) {
-    m_cameraHeading = fmod(m_cameraHeading + degrees,360.f);
+void Camera3D::ChangeHeading(float radians) {
+    m_cameraHeading = fmod(m_cameraHeading + radians, static_cast<float>(2 * M_PI));
 }
 
 void Camera3D::GetMatricies(glm::mat4 &P, glm::mat4 &V) {
@@ -71,16 +71,36 @@ void Camera3D::process(int key, int /*scancode*/, int action, int /*mods*/)
     case GLFW_KEY_W:
         if(action == GLFW_PRESS)
         {
-            m_cameraInputDelta.x += m_movementSpeed;
+            m_cameraInputDelta.z += m_movementSpeed;
         }
         else if(action == GLFW_RELEASE)
         {
-            m_cameraInputDelta.x -= m_movementSpeed;
+            m_cameraInputDelta.z -= m_movementSpeed;
         }
         break;
     case GLFW_KEY_S:
         if(action == GLFW_PRESS)
         {
+            m_cameraInputDelta.z -= m_movementSpeed;
+        }
+        else if(action == GLFW_RELEASE)
+        {
+            m_cameraInputDelta.z += m_movementSpeed;
+        }
+        break;
+    case GLFW_KEY_A:
+        if(action == GLFW_PRESS)
+        {
+            m_cameraInputDelta.x += m_movementSpeed;
+        }
+        else if(action == GLFW_RELEASE)
+        {
+            m_cameraInputDelta.x -= m_movementSpeed;
+        }
+        break;
+    case GLFW_KEY_D:
+        if(action == GLFW_PRESS)
+        {
             m_cameraInputDelta.x -= m_movementSpeed;
         }
         else if(action == GLFW_RELEASE)
@@ -88,44 +108,24 @@ void Camera3D::process(int key, int /*scancode*/, int action, int /*mods*/)
             m_cameraInputDelta.x += m_movementSpeed;
         }
         break;
-    case GLFW_KEY_A:
-        if(action == GLFW_PRESS)
-        {
-            m_cameraInputDelta.y += m_movementSpeed;
-        }
-        else if(action == GLFW_RELEASE)
-        {
-            m_cameraInputDelta.y -= m_movementSpeed;
-        }
-        break;
-    case GLFW_KEY_D:
-        if(action == GLFW_PRESS)
-        {
-            m_cameraInputDelta.y -= m_movementSpeed;
-        }
-        else if(action == GLFW_RELEASE)
-        {
-            m_cameraInputDelta.y += m_movementSpeed;
-        }
-        break;
     case GLFW_KEY_E:
         if(action == GLFW_PRESS)
         {
-            m_cameraInputDelta.z += m_movementSpeed;
+            m_cameraInputDelta.y += m_movementSpeed;
         }
         else if(action == GLFW_RELEASE)
         {
-            m_cameraInputDelta.z -= m_movementSpeed;
+            m_cameraInputDelta.y -= m_movementSpeed;
         }
         break;
     case GLFW_KEY_Q:
         if(action == GLFW_PRESS)
         {
-            m_cameraInputDelta.z -= m_movementSpeed;
+            m_cameraInputDelta.y -= m_movementSpeed;
         }
         else if(action == GLFW_RELEASE)
         {
-            m_cameraInputDelta.z += m_movementSpeed;
+            m_cameraInputDelta.y += m_movementSpeed;
         }
         break;
     case GLFW_KEY_UP:

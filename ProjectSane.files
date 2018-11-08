@@ -1,4 +1,6 @@
 buildStructure
+engine/buffers/framebuffer.h
+engine/buffers/framebuffer.cpp
 engine/buffers/indexbuffer.h
 engine/buffers/indexbuffer.cpp
 engine/buffers/vertexbuffer.h

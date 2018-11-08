@@ -87,7 +87,7 @@ bool Batch::submit(DrawableObject* object)
             if(m_textures.size() < 16)
             {
                 m_textures.push_back(objectTexture);
-                object->setTextureId(static_cast<int>(m_textures.size()));
+                object->setTextureId(static_cast<int>(m_textures.size()) - 1);
             }
             else
             {
@@ -124,7 +124,7 @@ void Batch::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-        m_shader->bind();
+       // m_shader->bind();
         m_shader->setUniform("transform", transform * m_transform);
     }
 

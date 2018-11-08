@@ -33,13 +33,13 @@ void Model::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-        m_shader->bind();
+        //m_shader->bind();
         m_shader->setUniform("transform", transform);
     }
 
     if(m_texture)
     {
-        m_texture->bind(0);
+        m_texture->bind(1);
     }
 
     m_indicesBuffer.bind();
