@@ -15,7 +15,7 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
     , m_windowManager(windowManager)
     , m_stack(shaderManager, textureManager)
 {
-    m_camera.SetViewport(0, 0, 640, 480);
+    m_camera.SetViewport(0, 0, 1280, 720);
     m_shadowCamera.SetViewport(0, 0, 1024, 1024);
     m_windowManager.registerHandler(&m_camera);
     loadResources();

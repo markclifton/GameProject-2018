@@ -61,7 +61,7 @@ public:
     void unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, 640, 480);
+        glViewport(0, 0, 1280, 720);
     }
 
 private:

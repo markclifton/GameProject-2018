@@ -12,7 +12,7 @@
 Game::Game()
     : m_contextManager()
 {
-    m_windowManager.toggleVsync(true);
+    m_windowManager.toggleVsync(false);
     setup();
 }
 
@@ -29,9 +29,9 @@ void Game::run()
     int ticks = 0;
     while( !m_windowManager.shouldClose() )
     {
-        if( ticks++ > 10)
+        if( ticks++ > 100)
         {
-            std::cerr << m_windowManager.latency()*1000 << "ms \n";
+            std::cerr << m_windowManager.latency()*1000 << "ms, " << 1000./(m_windowManager.latency()*1000) << "fps\n";
             ticks = 0;
         }
 

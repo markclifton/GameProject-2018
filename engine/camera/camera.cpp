@@ -5,11 +5,17 @@
 #include <math.h>
 
 void Camera3D::Update(bool force) {
-    if(!force && m_timer.get()*1000 < (1000/60.))
+    if(!force)
     {
-        return;
+        if(m_timer.get()*1000 < (1000/60.))
+        {
+            return;
+        }
+        else
+        {
+            m_speedModifier = m_timer.reset()*1000 / (1000/60.);
+        }
     }
-    m_speedModifier = m_timer.reset()*1000 / (1000/60.);
 
     m_projection = glm::perspective(m_fov, m_aspect, static_cast<double>(m_clippingPlanes.x), static_cast<double>(m_clippingPlanes.y));
 
@@ -23,7 +29,7 @@ void Camera3D::Update(bool force) {
     {
         m_cameraPositionDelta = glm::normalize(m_cameraPositionDelta);
     }
-    m_cameraPositionDelta *= m_movementSpeed;
+    m_cameraPositionDelta *= m_movementSpeed * static_cast<float>(m_speedModifier);
 
     m_cameraDirection = glm::normalize(m_cameraLookAt - m_cameraPosition);
 

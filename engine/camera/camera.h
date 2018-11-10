@@ -67,8 +67,8 @@ private:
     glm::vec3 m_cameraPositionDelta {0.f};
     glm::vec3 m_cameraUp {0,1,0};
 
-    float m_movementSpeed {.085f};
-    float m_rotationSpeed {.045f};
+    float m_movementSpeed {2*.085f};
+    float m_rotationSpeed {2*.045f};
 
     double m_speedModifier = 1;
     utils::Timer m_timer;
