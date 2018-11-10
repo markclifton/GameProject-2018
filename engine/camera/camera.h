@@ -42,8 +42,8 @@ public:
         m_movementSpeed = old;
         m_cameraInputDelta *= 0;
     }
-    inline void setPitch(float radians) { ChangePitch(radians); Update(); m_cameraPitch = 0; }
-    inline void setHeading(float radians) { ChangeHeading(radians); Update(); m_cameraHeading = 0; }
+    inline void setPitch(float radians) { auto old = m_cameraPitch; ChangePitch(radians); Update(); m_cameraPitch = old; }
+    inline void setHeading(float radians) { auto old = m_cameraHeading; ChangeHeading(radians); Update(); m_cameraHeading = old; }
 private:
     int m_viewportX;
     int m_viewportY;

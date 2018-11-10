@@ -16,18 +16,13 @@ public:
 
         glGenTextures(1, &renderedTexture);
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        glGenRenderbuffers(1, &depthrenderbuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-
-        glDrawBuffer(GL_NONE);
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, renderedTexture, 0);
 
         unbind();
     }
@@ -42,7 +37,7 @@ public:
     void bind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-        glViewport(0,0,m_width,m_height);
+        glViewport(0, 0, m_width, m_height);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
@@ -50,12 +45,14 @@ public:
     void bindColor()
     {
         bind();
+
         // Set the list of draw buffers.
-        GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-        glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+        //GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+        //glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+        glDrawBuffer(GL_NONE);
     }
 
-    void bindAsTexture()
+    void bindAsTexture(uint32_t offset = 0)
     {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
@@ -64,7 +61,7 @@ public:
     void unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0,0,640,480);
+        glViewport(0, 0, 640, 480);
     }
 
 private:

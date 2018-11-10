@@ -146,8 +146,8 @@ bool WindowManager::create()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_CLAMP);
+    //glEnable(GL_CULL_FACE);
+    //glEnable(GL_DEPTH_CLAMP);
 
     return true;
 }

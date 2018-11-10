@@ -37,7 +37,7 @@ void Triangle::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-        m_shader->bind();
+        //m_shader->bind();
         m_shader->setUniform("transform", transform);
     }
 

@@ -27,7 +27,7 @@ void Layer::draw(glm::mat4 transform)
     {
         for(auto& child : setOfChildren)
         {
-            auto shader = child->getShader();
+            //auto shader = child->getShader();
             //shader->bind();
 
             child->draw(transform);

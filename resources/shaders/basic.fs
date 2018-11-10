@@ -31,6 +31,7 @@ in FSData {
 } fs;
 
 in mat4 tform;
+in vec4 shadowCoords;
 
 uniform sampler2D textures[16];
 
@@ -95,7 +96,7 @@ void main()
     finalColor = fs.color;
     if( fs.uv.z >= 0.f )
     {
-        finalColor = texture2D(textures[int(fs.uv.z - .5)], fs.uv.xy);
+        finalColor = texture2D(textures[int(fs.uv.z + 1)], fs.uv.xy);
     }
 
     if(length(fs.normal) > 0)
@@ -119,6 +120,13 @@ void main()
 
         float alpha = finalColor.a;
         finalColor *= totalLight;
+
+        float visibility = 1.0;
+        vec3 sh = shadowCoords.xyz / shadowCoords.w;
+        if ( texture2D( textures[0], sh.xy ).z  <  sh.z - 0.005){
+            visibility = 0.5;
+        }
+        finalColor *= visibility;
         finalColor.a = alpha;
     }
 }

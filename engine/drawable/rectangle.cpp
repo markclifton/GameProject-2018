@@ -43,7 +43,7 @@ Rectangle::Rectangle(glm::vec3 center, Shader* shader)
 
 void Rectangle::draw(glm::mat4 transform)
 {
-    if(m_shader != nullptr)
+    if(m_shader)
     {
        // m_shader->bind();
         m_shader->setUniform("transform", transform);
@@ -51,7 +51,7 @@ void Rectangle::draw(glm::mat4 transform)
 
     if(m_texture)
     {
-        m_texture->bind(0);
+        m_texture->bind(1);
     }
 
     m_indicesBuffer.bind();

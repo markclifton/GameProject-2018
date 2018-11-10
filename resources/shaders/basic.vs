@@ -15,15 +15,18 @@ out FSData {
 } fs;
 
 out mat4 tform;
+out vec4 shadowCoords;
 
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 transform;
 uniform vec4 camera;
+uniform mat4 shadow;
 
 void main()
 {
-    gl_Position = projection * view * transform * model * vec4(position, 1);
+    gl_Position = projection * view * model * vec4(position, 1);
+    shadowCoords = shadow * model * vec4(position, 1);
 
     fs.pos = ( view * transform * model * vec4(position,1)).xyz;
     fs.color = color;

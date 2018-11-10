@@ -117,15 +117,16 @@ void Instanced::draw(glm::mat4 transform)
     }
 
     std::vector<int> data;
+    data.push_back(0);
     for(size_t i = 0; i<m_textures.size(); i++)
     {
-        data.push_back(static_cast<int>(i));
-        m_textures[i]->bind(static_cast<uint>(i));
+        data.push_back(static_cast<int>(i) + 1);
+        m_textures[i]->bind(static_cast<uint>(i) + 1);
     }
 
     if(m_shader != nullptr && data.size() > 0)
     {
-        m_shader->setUniform("textures", static_cast<int>(m_textures.size()), &data.front());
+        m_shader->setUniform("textures", static_cast<int>(data.size()), &data.front());
     }
 
     if(m_changed)

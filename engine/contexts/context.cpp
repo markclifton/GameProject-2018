@@ -16,37 +16,58 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
     , m_stack(shaderManager, textureManager)
 {
     m_camera.SetViewport(0, 0, 640, 480);
+    m_shadowCamera.SetViewport(0, 0, 1024, 1024);
     m_windowManager.registerHandler(&m_camera);
     loadResources();
 }
 
 void Context::run()
 {
-    m_fbo->bindColor();
+    // Shadow Pass
+    glm::mat4 pS, vS;
+    m_shadowCamera.Update();
+    m_shadowCamera.GetMatricies(pS, vS);
+    pS = glm::ortho<float>(-10, 10, -10, 10, 1, 100);
+    {
+        m_fbo->bindColor();
 
-    glm::mat4 p, v;
-    m_camera.Update();
-    m_camera.GetMatricies(p, v);
+        Shader* s = m_shaderManager.getShader("Shadow");
+        s->bind();
+        s->setUniform("projection", pS);
+        s->setUniform("view", vS);
+        m_stack.draw();
 
-    Shader* s = m_shaderManager.getShader("BasicShader");
-    s->bind();
-    s->setUniform("view", v);
-    s->setUniform("camera", glm::vec4(m_camera.GetPosition(), 1));
+        m_fbo->unbind();
+    }
 
-    lights::setLights(m_pointlights, s, v);
-    lights::setLights(m_spotlights, s, v);
+    // Regular Pass
+    {
+        glm::mat4 p, v;
+        m_camera.Update();
+        m_camera.GetMatricies(p, v);
 
-    m_stack.draw();
+        m_fbo->bindAsTexture(0);
 
-    m_fbo->unbind();
+        Shader* s = m_shaderManager.getShader("BasicShader");
+        s->bind();
+        s->setUniform("projection", p);
+        s->setUniform("view", v);
+        s->setUniform("camera", glm::vec4(m_camera.GetPosition(), 1));
 
-    s = m_shaderManager.getShader("FBO");
-    s->bind();
-    s->setUniform("projection",  glm::ortho(-1., 1., -1., 1.));
-    drawable::Rectangle r(glm::vec3(0,0,0), s);
-    r.setTextureId(0);
-    m_fbo->bindAsTexture();
-    r.draw();
+        glm::mat4 biasMatrix(
+                    0.5, 0.0, 0.0, 0.0,
+                    0.0, 0.5, 0.0, 0.0,
+                    0.0, 0.0, 0.5, 0.0,
+                    0.5, 0.5, 0.5, 1.0
+                    );
+        glm::mat4 depthBiasMVP = biasMatrix*pS*vS;
+        s->setUniform("shadow", depthBiasMVP);
+
+        lights::setLights(m_pointlights, s, v);
+        lights::setLights(m_spotlights, s, v);
+
+        m_stack.draw();
+    }
 }
 
 void Context::loadResources()
@@ -54,15 +75,15 @@ void Context::loadResources()
     std::cout << "Loading Resources!\n" << std::endl;
 
     m_shaderManager.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs");
+    m_shaderManager.loadShader("Shadow", "resources/shaders/shadow.vs", "resources/shaders/shadow.fs");
 
     m_shaderManager.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->bind();
 
-    glm::mat4 p, v;
-    m_camera.Update();
-    m_camera.GetMatricies(p, v);
-    s->setUniform("projection", p);
+    m_shadowCamera.Update();
+    m_shadowCamera.setPosition(glm::vec3(1.5, 10, 5.5));
+    m_shadowCamera.setPitch(glm::radians(-89.f));
 
     m_textureManager.load("smile", "resources/images/smile.tif");
     m_textureManager.load("smile2", "resources/images/smile2.tif");
@@ -157,11 +178,11 @@ void Context::loadResources()
 
         drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r2->setTexture(m_textureManager.find("smile2"));
-        r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(.5f,0,0)));
+        r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
         m_stack.submit(r2);
     }
 
-    m_fbo = std::make_unique<buffers::FrameBufferObject>(640, 480);
+    m_fbo = std::make_unique<buffers::FrameBufferObject>(1024, 1024);
 
     //END TEST CODE
 }
