@@ -81,7 +81,7 @@ void Context::loadResources()
     Shader* s = m_shaderManager.getShader("BasicShader");
     s->bind();
 
-    m_shadowCamera.Update();
+    m_shadowCamera.Update(true);
     m_shadowCamera.setPosition(glm::vec3(1.5, 10, 5.5));
     m_shadowCamera.setPitch(glm::radians(-89.f));
 
