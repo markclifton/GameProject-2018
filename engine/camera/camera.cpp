@@ -4,7 +4,13 @@
 
 #include <math.h>
 
-void Camera3D::Update() {
+void Camera3D::Update(bool force) {
+    if(!force && m_timer.get()*1000 < (1000/60.))
+    {
+        return;
+    }
+    m_speedModifier = m_timer.reset()*1000 / (1000/60.);
+
     m_projection = glm::perspective(m_fov, m_aspect, static_cast<double>(m_clippingPlanes.x), static_cast<double>(m_clippingPlanes.y));
 
     // Calculate XYZ movement delta

@@ -10,7 +10,6 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
         fif = FreeImage_GetFIFFromFilename(filename.c_str());
     if(fif == FIF_UNKNOWN)
     {
-        printf("123\n");
         return;
     }
     //check that the plugin has reading capabilities and load the file
@@ -21,7 +20,7 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
     }
 
     if(!dib)
-    {printf("123\n");
+    {
         return;
     }
 
@@ -31,7 +30,6 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
     unsigned int height = FreeImage_GetHeight(dib);
     if((bits == nullptr) || (width == 0) || (height == 0))
     {
-        printf("123\n");
         return;
     }
 

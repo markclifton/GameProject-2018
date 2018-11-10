@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "utils/keyhandler.h"
+#include "utils/timer.h"
 
 //TODO: Connect Camera to a timer, Movement occurs every frame otherwise
 
@@ -18,7 +19,7 @@ public:
     Camera3D() = default;
     virtual ~Camera3D() = default;
 
-    void Update();
+    void Update(bool force = false);
 
     void ChangePitch(float radians);
     void ChangeHeading(float radians);
@@ -38,12 +39,12 @@ public:
         auto old = m_movementSpeed;
         m_movementSpeed = glm::length(positionDelta);
         m_cameraInputDelta += positionDelta;
-        Update();
+        Update(true);
         m_movementSpeed = old;
         m_cameraInputDelta *= 0;
     }
-    inline void setPitch(float radians) { auto old = m_cameraPitch; ChangePitch(radians); Update(); m_cameraPitch = old; }
-    inline void setHeading(float radians) { auto old = m_cameraHeading; ChangeHeading(radians); Update(); m_cameraHeading = old; }
+    inline void setPitch(float radians) { auto old = m_cameraPitch; ChangePitch(radians); Update(true); m_cameraPitch = old; }
+    inline void setHeading(float radians) { auto old = m_cameraHeading; ChangeHeading(radians); Update(true); m_cameraHeading = old; }
 private:
     int m_viewportX;
     int m_viewportY;
@@ -68,4 +69,7 @@ private:
 
     float m_movementSpeed {.085f};
     float m_rotationSpeed {.045f};
+
+    double m_speedModifier = 1;
+    utils::Timer m_timer;
 };

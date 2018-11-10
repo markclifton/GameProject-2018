@@ -46,7 +46,7 @@ void Context::run()
         m_camera.Update();
         m_camera.GetMatricies(p, v);
 
-        m_fbo->bindAsTexture(0);
+        m_fbo->bindAsTexture();
 
         Shader* s = m_shaderManager.getShader("BasicShader");
         s->bind();

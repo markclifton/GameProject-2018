@@ -52,7 +52,7 @@ public:
         glDrawBuffer(GL_NONE);
     }
 
-    void bindAsTexture(uint32_t offset = 0)
+    void bindAsTexture()
     {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
