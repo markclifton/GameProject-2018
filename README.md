@@ -2,7 +2,9 @@
 
 ## What is Project Sane?
 ProjectSane is a game engine being developed in a Linux environment and making use of C++ and OpenGL. This could be expanded to other operating systems in the future, but the focus will be linux. The goal of the project is to write a game engine that can be used to write a game(s).
-  
+
+Recently added support for Windows 10. On Windows, the project should be self-contained and not need anything beyond CMake and a compiler. Linux requires some libraries to be installed by the user.
+
 ### Things completed (mostly):
 * 2D Rendering (Rectangle, Triangles, other simple shapes)
 * 3D Rendering (Models)
@@ -12,6 +14,7 @@ ProjectSane is a game engine being developed in a Linux environment and making u
 * Shader System (Allows reuse by uid)
 * Texture System (Allows reuse by uid)
 * Callback System for the Window (register handlers that allow the handling of GLFW Callbacks)
+* Basic Real-time Shadows
 
 ### Things to do:
 * Level Loading
@@ -20,12 +23,12 @@ ProjectSane is a game engine being developed in a Linux environment and making u
 * Interaction System
 * Physics System
 * Advanced Lighting
-* Shadows
+* Improved Shadows
 * Networking
 
 ### Development Environment
-* Linux Mint 19
-* QtCreator 4.8
+* Linux Mint 19 (Windows 10)
+* QtCreator 4.8 (QtCreator 4.7 on Windows)
 * Modern OpenGL
 * GLSL 450
 * FreeImage
