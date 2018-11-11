@@ -27,7 +27,7 @@ public:
     void buffer(const long& totalSize, void* data, const unsigned int& drawType = GL_STATIC_DRAW);
 
     void enableVertexAttribs();
-    void useVertexAttrib(uint32_t vertexPosition, int count, uint32_t type, bool normalized, int stride, uint32_t offset, bool instanced = false);
+    void useVertexAttrib(uint32_t vertexPosition, int count, uint32_t type, bool normalized, int stride, size_t offset, bool instanced = false);
     void useVertexAttribDivisor(uint32_t vertexPosition);
 private:
     GLuint m_vbo;

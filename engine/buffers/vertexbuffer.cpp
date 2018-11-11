@@ -47,7 +47,7 @@ void VertexBuffer::enableVertexAttribs()
     }
 }
 
-void VertexBuffer::useVertexAttrib(uint32_t vertexPosition, int count, uint32_t type, bool normalized, int stride, uint32_t offset, bool instanced)
+void VertexBuffer::useVertexAttrib(uint32_t vertexPosition, int count, uint32_t type, bool normalized, int stride, size_t offset, bool instanced)
 {
     // Update if exist
     for(auto& attrib : m_vertexAttribs)
