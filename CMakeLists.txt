@@ -23,31 +23,31 @@ include_directories(${CMAKE_SOURCE_DIR}/engine)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/independent)
 
 IF (WIN32)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/include)
 
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/glfw3.lib)
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glm/libs/glm_static.lib)
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/freeimage/FreeImage.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/glfw3.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glm/libs/glm_static.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/freeimage/FreeImage.lib)
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "${CMAKE_SOURCE_DIR}/dependencies/Windows/freeimage/FreeImage.dll"
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/dependencies/Windows/freeimage/FreeImage.dll"
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 ELSE()
-target_link_libraries(${PROJECT_NAME} glfw3)
-target_link_libraries(${PROJECT_NAME} GLU)
-target_link_libraries(${PROJECT_NAME} GL)
-target_link_libraries(${PROJECT_NAME} X11)
-target_link_libraries(${PROJECT_NAME} Xrandr)
-target_link_libraries(${PROJECT_NAME} Xxf86vm)
-target_link_libraries(${PROJECT_NAME} Xinerama)
-target_link_libraries(${PROJECT_NAME} Xcursor)
-target_link_libraries(${PROJECT_NAME} rt)
-target_link_libraries(${PROJECT_NAME} m)
-target_link_libraries(${PROJECT_NAME} pthread)
-target_link_libraries(${PROJECT_NAME} dl)
-target_link_libraries(${PROJECT_NAME} freeimage)
+    target_link_libraries(${PROJECT_NAME} glfw3)
+    target_link_libraries(${PROJECT_NAME} GLU)
+    target_link_libraries(${PROJECT_NAME} GL)
+    target_link_libraries(${PROJECT_NAME} X11)
+    target_link_libraries(${PROJECT_NAME} Xrandr)
+    target_link_libraries(${PROJECT_NAME} Xxf86vm)
+    target_link_libraries(${PROJECT_NAME} Xinerama)
+    target_link_libraries(${PROJECT_NAME} Xcursor)
+    target_link_libraries(${PROJECT_NAME} rt)
+    target_link_libraries(${PROJECT_NAME} m)
+    target_link_libraries(${PROJECT_NAME} pthread)
+    target_link_libraries(${PROJECT_NAME} dl)
+    target_link_libraries(${PROJECT_NAME} freeimage)
 ENDIF()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
