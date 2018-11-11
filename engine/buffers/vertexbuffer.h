@@ -13,7 +13,7 @@ struct VertexAttrib
     uint32_t type; // e.g. GL_FLOAT, GL_INT
     bool normalized;
     int stride;
-    uint32_t offset;
+    size_t offset;
     bool instanced;
 };
 

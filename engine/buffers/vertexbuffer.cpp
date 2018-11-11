@@ -33,7 +33,7 @@ void VertexBuffer::enableVertexAttribs()
     for(auto& attrib : m_vertexAttribs)
     {
         glEnableVertexAttribArray(attrib.vertexPosition);
-        glVertexAttribPointer(attrib.vertexPosition, attrib.count, attrib.type, attrib.normalized, attrib.stride, reinterpret_cast<void*>(attrib.offset));
+        glVertexAttribPointer(attrib.vertexPosition, attrib.count, attrib.type, attrib.normalized, attrib.stride, reinterpret_cast<GLvoid*>(attrib.offset));
 
         if(attrib.instanced)
         {
