@@ -1,7 +1,11 @@
 #pragma once
 
 #include "glad/gl.h"
+#ifdef _WIN32
 #include "freeimage/FreeImage.h"
+#elif __linux__
+#include <FreeImage.h>
+#endif
 
 #include <string>
 
