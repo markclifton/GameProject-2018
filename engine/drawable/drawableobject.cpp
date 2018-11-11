@@ -1,5 +1,7 @@
 #include "drawableobject.h"
 
+#include <algorithm>
+
 namespace drawable
 {
 DrawableObject::DrawableObject(Shader* shader) : Drawable( shader )
@@ -54,7 +56,7 @@ void DrawableObject::setTextureId(const int& id)
 {
     for(auto& vert : m_vertices)
     {
-        vert.uv.z = id;
+        vert.uv.z = float(id);
     }
     update();
 }

@@ -121,7 +121,7 @@ void Instanced::draw(glm::mat4 transform)
     for(size_t i = 0; i<m_textures.size(); i++)
     {
         data.push_back(static_cast<int>(i) + 1);
-        m_textures[i]->bind(static_cast<uint>(i) + 1);
+        m_textures[i]->bind(static_cast<uint32_t>(i) + 1);
     }
 
     if(m_shader != nullptr && data.size() > 0)

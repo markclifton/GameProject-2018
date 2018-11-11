@@ -23,6 +23,8 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
 
 void Context::run()
 {
+    m_shadowCamera.setPosition(glm::vec3(-.001,0,0));
+
     // Shadow Pass
     glm::mat4 pS, vS;
     m_shadowCamera.Update();

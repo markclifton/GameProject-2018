@@ -1,6 +1,2 @@
-bin/
-build/
 
-*.20
-
-*.user
+CMakeLists\.txt\.user

@@ -2,8 +2,6 @@
 
 #include <GLFW/glfw3.h>
 
-#include <math.h>
-
 void Camera3D::Update(bool force) {
     if(!force)
     {
@@ -64,11 +62,11 @@ void Camera3D::SetClipping(float near_clip_distance, float far_clip_distance) {
 }
 
 void Camera3D::ChangePitch(float radians) {
-    m_cameraPitch = fmod(m_cameraPitch + radians, static_cast<float>(2 * M_PI));
+    m_cameraPitch = fmod(m_cameraPitch + radians, static_cast<float>(2 * 3.141592653589793238));
 }
 
 void Camera3D::ChangeHeading(float radians) {
-    m_cameraHeading = fmod(m_cameraHeading + radians, static_cast<float>(2 * M_PI));
+    m_cameraHeading = fmod(m_cameraHeading + radians, static_cast<float>(2 * 3.141592653589793238));
 }
 
 void Camera3D::GetMatricies(glm::mat4 &P, glm::mat4 &V) {

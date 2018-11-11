@@ -33,7 +33,7 @@ Texture* TextureManager::find(const std::string& name)
     return nullptr;
 }
 
-bool TextureManager::bind(const std::string& name, uint position)
+bool TextureManager::bind(const std::string& name, uint32_t position)
 {
     Texture* texture = find(name);
     if( texture )

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glad/gl.h"
-#include <FreeImage.h>
+#include "freeimage/FreeImage.h"
 
 #include <map>
 #include <memory>
@@ -28,7 +28,7 @@ public:
               GLint border = 0);
 
     Texture* find(const std::string& name);
-    bool bind(const std::string& name, uint position = 0);
+    bool bind(const std::string& name, uint32_t position = 0);
     void reset();
 
 private:
