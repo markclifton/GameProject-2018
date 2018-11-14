@@ -9,8 +9,6 @@
 #include "lights/point.h"
 #include "lights/spot.h"
 
-#include "buffers/framebuffer.h"
-
 class Context
 {
 public:
@@ -30,5 +28,5 @@ private:
     std::vector<lights::PointLight> m_pointlights;
     std::vector<lights::SpotLight> m_spotlights;
 
-    std::unique_ptr<buffers::FrameBufferObject> m_fbo;
+    std::unique_ptr<Texture> m_shadowTexture;
 };

@@ -26,9 +26,9 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
 
     //retrieve the image data
     BYTE*  bits = FreeImage_GetBits(dib);
-    unsigned int width = FreeImage_GetWidth(dib);
-    unsigned int height = FreeImage_GetHeight(dib);
-    if((bits == nullptr) || (width == 0) || (height == 0))
+    m_width = FreeImage_GetWidth(dib);
+    m_height = FreeImage_GetHeight(dib);
+    if((bits == nullptr) || (m_width == 0) || (m_height == 0))
     {
         return;
     }
@@ -41,16 +41,60 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexImage2D(GL_TEXTURE_2D, level, internal_format, static_cast<int>(width), static_cast<int>(height), border, image_format, GL_UNSIGNED_BYTE, bits);
+    glTexImage2D(GL_TEXTURE_2D, level, internal_format, static_cast<int>(m_width), static_cast<int>(m_height), border, image_format, GL_UNSIGNED_BYTE, bits);
 
     FreeImage_Unload(dib);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+Texture::Texture(const std::string& name, int width, int height)
+    : m_name(name)
+{
+    glGenFramebuffers(1, &m_fbo);
+    setAsRenderTarget();
+
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, width, height, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_textureID, 0);
+}
+
 Texture::~Texture()
 {
-    glDeleteTextures(1, &m_textureID);
+    if(m_textureID != 0)
+    {
+        glDeleteTextures(1, &m_textureID);
+    }
+
+    if(m_fbo != 0)
+    {
+        glDeleteFramebuffers(1, &m_fbo);
+    }
+}
+
+void Texture::setAsRenderTarget()
+{
+    std::vector<GLenum> buffers { GL_NONE };
+    setAsRenderTarget(buffers);
+}
+
+void Texture::setAsRenderTarget(const std::vector<GLenum>& buffers)
+{
+    if(m_fbo != 0 && buffers.size() > 0)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+        glViewport(0, 0, static_cast<int>(m_width), static_cast<int>(m_height));
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glDrawBuffers(static_cast<int>(buffers.size()), &buffers[0]);
+    }
 }
 
 void Texture::bind(const uint32_t& index)

@@ -112,6 +112,12 @@ void WindowManager::mouseHandler(int button, int action, int mods)
     }
 }
 
+void WindowManager::setAsRenderTarget()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, 1280, 720); //TODO: Window Size...
+}
+
 bool WindowManager::create()
 {
     if (! glfwInit())
@@ -145,9 +151,8 @@ bool WindowManager::create()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     //glEnable(GL_DEPTH_CLAMP);
 
     return true;
-}
-}
+}}

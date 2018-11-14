@@ -121,11 +121,19 @@ void main()
         float alpha = finalColor.a;
         finalColor *= totalLight;
 
+        vec2 poissonDisk[4] = vec2[](
+          vec2( -0.94201624, -0.39906216 ),
+          vec2( 0.94558609, -0.76890725 ),
+          vec2( -0.094184101, -0.92938870 ),
+          vec2( 0.34495938, 0.29387760 )
+        );
+
         float visibility = 1.0;
         vec3 sh = shadowCoords.xyz / shadowCoords.w;
         if ( texture2D( textures[0], sh.xy ).z  <  sh.z - 0.005){
-            visibility = 0.5;
+            visibility = 0.75;
         }
+
         finalColor *= visibility;
         finalColor.a = alpha;
     }

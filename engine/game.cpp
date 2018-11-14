@@ -29,9 +29,9 @@ void Game::run()
     int ticks = 0;
     while( !m_windowManager.shouldClose() )
     {
-        if( ticks++ > 100)
+        if( ticks++ > 500)
         {
-            std::cerr << m_windowManager.latency()*1000 << "ms, " << 1000./(m_windowManager.latency()*1000) << "fps\n";
+            std::cerr << m_windowManager.latency()*1000 << "ms\n";
             ticks = 0;
         }
 

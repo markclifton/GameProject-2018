@@ -23,15 +23,13 @@ Context::Context(managers::ShaderManager& shaderManager, managers::TextureManage
 
 void Context::run()
 {
-    m_shadowCamera.setPosition(glm::vec3(-.001,0,0));
-
     // Shadow Pass
     glm::mat4 pS, vS;
     m_shadowCamera.Update();
     m_shadowCamera.GetMatricies(pS, vS);
     pS = glm::ortho<float>(-10, 10, -10, 10, 1, 100);
     {
-        m_fbo->bindColor();
+        m_shadowTexture->setAsRenderTarget();
 
         Shader* s = m_shaderManager.getShader("Shadow");
         s->bind();
@@ -39,7 +37,7 @@ void Context::run()
         s->setUniform("view", vS);
         m_stack.draw();
 
-        m_fbo->unbind();
+        m_windowManager.setAsRenderTarget();
     }
 
     // Regular Pass
@@ -48,7 +46,7 @@ void Context::run()
         m_camera.Update();
         m_camera.GetMatricies(p, v);
 
-        m_fbo->bindAsTexture();
+        m_shadowTexture->bind(0);
 
         Shader* s = m_shaderManager.getShader("BasicShader");
         s->bind();
@@ -184,7 +182,7 @@ void Context::loadResources()
         m_stack.submit(r2);
     }
 
-    m_fbo = std::make_unique<buffers::FrameBufferObject>(1024, 1024);
+    m_shadowTexture = std::make_unique<Texture>("Shadows", 1024, 1024);
 
     //END TEST CODE
 }

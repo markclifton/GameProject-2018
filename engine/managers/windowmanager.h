@@ -51,6 +51,8 @@ public:
     void mouseHandler(double xpos, double ypos);
     void mouseHandler(int button, int action, int mods);
 
+    void setAsRenderTarget();
+
 private:
     bool create();
 
