@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <mutex>
 #include <vector>
 
@@ -15,6 +16,7 @@ namespace ecs
 class IComponent
 {
 public:
+    inline void setID(const unsigned int& ID) { componentID_ = ID; } //TODO: Generate Automatically
     inline const unsigned int& getID(){ return componentID_; }
 
 private:
@@ -24,12 +26,17 @@ private:
 class ComponentHandler
 {
 public:
-    void submit(IComponent* component);
+    void submit(std::shared_ptr<IComponent> component);
+    void submit(std::weak_ptr<IComponent> component);
     void remove(unsigned int componentID);
 
 protected:
-    std::vector<IComponent*> components_;
+    std::vector<std::shared_ptr<IComponent>> ownedComponents_;
+    std::vector<std::weak_ptr<IComponent>> sharedComponents_;
+
     std::mutex mutex_;
+
+    unsigned int id = 0;
 };
 
 }

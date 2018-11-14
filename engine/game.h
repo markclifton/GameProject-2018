@@ -5,6 +5,10 @@
 #include "managers/texturemanager.h"
 #include "managers/windowmanager.h"
 
+//TEMP
+#include "ecs/entity.h"
+#include "ecs/system.h"
+
 class Game
 {
 public:
@@ -21,4 +25,7 @@ private:
     managers::ShaderManager m_shaderManager;
     managers::TextureManager m_textureManager;
     managers::WindowManager m_windowManager;
+
+    ecs::ISystem system_;
+    ecs::IEntity entity_;
 };

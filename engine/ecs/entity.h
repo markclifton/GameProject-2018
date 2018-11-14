@@ -2,6 +2,7 @@
 
 #include "component.h"
 
+
 /*  Grouping of Raw Data into a "thing"
  *
  *  Example :
@@ -12,8 +13,11 @@
 
 namespace ecs
 {
-    class IEntity : ComponentHandler
-    {
-    public:
-    };
+class ISystem;
+
+class IEntity : public ComponentHandler
+{
+    friend class ISystem;
+public:
+};
 }
