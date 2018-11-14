@@ -62,11 +62,11 @@ void Camera3D::SetClipping(float near_clip_distance, float far_clip_distance) {
 }
 
 void Camera3D::ChangePitch(float radians) {
-    m_cameraPitch = fmod(m_cameraPitch + radians, static_cast<float>(2 * 3.141592653589793238));
+    m_cameraPitch = static_cast<float>(fmod(m_cameraPitch + radians, static_cast<float>(2 * 3.141592653589793238)));
 }
 
 void Camera3D::ChangeHeading(float radians) {
-    m_cameraHeading = fmod(m_cameraHeading + radians, static_cast<float>(2 * 3.141592653589793238));
+    m_cameraHeading = static_cast<float>(fmod(m_cameraHeading + radians, static_cast<float>(2 * 3.141592653589793238)));
 }
 
 void Camera3D::GetMatricies(glm::mat4 &P, glm::mat4 &V) {
