@@ -28,6 +28,6 @@ private:
     std::string m_name {""};
     GLuint m_textureID {0};
     GLuint m_fbo {0};
-    unsigned int  m_width {0};
-    unsigned int  m_height {0};
+    int  m_width {0};
+    int  m_height {0};
 };

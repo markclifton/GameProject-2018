@@ -48,6 +48,12 @@ ELSE()
     target_link_libraries(${PROJECT_NAME} pthread)
     target_link_libraries(${PROJECT_NAME} dl)
     target_link_libraries(${PROJECT_NAME} freeimage)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/linux/irrKlang/libIrrKlang.so)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/dependencies/linux/irrKlang/ikpMP3.so"
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 ENDIF()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -83,5 +89,16 @@ foreach( file_i ${RESOURCES_SHADERS})
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND}
         ARGS -E copy_if_different ${file_i} "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources/shaders/"
+        )
+endforeach()
+
+file(GLOB RESOURCES_SOUNDS resources/sounds/* )
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources/sounds")
+foreach( file_i ${RESOURCES_SOUNDS})
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND}
+        ARGS -E copy_if_different ${file_i} "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources/sounds/"
         )
 endforeach()

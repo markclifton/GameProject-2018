@@ -10,6 +10,7 @@ int main()
 #ifdef _WIN32
     FreeConsole();
 #endif
+
     Game g;
     g.run();
     return 0;

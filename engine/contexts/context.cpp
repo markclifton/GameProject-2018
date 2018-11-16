@@ -9,8 +9,9 @@
 
 #include "drawable/renderers/instanced.h"
 
-Context::Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
-    : m_shaderManager(shaderManager)
+Context::Context(managers::SoundManager& soundManager, managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
+    : m_soundManager(soundManager)
+    , m_shaderManager(shaderManager)
     , m_textureManager(textureManager)
     , m_windowManager(windowManager)
     , m_stack(shaderManager, textureManager)
@@ -91,6 +92,8 @@ void Context::loadResources()
 
     m_textureManager.submitTexture(std::make_unique<Texture>("Shadows", 1024, 1024));
     m_shadowTexture = m_textureManager.find("Shadows");
+
+    m_soundManager.loadSound("rain", "resources/sounds/rain.mp3");
 
     //START TEST CODE
     //Light Representation
@@ -180,9 +183,11 @@ void Context::loadResources()
         m_stack.submit(r);
 
         drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
-        r2->setTexture(m_textureManager.find("smile2"));
+        r2->setTexture(m_textureManager.find("Shadows"));
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
         m_stack.submit(r2);
     }
     //END TEST CODE
+
+    std::cout << "Finished Loading Resources!\n" << std::endl;
 }

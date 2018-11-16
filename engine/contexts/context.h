@@ -2,6 +2,7 @@
 
 #include "camera/camera.h"
 #include "drawable/renderers/layer.h"
+#include "managers/soundmanager.h"
 #include "managers/shadermanager.h"
 #include "managers/texturemanager.h"
 #include "managers/windowmanager.h"
@@ -12,11 +13,12 @@
 class Context
 {
 public:
-    Context(managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager);
+    Context(managers::SoundManager& soundManager, managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager);
     void run();
     void loadResources();
 
 private:
+    managers::SoundManager& m_soundManager;
     managers::ShaderManager& m_shaderManager;
     managers::TextureManager& m_textureManager;
     managers::WindowManager& m_windowManager;

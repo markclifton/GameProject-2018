@@ -44,7 +44,7 @@ void Game::run()
 
 void Game::setup()
 {
-    if( !m_contextManager.addContext("Sandbox", std::make_unique<Context>(m_shaderManager, m_textureManager, m_windowManager)) )
+    if( !m_contextManager.addContext("Sandbox", std::make_unique<Context>(m_soundManager, m_shaderManager, m_textureManager, m_windowManager)) )
         std::cerr << "Failed to add context\n";
     if( !m_contextManager.setContext("Sandbox") )
         std::cerr << "Failed to set context\n";

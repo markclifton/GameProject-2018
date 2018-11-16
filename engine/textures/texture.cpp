@@ -26,8 +26,8 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
 
     //retrieve the image data
     BYTE*  bits = FreeImage_GetBits(dib);
-    m_width = FreeImage_GetWidth(dib);
-    m_height = FreeImage_GetHeight(dib);
+    m_width = static_cast<int>(FreeImage_GetWidth(dib));
+    m_height = static_cast<int>(FreeImage_GetHeight(dib));
     if((bits == nullptr) || (m_width == 0) || (m_height == 0))
     {
         return;
@@ -50,13 +50,15 @@ Texture::Texture(const std::string& name, const std::string& filename, GLenum im
 
 Texture::Texture(const std::string& name, int width, int height)
     : m_name(name)
+    , m_width(width)
+    , m_height(height)
 {
     glGenFramebuffers(1, &m_fbo);
     setAsRenderTarget();
 
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, width, height, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, width, height, 0,GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
