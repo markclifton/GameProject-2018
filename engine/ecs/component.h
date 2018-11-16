@@ -36,7 +36,7 @@ protected:
 
     std::mutex mutex_;
 
-    unsigned int id = 0;
+    unsigned int id {0};
 };
 
 }

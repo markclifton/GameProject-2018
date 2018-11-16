@@ -39,7 +39,7 @@ public:
     void setUpdateFunc(std::function<void()> fn);
     void update();
 
-    const bbox& calculateBBox();
+    const bbox& calculateBBox(); //Diagonal Corner BBox that is Axis Aligned
     void calculateNormals();
 
     void setInstanced();

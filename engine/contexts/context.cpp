@@ -183,11 +183,18 @@ void Context::loadResources()
         m_stack.submit(r);
 
         drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
-        r2->setTexture(m_textureManager.find("Shadows"));
+        r2->setTexture(m_textureManager.find("smile2"));
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
         m_stack.submit(r2);
+
+        // Shadow Map
+        drawable::Rectangle* r3 = new drawable::Rectangle(glm::vec3(0,0,0), s);
+        r3->setTexture(m_textureManager.find("Shadows"));
+        r3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.5f,0,0)));
+        m_stack.submit(r3);
     }
     //END TEST CODE
 
     std::cout << "Finished Loading Resources!\n" << std::endl;
+    m_soundManager.playSound("rain");
 }
