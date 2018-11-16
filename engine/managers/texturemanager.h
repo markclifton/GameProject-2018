@@ -35,6 +35,8 @@ public:
     bool bind(const std::string& name, uint32_t position = 0);
     void reset();
 
+    void submitTexture(std::unique_ptr<Texture> texture);
+
 private:
     bool unload(const std::string& name); //TODO: Needs tested...
 

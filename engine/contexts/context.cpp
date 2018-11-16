@@ -89,6 +89,9 @@ void Context::loadResources()
     m_textureManager.load("smile2", "resources/images/smile2.tif");
     m_textureManager.load("dirt", "resources/images/dirt.tif");
 
+    m_textureManager.submitTexture(std::make_unique<Texture>("Shadows", 1024, 1024));
+    m_shadowTexture = m_textureManager.find("Shadows");
+
     //START TEST CODE
     //Light Representation
     {
@@ -181,8 +184,5 @@ void Context::loadResources()
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
         m_stack.submit(r2);
     }
-
-    m_shadowTexture = std::make_unique<Texture>("Shadows", 1024, 1024);
-
     //END TEST CODE
 }

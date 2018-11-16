@@ -28,5 +28,5 @@ private:
     std::vector<lights::PointLight> m_pointlights;
     std::vector<lights::SpotLight> m_spotlights;
 
-    std::unique_ptr<Texture> m_shadowTexture;
+    Texture* m_shadowTexture {nullptr};
 };

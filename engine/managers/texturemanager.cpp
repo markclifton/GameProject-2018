@@ -49,6 +49,19 @@ void TextureManager::reset()
     m_textures.clear();
 }
 
+void TextureManager::submitTexture(std::unique_ptr<Texture> texture)
+{
+    if(texture == nullptr)
+    {
+        return;
+    }
+
+    if(find(texture->name()) == nullptr)
+    {
+        m_textures.push_back(std::move(texture));
+    }
+}
+
 bool TextureManager::unload(const std::string& name)
 {
     for(size_t i=0; i<m_textures.size(); i++)
