@@ -19,6 +19,8 @@ public:
     inline void setID(const unsigned int& ID) { componentID_ = ID; } //TODO: Generate Automatically
     inline const unsigned int& getID(){ return componentID_; }
 
+    inline virtual void test(){} //THIS IS DUMB
+
 private:
     unsigned int componentID_ {0};
 };

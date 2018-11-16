@@ -49,10 +49,11 @@ void Game::setup()
     if( !m_contextManager.setContext("Sandbox") )
         std::cerr << "Failed to set context\n";
 
-    entity_.submit(std::make_shared<ecs::IComponent>());
-    entity_.submit(std::make_shared<ecs::IComponent>());
-    entity_.submit(std::make_shared<ecs::IComponent>());
-    entity_.submit(std::make_shared<ecs::IComponent>());
-    entity_.submit(std::make_shared<ecs::IComponent>());
-    system_.submit(entity_);
+    entities_.push_back(new ecs::Simple(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(1,1,1)));
+    entities_.push_back(new ecs::Simple(glm::vec3(1,1,1), glm::vec3(0,0,0), glm::vec3(1,1,1)));
+
+    for(auto& entity : entities_)
+    {
+        system_.submit(*entity);
+    }
 }

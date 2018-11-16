@@ -7,8 +7,8 @@
 #include "managers/windowmanager.h"
 
 //TEMP
-#include "ecs/components/component.h"
-#include "ecs/entities/entity.h"
+#include "ecs/components/collidable.h"
+#include "ecs/entities/simple.h"
 #include "ecs/systems/system.h"
 
 class Game
@@ -30,5 +30,5 @@ private:
     managers::WindowManager m_windowManager;
 
     ecs::ISystem system_;
-    ecs::IEntity entity_;
+    std::vector<ecs::Simple*> entities_;
 };

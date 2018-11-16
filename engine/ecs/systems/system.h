@@ -14,6 +14,8 @@
  *  Component :  Position
  */
 
+#include "ecs/components/collidable.h"
+
 namespace ecs
 {
 class ISystem : public ComponentHandler
@@ -23,9 +25,14 @@ public:
     //TEMP
     void submit(IEntity& entity)
     {
-        for(auto& component : entity.ownedComponents_)
+        for(std::shared_ptr<IComponent>& component : entity.ownedComponents_)
         {
-            ComponentHandler::submit(std::weak_ptr<IComponent>(component));
+            IComponent* raw = component.get();
+            if(dynamic_cast<Collidable*>(raw) != nullptr)
+            {
+                ComponentHandler::submit(std::weak_ptr<IComponent>(component));
+                printf("Collidable Component Found!\n");
+            }
         }
     }
 
@@ -42,8 +49,15 @@ public:
                 continue;
             }
 
-            auto spComponent = sharedComponents_[index].lock();
-            std::cout << "DoingWork with: " << spComponent->getID() << std::endl;
+            auto spCurrent = sharedComponents_[index].lock();
+            for(size_t indexInner=0; indexInner<sharedComponents_.size(); indexInner++)
+            {
+                auto spComparison = sharedComponents_[index].lock();
+                if(spComparison && spComparison->getID() != spCurrent->getID())
+                {
+                    printf("Comparing!\n");
+                }
+            }
         }
     }
 };
