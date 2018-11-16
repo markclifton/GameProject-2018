@@ -13,6 +13,8 @@ file(GLOB SOURCES
     engine/**/*.cpp
     engine/drawable/**/*.h
     engine/drawable/**/*.cpp
+    engine/ecs/**/*.h
+    engine/ecs/**/*.cpp
     dependencies/independent/glad/gl.cpp
     main.cpp
     )

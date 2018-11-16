@@ -1,7 +1,6 @@
 #pragma once
 
-#include "component.h"
-
+#include "ecs/components/component.h"
 
 /*  Grouping of Raw Data into a "thing"
  *

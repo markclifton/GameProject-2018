@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "component.h"
-#include "entity.h"
+#include "ecs/components/component.h"
+#include "ecs/entities/entity.h"
 
 /*  System that executes actions on Components
  *

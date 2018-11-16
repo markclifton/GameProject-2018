@@ -7,8 +7,9 @@
 #include "managers/windowmanager.h"
 
 //TEMP
-#include "ecs/entity.h"
-#include "ecs/system.h"
+#include "ecs/components/component.h"
+#include "ecs/entities/entity.h"
+#include "ecs/systems/system.h"
 
 class Game
 {
