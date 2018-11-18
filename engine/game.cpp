@@ -33,8 +33,6 @@ void Game::run()
         {
             std::cerr << m_windowManager.latency()*1000 << "ms\n";
             ticks = 0;
-
-            system_.doWork();
         }
 
         m_contextManager.run();
@@ -48,12 +46,4 @@ void Game::setup()
         std::cerr << "Failed to add context\n";
     if( !m_contextManager.setContext("Sandbox") )
         std::cerr << "Failed to set context\n";
-
-    entities_.push_back(new ecs::Simple(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(1,1,1)));
-    entities_.push_back(new ecs::Simple(glm::vec3(1,1,1), glm::vec3(0,0,0), glm::vec3(1,1,1)));
-
-    for(auto& entity : entities_)
-    {
-        system_.submit(*entity);
-    }
 }
