@@ -15,11 +15,11 @@ Recently added support for Windows 10. On Windows, the project should be self-co
 * Texture System (Allows reuse by uid)
 * Callback System for the Window (register handlers that allow the handling of GLFW Callbacks)
 * Basic Real-time Shadows
+* Audio Handling
 
 ### Things to do:
 * Level Loading
 * Text System
-* Audio Handling
 * Interaction System
 * Physics System
 * Advanced Lighting
@@ -28,7 +28,8 @@ Recently added support for Windows 10. On Windows, the project should be self-co
 
 ### Development Environment
 * Linux Mint 19 (Windows 10)
-* QtCreator 4.8 (QtCreator 4.7 on Windows)
+* CMake
+* QtCreator 4.8
 * Modern OpenGL
 * GLSL 450
 * FreeImage
