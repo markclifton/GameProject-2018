@@ -19,12 +19,10 @@ struct bbox
     glm::vec3 max {0};
 };
 
-class DrawableObject : public drawable::Drawable, public ecs::IEntity
+class DrawableObject : public ecs::IEntity
 {
 public:
     DrawableObject(Shader* shader);
-
-    void setTransform(glm::mat4 transform) override;
 
     void setTextureId(const int& id);
     void setTexture( Texture* texture ) { m_texture = texture; setTextureId(0); }
@@ -48,9 +46,13 @@ public:
 
     inline void addVertex(Vertex& vertex) { AddComponentOfType(Vertex::Type, Vertex::CreationFN(this, &vertex)); }
 
-protected:
+    void setTransform(glm::mat4 transform);
+
+public: //TEMP
+    Shader* shader_ {nullptr};
     std::vector<GLint> m_indices;
     Texture* m_texture {nullptr};
+    glm::mat4 m_transform {1.f};
 
     buffers::VertexBuffer m_vertexBuffer;
     buffers::IndexBuffer m_indicesBuffer;

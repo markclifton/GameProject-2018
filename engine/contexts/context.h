@@ -10,6 +10,8 @@
 #include "lights/point.h"
 #include "lights/spot.h"
 
+#include "ecs/systems/rendering.h"
+
 class Context
 {
 public:
@@ -31,4 +33,6 @@ private:
     std::vector<lights::SpotLight> m_spotlights;
 
     Texture* m_shadowTexture {nullptr};
+
+    ecs::RenderingSystem renderingSystem_;
 };

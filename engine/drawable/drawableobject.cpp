@@ -4,35 +4,36 @@
 
 namespace drawable
 {
-DrawableObject::DrawableObject(Shader* shader) : Drawable( shader )
+DrawableObject::DrawableObject(Shader* shader)
+    : shader_(shader)
 {
-    shader->bind();
+    shader_->bind();
 
-    int position = shader->getAttribLocation("position");
+    int position = shader_->getAttribLocation("position");
     if(position >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, pos));
     }
 
-    int color = shader->getAttribLocation("color");
+    int color = shader_->getAttribLocation("color");
     if(color >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, color));
     }
 
-    int uv = shader->getAttribLocation("uv");
+    int uv = shader_->getAttribLocation("uv");
     if(uv >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, uv));
     }
 
-    int normal = shader->getAttribLocation("normal");
+    int normal = shader_->getAttribLocation("normal");
     if(normal >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, normal));
     }
 
-    int model = shader->getAttribLocation("model");
+    int model = shader_->getAttribLocation("model");
     if(model >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model));
@@ -123,8 +124,8 @@ void DrawableObject::calculateNormals()
 
 void DrawableObject::setInstanced()
 {
-    m_shader->bind();
-    int model = m_shader->getAttribLocation("model");
+    shader_->bind();
+    int model = shader_->getAttribLocation("model");
     if(model >= 0)
     {
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model), true);

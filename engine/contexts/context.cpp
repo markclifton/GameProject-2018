@@ -38,7 +38,9 @@ void Context::run()
         s->bind();
         s->setUniform("projection", pS);
         s->setUniform("view", vS);
+
         m_stack.draw();
+        renderingSystem_.update(false);
 
         m_windowManager.setAsRenderTarget();
     }
@@ -70,7 +72,7 @@ void Context::run()
         lights::setLights(m_spotlights, s, v);
 
         m_stack.draw();
-
+        renderingSystem_.update();
     }
 }
 
@@ -103,7 +105,6 @@ void Context::loadResources()
     {
         auto m = new drawable::Model("resources/models/cube.obj", s);
         m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,10,-5.5f)));
-        m_stack.submit(m);
 
         lights::PointLight plight;
         plight.color = glm::vec3(1,1,1);
@@ -115,7 +116,6 @@ void Context::loadResources()
         auto m4 = new drawable::Model("resources/models/cube.obj", s);
         m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.f,-.5f,-10.5f)));
         m4->setColor(glm::vec4(1,0,1,1));
-        m_stack.submit(m4);
 
         lights::SpotLight slight;
         slight.color = glm::vec3(1,0,1);
@@ -132,14 +132,12 @@ void Context::loadResources()
         auto m2 = new drawable::Model("resources/models/teapot.obj", s);
         m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,-1,-10.f)));
         m2->calculateNormals();
-        m_stack.submit(m2);
     }
 
     // Model 2 - suzanne
     {
         auto m3 = new drawable::Model("resources/models/monkey.obj", s);
         m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,1,-5.f)));
-        m_stack.submit(m3);
     }
 
     // Floor
@@ -164,37 +162,34 @@ void Context::loadResources()
         m_stack.submit(instanced);
     }
 
-    //Triangle Wall
-    {
-        drawable::renderer::Batch* batch = new drawable::renderer::Batch(s, glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
-        batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
-        for(float x=-1; x<=1.f; x+=.0625f/2.f)
-        {
-            for(float y=-1; y<=1.f; y+=.0625f/2.f)
-            {
-                batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), s ));
-            }
-        }
-        m_stack.submit(batch);
-    }
+    //Triangle Wall //TODO: FIXME Horrible performance with doing batch rendering
+    //{
+    //    drawable::renderer::Batch* batch = new drawable::renderer::Batch(s, glm::translate(glm::mat4(1.f), glm::vec3(-1,0,0)));
+    //    batch->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1,0,0)));
+    //    for(float x=-1; x<=1.f; x+=.0625f/2.f)
+    //    {
+    //        for(float y=-1; y<=1.f; y+=.0625f/2.f)
+    //        {
+    //            batch->submit(new drawable::Triangle( glm::vec3(x,y, -1), s ));
+    //        }
+    //    }
+    //    m_stack.submit(batch);
+    //}
 
     // Textured Faces
     {
         drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r->setTexture(m_textureManager.find("smile"));
         r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
-        m_stack.submit(r);
 
         drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r2->setTexture(m_textureManager.find("smile2"));
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
-        m_stack.submit(r2);
 
         // Shadow Map
         drawable::Rectangle* r3 = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r3->setTexture(m_textureManager.find("Shadows"));
         r3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.5f,0,0)));
-        m_stack.submit(r3);
     }
     //END TEST CODE
 
