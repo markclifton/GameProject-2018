@@ -1,11 +1,13 @@
 #include "context.h"
 
+#include <iostream>
+
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "drawable/triangle.h"
 #include "drawable/model.h"
 #include "drawable/rectangle.h"
 #include "drawable/renderers/batch.h"
+#include "drawable/triangle.h"
 
 #include "drawable/renderers/instanced.h"
 
@@ -68,6 +70,7 @@ void Context::run()
         lights::setLights(m_spotlights, s, v);
 
         m_stack.draw();
+
     }
 }
 

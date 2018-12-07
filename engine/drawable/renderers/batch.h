@@ -9,8 +9,9 @@
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffer.h"
 #include "drawable/drawable.h"
-#include "drawable/drawablebasics.h"
 #include "drawable/drawableobject.h"
+
+//TODO: Broken (This is to become the Batch Rendering System)
 
 namespace drawable
 {

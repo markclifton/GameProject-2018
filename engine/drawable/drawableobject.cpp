@@ -45,27 +45,27 @@ DrawableObject::DrawableObject(Shader* shader) : Drawable( shader )
 void DrawableObject::setTransform(glm::mat4 transform)
 {
     m_transform = transform;
-    for(auto& vert : m_vertices)
+    for(int i=0 ; i<numVerts(); i++)
     {
-        vert.model = m_transform;
+        verts()[i].model = m_transform;
     }
     update();
 }
 
 void DrawableObject::setTextureId(const int& id)
 {
-    for(auto& vert : m_vertices)
+    for(int i=0 ; i<numVerts(); i++)
     {
-        vert.uv.z = float(id);
+        verts()[i].uv.z = float(id);
     }
     update();
 }
 
 void DrawableObject::setColor(const glm::vec4& color)
 {
-    for(auto& vertex : m_vertices)
+    for(int i=0 ; i<numVerts(); i++)
     {
-        vertex.color = color;
+        verts()[i].color = color;
     }
     update();
 }
@@ -89,14 +89,14 @@ void DrawableObject::update()
 
 const bbox& DrawableObject::calculateBBox()
 {
-    for(auto& vertex : m_vertices)
+    for(int i=0 ; i<numVerts(); i++)
     {
-        m_bbox.min.x = std::min(m_bbox.min.x, vertex.pos.x);
-        m_bbox.min.y = std::min(m_bbox.min.y, vertex.pos.y);
-        m_bbox.min.z = std::min(m_bbox.min.z, vertex.pos.z);
-        m_bbox.max.x = std::max(m_bbox.max.x, vertex.pos.x);
-        m_bbox.max.y = std::max(m_bbox.max.y, vertex.pos.y);
-        m_bbox.max.z = std::max(m_bbox.max.z, vertex.pos.z);
+        m_bbox.min.x = std::min(m_bbox.min.x, verts()[i].pos.x);
+        m_bbox.min.y = std::min(m_bbox.min.y, verts()[i].pos.y);
+        m_bbox.min.z = std::min(m_bbox.min.z, verts()[i].pos.z);
+        m_bbox.max.x = std::max(m_bbox.max.x, verts()[i].pos.x);
+        m_bbox.max.y = std::max(m_bbox.max.y, verts()[i].pos.y);
+        m_bbox.max.z = std::max(m_bbox.max.z, verts()[i].pos.z);
     }
 
     return m_bbox;
@@ -106,9 +106,9 @@ void DrawableObject::calculateNormals()
 {
     for(size_t i = 0; i<m_indices.size(); i+=3)
     {
-        auto& vert1 = m_vertices[static_cast<size_t>(m_indices[i+0])];
-        auto& vert2 = m_vertices[static_cast<size_t>(m_indices[i+1])];
-        auto& vert3 = m_vertices[static_cast<size_t>(m_indices[i+2])];
+        auto& vert1 = verts()[static_cast<size_t>(m_indices[i+0])];
+        auto& vert2 = verts()[static_cast<size_t>(m_indices[i+1])];
+        auto& vert3 = verts()[static_cast<size_t>(m_indices[i+2])];
 
         auto edge1 = vert2.pos - vert1.pos;
         auto edge2 = vert3.pos - vert1.pos;

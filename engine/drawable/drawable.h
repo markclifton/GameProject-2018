@@ -2,7 +2,6 @@
 
 #include <glm/matrix.hpp>
 
-#include <iostream>
 #include <vector>
 
 #include "managers/texturemanager.h"

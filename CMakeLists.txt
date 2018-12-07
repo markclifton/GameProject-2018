@@ -11,10 +11,8 @@ file(GLOB SOURCES
     engine/*.cpp
     engine/**/*.h
     engine/**/*.cpp
-    engine/drawable/**/*.h
-    engine/drawable/**/*.cpp
-    engine/ecs/**/*.h
-    engine/ecs/**/*.cpp
+    engine/**/**/*.h
+    engine/**/**/*.cpp
     dependencies/independent/glad/gl.cpp
     main.cpp
     )

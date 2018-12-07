@@ -28,16 +28,16 @@ Triangle::Triangle(glm::vec3 center, Shader* shader)
     v3.color = glm::vec4(0,0,1,1);
     v3.uv = glm::vec3(0,0,-1);
 
-    m_vertices.push_back(v1);
-    m_vertices.push_back(v2);
-    m_vertices.push_back(v3);
+    addVertex(v1);
+    addVertex(v2);
+    addVertex(v3);
 }
 
 void Triangle::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-        //m_shader->bind();
+        m_shader->bind();
         m_shader->setUniform("transform", transform);
     }
 
@@ -52,7 +52,7 @@ void Triangle::draw(glm::mat4 transform)
     {
         m_changed = false;
         m_indicesBuffer.buffer(static_cast<long>(m_indices.size()*sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
-        m_vertexBuffer.buffer(static_cast<long>(m_vertices.size()*sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
+        m_vertexBuffer.buffer(static_cast<long>(numVerts()*sizeof(Vertex)), verts());
     }
 
     glDrawElements(m_drawType, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr);

@@ -1,12 +1,13 @@
 #pragma once
 
+#include "ecs/icomponent.h"
+
 #include "glm/vec3.hpp"
 #include "glm/matrix.hpp"
 
-namespace drawable
+class Vertex : public ecs::IComponent<Vertex>
 {
-struct Vertex
-{
+public:
     Vertex(){}
     Vertex(glm::vec4 color, glm::vec3 pos, glm::vec3 uv = glm::vec3(0,0,-1))
         : color(color), pos(pos), uv(uv)
@@ -17,4 +18,3 @@ struct Vertex
     glm::vec3 normal{0,0,0};
     glm::mat4 model{1.0f};
 };
-}

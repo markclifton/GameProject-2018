@@ -1,6 +1,5 @@
 #pragma once
 
-#include "drawablebasics.h"
 #include "drawableobject.h"
 
 namespace drawable
