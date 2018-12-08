@@ -12,7 +12,7 @@ class ISystem
 {
 public:
     virtual ~ISystem() = default;
-    inline virtual void update(float /*timeDelta*/, void** /*components*/) {}
+    inline virtual void update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*timeDelta*/, void** /*components*/) {}
 
     inline bool containsComponent(const COMP_TYPE& type)
     {

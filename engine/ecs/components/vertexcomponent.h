@@ -5,7 +5,7 @@
 #include "glm/vec3.hpp"
 #include "glm/matrix.hpp"
 
-struct Vertex : public ecs::IComponent<Vertex>
+struct VertexComponent : public ecs::IComponent<VertexComponent>
 {
     glm::vec4 color{1,1,1,1};
     glm::vec3 pos{0,0,0};

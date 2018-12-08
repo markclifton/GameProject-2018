@@ -50,7 +50,7 @@ void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
         {
             for(auto& component : componentsToUpdate)
             {
-                system.second->update(0, &component.front());
+                system.second->update(ComponentsToUse, 0, &component.front());
             }
         }
     }

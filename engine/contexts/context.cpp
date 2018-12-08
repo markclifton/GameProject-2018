@@ -40,7 +40,7 @@ void Context::run()
         s->setUniform("view", vS);
 
         stack_.draw();
-        ecsManager_.updateSystems({Vertex::Type});
+        ecsManager_.updateSystems({VertexComponent::Type});
 
         windowManager_.setAsRenderTarget();
     }
@@ -72,7 +72,7 @@ void Context::run()
         lights::setLights(spotlights_, s, v);
 
         stack_.draw();
-        ecsManager_.updateSystems({Vertex::Type});
+        ecsManager_.updateSystems({VertexComponent::Type, ShaderComponent::Type});
     }
 }
 

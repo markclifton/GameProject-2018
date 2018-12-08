@@ -9,7 +9,8 @@
 #include "textures/texture.h"
 
 #include "ecs/ientity.h"
-#include "ecs/components/vertex.h"
+#include "ecs/components/shadercomponent.h"
+#include "ecs/components/vertexcomponent.h"
 
 namespace drawable
 {
@@ -28,8 +29,8 @@ public:
     void setTexture( Texture* texture ) { m_texture = texture; setTextureId(0); }
     Texture* getTexture() { return m_texture; }
 
-    Vertex* verts() { return reinterpret_cast<Vertex*>(GetComponentByTypeAndIndex(Vertex::Type, 0)); }
-    int numVerts() { return static_cast<int>(NumComponentsForType(Vertex::Type)); }
+    VertexComponent* verts() { return reinterpret_cast<VertexComponent*>(GetComponentByTypeAndIndex(VertexComponent::Type, 0)); }
+    int numVerts() { return static_cast<int>(NumComponentsForType(VertexComponent::Type)); }
 
     GLint* indices() { return &m_indices.front(); }
     int numIndices() { return static_cast<int>(m_indices.size()); }
@@ -44,12 +45,12 @@ public:
 
     void setInstanced();
 
-    inline void addVertex(Vertex& vertex) { AddComponentOfType(Vertex::Type, Vertex::CreationFN(this, &vertex)); }
+    inline void addVertex(VertexComponent& vertex) { AddComponentOfType(VertexComponent::Type, VertexComponent::CreationFN(this, &vertex)); }
+    inline void setShader(ShaderComponent& shader) { AddComponentOfType(ShaderComponent::Type, ShaderComponent::CreationFN(this, &shader)); }
 
     void setTransform(glm::mat4 transform);
 
-public: //TEMP
-    Shader* shader_ {nullptr};
+public:
     std::vector<GLint> m_indices;
     Texture* m_texture {nullptr};
     glm::mat4 m_transform {1.f};

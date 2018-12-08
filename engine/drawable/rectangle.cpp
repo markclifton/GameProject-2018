@@ -18,7 +18,7 @@ Rectangle::Rectangle(glm::vec3 center, Shader* shader)
     m_indices.push_back(2);
 
     float size = 1.f;
-    Vertex v1, v2, v3, v4;
+    VertexComponent v1, v2, v3, v4;
     v1.color = glm::vec4(1,0,0,1);
     v1.pos = glm::vec3(center.x - size, center.y - size, center.z);
     v1.uv = glm::vec3(0,0,-1);

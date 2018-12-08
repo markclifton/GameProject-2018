@@ -33,7 +33,7 @@ void Model::loadModel()
 {
     std::vector<glm::vec3> normals;
     std::vector<glm::vec3> uv;
-    std::vector<Vertex> vertices;
+    std::vector<VertexComponent> vertices;
 
     std::ifstream ifs(m_path);
     if (ifs.is_open())
@@ -44,7 +44,7 @@ void Model::loadModel()
             std::vector<std::string> ls = split(line, ' ');
             if(ls.size() > 3 && ls.front().compare("v") == 0)
             {
-                Vertex v;
+                VertexComponent v;
                 v.pos = glm::vec3(stof(ls[1]), stof(ls[2]), stof(ls[3]));
                 vertices.push_back(v);
             }
@@ -71,9 +71,9 @@ void Model::loadModel()
                 // which ultimately causes issues with lighting (normals)
                 // and general performance (although minor)
 
-                Vertex v1 = vertices[static_cast<size_t>(vertex1)];
-                Vertex v2 = vertices[static_cast<size_t>(vertex2)];
-                Vertex v3 = vertices[static_cast<size_t>(vertex3)];
+                VertexComponent v1 = vertices[static_cast<size_t>(vertex1)];
+                VertexComponent v2 = vertices[static_cast<size_t>(vertex2)];
+                VertexComponent v3 = vertices[static_cast<size_t>(vertex3)];
 
                 //Tex Coords
                 if(vertInfo1.size() > 1 && strcmp(vertInfo1[1].c_str(), "") != 0 && uv.size() > 0)

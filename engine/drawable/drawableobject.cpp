@@ -5,43 +5,44 @@
 namespace drawable
 {
 DrawableObject::DrawableObject(Shader* shader)
-    : shader_(shader)
 {
-    shader_->bind();
+    ShaderComponent shaderComp;
+    shaderComp.shader = shader;
+    setShader(shaderComp);
 
     //Vertex is no longer a pod, and therefore offsetof cannot be "used" (Undefined Behaviour, rip...)
     //tbd...
-    int position = shader_->getAttribLocation("position");
+    int position = shader->getAttribLocation("position");
     if(position >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, pos));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, pos));
     }
 
-    int color = shader_->getAttribLocation("color");
+    int color = shader->getAttribLocation("color");
     if(color >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, color));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, color));
     }
 
-    int uv = shader_->getAttribLocation("uv");
+    int uv = shader->getAttribLocation("uv");
     if(uv >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, uv));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, uv));
     }
 
-    int normal = shader_->getAttribLocation("normal");
+    int normal = shader->getAttribLocation("normal");
     if(normal >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, normal));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, normal));
     }
 
-    int model = shader_->getAttribLocation("model");
+    int model = shader->getAttribLocation("model");
     if(model >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model));
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(Vertex), 1 * sizeof(glm::vec4) + offsetof(Vertex, model));
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(Vertex), 2 * sizeof(glm::vec4) + offsetof(Vertex, model));
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(Vertex), 3 * sizeof(glm::vec4) + offsetof(Vertex, model));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(VertexComponent), 0 * sizeof(glm::vec4) + offsetof(VertexComponent, model));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(VertexComponent), 1 * sizeof(glm::vec4) + offsetof(VertexComponent, model));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(VertexComponent), 2 * sizeof(glm::vec4) + offsetof(VertexComponent, model));
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(VertexComponent), 3 * sizeof(glm::vec4) + offsetof(VertexComponent, model));
     }
 }
 
@@ -126,14 +127,20 @@ void DrawableObject::calculateNormals()
 
 void DrawableObject::setInstanced()
 {
-    shader_->bind();
-    int model = shader_->getAttribLocation("model");
+    auto shaderComp = reinterpret_cast<ShaderComponent*>(GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
+    if(shaderComp == nullptr)
+    {
+        return;
+    }
+
+    shaderComp->shader->bind();
+    int model = shaderComp->shader->getAttribLocation("model");
     if(model >= 0)
     {
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(Vertex), 0 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(Vertex), 1 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(Vertex), 2 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
-        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(Vertex), 3 * sizeof(glm::vec4) + offsetof(Vertex, model), true);
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 0), 4, GL_FLOAT, false, sizeof(VertexComponent), 0 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 1), 4, GL_FLOAT, false, sizeof(VertexComponent), 1 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(VertexComponent), 2 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
+        m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(VertexComponent), 3 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
     }
 }
 

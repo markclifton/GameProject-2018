@@ -17,25 +17,25 @@ Instanced::Instanced(Shader* shader, glm::mat4 transform)
     int position = shader->getAttribLocation("position");
     if(position >= 0)
     {
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, pos));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(position), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, pos));
     }
 
     int color = shader->getAttribLocation("color");
     if(color >= 0)
     {
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, color));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(color), 4, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, color));
     }
 
     int uv = shader->getAttribLocation("uv");
     if(uv >= 0)
     {
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, uv));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(uv), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, uv));
     }
 
     int normal = shader->getAttribLocation("normal");
     if(normal >= 0)
     {
-        m_vbo.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(Vertex), offsetof(Vertex, normal));
+        m_vbo.useVertexAttrib(static_cast<uint32_t>(normal), 3, GL_FLOAT, false, sizeof(VertexComponent), offsetof(VertexComponent, normal));
     }
 
     int model = shader->getAttribLocation("model");
@@ -53,7 +53,7 @@ Instanced::Instanced(Shader* shader, glm::mat4 transform)
     }
 }
 
-void Instanced::submit(const int& numVerts, Vertex* vertices, const int& numIndices, GLint* indices)
+void Instanced::submit(const int& numVerts, VertexComponent* vertices, const int& numIndices, GLint* indices)
 {
     m_changed = true; // nb: Not thread-safe
 
@@ -132,7 +132,7 @@ void Instanced::draw(glm::mat4 transform)
     if(m_changed)
     {
         m_ibo.buffer(static_cast<long>(m_indices.size() * sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
-        m_vbo.buffer(static_cast<long>(m_vertices.size() * sizeof(Vertex)), reinterpret_cast<void*>(&m_vertices.front()));
+        m_vbo.buffer(static_cast<long>(m_vertices.size() * sizeof(VertexComponent)), reinterpret_cast<void*>(&m_vertices.front()));
         m_vboTransforms.buffer(static_cast<long>(m_transforms.size() * sizeof(glm::mat4)), &m_transforms.front());
         m_changed = false;
     }
