@@ -9,6 +9,8 @@ DrawableObject::DrawableObject(Shader* shader)
 {
     shader_->bind();
 
+    //Vertex is no longer a pod, and therefore offsetof cannot be "used" (Undefined Behaviour, rip...)
+    //tbd...
     int position = shader_->getAttribLocation("position");
     if(position >= 0)
     {

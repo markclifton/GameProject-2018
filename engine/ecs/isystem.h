@@ -1,13 +1,27 @@
 #pragma once
 
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+#include "icomponent.h"
+
+namespace ecs
+{
 class ISystem
 {
 public:
-    void update()
+    virtual ~ISystem() = default;
+    inline virtual void update(float /*timeDelta*/, void** /*components*/) {}
+
+    inline bool containsComponent(const COMP_TYPE& type)
     {
-        //for(size_t currentOffset = 0; currentOffset != TestComp1::componentTotalOffset; currentOffset += sizeof(TestComp1))
-        //{
-        //    auto component = reinterpret_cast<TestComp1*>(TestComp1::componentZero + currentOffset);
-        //}
+        auto iter = std::find(components_.begin(), components_.end(), type);
+        return iter != components_.end();
     }
+
+protected:
+    std::vector<COMP_TYPE> components_;
+
 };
+}

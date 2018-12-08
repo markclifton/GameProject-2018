@@ -40,6 +40,7 @@ public:
     static COMP_TYPE RegisterComponent(COMP_SIZE size, COMP_CTOR ctor, COMP_DTOR dtor);
     static bool ValidComponent(COMP_TYPE type);
     static RAWCOMP* GetRaw(COMP_TYPE type);
+    static const std::vector<RAWCOMP>& GetAllComponents();
 
     ENTITY_HANDLE entityHandle {nullptr};
 private:

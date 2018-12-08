@@ -10,7 +10,8 @@
 #include "lights/point.h"
 #include "lights/spot.h"
 
-#include "ecs/systems/rendering.h"
+#include "ecs/ecsmanager.h"
+#include "ecs/systems/renderer.h"
 
 class Context
 {
@@ -20,19 +21,20 @@ public:
     void loadResources();
 
 private:
-    managers::SoundManager& m_soundManager;
-    managers::ShaderManager& m_shaderManager;
-    managers::TextureManager& m_textureManager;
-    managers::WindowManager& m_windowManager;
-    drawable::renderer::Layer m_stack;
+    managers::SoundManager& soundManager_;
+    managers::ShaderManager& shaderManager_;
+    managers::TextureManager& textureManager_;
+    managers::WindowManager& windowManager_;
+    drawable::renderer::Layer stack_;
 
     Camera3D m_camera;
-    Camera3D m_shadowCamera;
+    Camera3D shadowCamera_;
 
-    std::vector<lights::PointLight> m_pointlights;
-    std::vector<lights::SpotLight> m_spotlights;
+    std::vector<lights::PointLight> pointlights_;
+    std::vector<lights::SpotLight> spotlights_;
 
-    Texture* m_shadowTexture {nullptr};
+    Texture* shadowTexture_ {nullptr};
 
-    ecs::RenderingSystem renderingSystem_;
+    ecs::ECSManager ecsManager_;
+    ecs::RendererSystem renderingSystem_;
 };

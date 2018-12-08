@@ -33,5 +33,10 @@ RAWCOMP* BaseComponent::GetRaw(COMP_TYPE type)
     return nullptr;
 }
 
+const std::vector<RAWCOMP>& BaseComponent::GetAllComponents()
+{
+    return availableComponents_;
+}
+
 std::vector<RAWCOMP> BaseComponent::availableComponents_;
 }
