@@ -144,9 +144,9 @@ void Context::loadResources()
         auto instanced = new drawable::renderer::Instanced(s);
 
         auto cube = new drawable::Model("resources/models/cube2.obj", s);
-        auto bbox = cube->calculateBBox();
-        float width = bbox.max.x - bbox.min.x;
-        float depth = bbox.max.z - bbox.min.z;
+        auto bboxComponent = cube->calculateBBox();
+        float width = bboxComponent->max.x - bboxComponent->min.x;
+        float depth = bboxComponent->max.z - bboxComponent->min.z;
         cube->calculateNormals();
         cube->setTexture(textureManager_.find("dirt"));
         instanced->submit(cube);

@@ -9,18 +9,13 @@
 
 #include "ecs/ientity.h"
 #include "ecs/entities/drawableentity.h"
+#include "ecs/components/bboxcomponent.h"
 #include "ecs/components/shadercomponent.h"
 #include "ecs/components/texturecomponent.h"
 #include "ecs/components/vertexcomponent.h"
 
 namespace drawable
 {
-struct bbox
-{
-    glm::vec3 min {0};
-    glm::vec3 max {0};
-};
-
 class DrawableEntity : public ecs::IEntity
 {
 public:
@@ -47,7 +42,7 @@ public:
     void setUpdateFunc(std::function<void()> fn);
     void update();
 
-    const bbox& calculateBBox(); //Diagonal Corner BBox that is Axis Aligned
+    BBoxComponent* calculateBBox(); //Diagonal Corner BBox that is Axis Aligned
     void calculateNormals();
 
     void setInstanced();
@@ -67,7 +62,5 @@ public:
     bool m_changed { true };
 
     std::function<void()> m_updateFunc;
-
-    bbox m_bbox;
 };
 }

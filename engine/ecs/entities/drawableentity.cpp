@@ -94,19 +94,24 @@ void DrawableEntity::update()
     }
 }
 
-const bbox& DrawableEntity::calculateBBox()
+BBoxComponent* DrawableEntity::calculateBBox()
 {
-    for(int i=0 ; i<numVerts(); i++)
+    if(GetComponentByTypeAndIndex(BBoxComponent::Type, 0) == nullptr)
     {
-        m_bbox.min.x = std::min(m_bbox.min.x, verts()[i].pos.x);
-        m_bbox.min.y = std::min(m_bbox.min.y, verts()[i].pos.y);
-        m_bbox.min.z = std::min(m_bbox.min.z, verts()[i].pos.z);
-        m_bbox.max.x = std::max(m_bbox.max.x, verts()[i].pos.x);
-        m_bbox.max.y = std::max(m_bbox.max.y, verts()[i].pos.y);
-        m_bbox.max.z = std::max(m_bbox.max.z, verts()[i].pos.z);
+        BBoxComponent bboxComponent;
+        for(int i=0 ; i<numVerts(); i++)
+        {
+            bboxComponent.min.x = std::min(bboxComponent.min.x, verts()[i].pos.x);
+            bboxComponent.min.y = std::min(bboxComponent.min.y, verts()[i].pos.y);
+            bboxComponent.min.z = std::min(bboxComponent.min.z, verts()[i].pos.z);
+            bboxComponent.max.x = std::max(bboxComponent.max.x, verts()[i].pos.x);
+            bboxComponent.max.y = std::max(bboxComponent.max.y, verts()[i].pos.y);
+            bboxComponent.max.z = std::max(bboxComponent.max.z, verts()[i].pos.z);
+        }
+        AddComponentOfType(BBoxComponent::Type, &bboxComponent);
     }
 
-    return m_bbox;
+    return reinterpret_cast<BBoxComponent*>(GetComponentByTypeAndIndex(BBoxComponent::Type, 0));
 }
 
 void DrawableEntity::calculateNormals()
