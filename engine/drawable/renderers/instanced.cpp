@@ -73,11 +73,11 @@ void Instanced::submit(const int& numVerts, VertexComponent* vertices, const int
 
 bool Instanced::submit(DrawableEntity* object)
 {
-    Texture* objectTexture = object->getTexture();
+    auto objectTexture = object->getTexture();
     if(objectTexture)
     {
         m_textures.clear();
-        m_textures.push_back(objectTexture);
+        m_textures.push_back(objectTexture->texture);
         object->setTextureId(static_cast<int>(m_textures.size()) - 1);
     }
 

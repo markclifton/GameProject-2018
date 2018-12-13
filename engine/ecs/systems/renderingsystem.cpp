@@ -13,13 +13,13 @@
 
 namespace ecs
 {
-RendererSystem::RendererSystem()
+RenderingSystem::RenderingSystem()
 {
     components_.push_back(VertexComponent::Type);
     components_.push_back(ShaderComponent::Type);
 }
 
-void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void** component)
+void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void** component)
 {
     auto baseComponent = reinterpret_cast<BaseComponent*>(*component);
     auto entity = reinterpret_cast<drawable::DrawableEntity*>(baseComponent->entityHandle);

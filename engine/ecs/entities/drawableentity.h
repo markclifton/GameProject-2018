@@ -29,7 +29,7 @@ public:
         AddComponentOfType(TextureComponent::Type, TextureComponent::CreationFN(this, &texComp));
         setTextureId(1);
     }
-    Texture* getTexture() { return reinterpret_cast<TextureComponent*>(GetComponentByTypeAndIndex(TextureComponent::Type, 0))->texture; }
+    TextureComponent* getTexture() { return reinterpret_cast<TextureComponent*>(GetComponentByTypeAndIndex(TextureComponent::Type, 0)); }
 
     VertexComponent* verts() { return reinterpret_cast<VertexComponent*>(GetComponentByTypeAndIndex(VertexComponent::Type, 0)); }
     int numVerts() { return static_cast<int>(NumComponentsForType(VertexComponent::Type)); }

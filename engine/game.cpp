@@ -31,7 +31,7 @@ void Game::run()
     {
         if( ticks++ > 500)
         {
-            std::cerr << m_windowManager.latency()*1000 << "ms\n";
+           // std::cerr << m_windowManager.latency()*1000 << "ms\n";
             ticks = 0;
         }
 

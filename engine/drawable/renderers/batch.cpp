@@ -68,13 +68,13 @@ void Batch::submit(const int& numVerts, VertexComponent* vertices, const int& nu
 
 bool Batch::submit(DrawableEntity* object)
 {
-    Texture* objectTexture = object->getTexture();
+    auto objectTexture = object->getTexture();
     if(objectTexture)
     {
         bool found = false;
         for(size_t i = 0; i < m_textures.size(); i++)
         {
-            if(m_textures[i] == objectTexture)
+            if(m_textures[i] == objectTexture->texture)
             {
                 object->setTextureId(static_cast<int>(i));
                 found = true;
@@ -86,7 +86,7 @@ bool Batch::submit(DrawableEntity* object)
         {
             if(m_textures.size() < 16)
             {
-                m_textures.push_back(objectTexture);
+                m_textures.push_back(objectTexture->texture);
                 object->setTextureId(static_cast<int>(m_textures.size()) - 1);
             }
             else

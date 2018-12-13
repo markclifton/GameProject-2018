@@ -61,6 +61,7 @@ void Context::run()
         glm::mat4 depthBiasMVP = biasMatrix*pS*vS;
         s->setUniform("shadow", depthBiasMVP);
 
+        //TODO: Use these in the Render System
         lights::setLights(pointlights_, s, v);
         lights::setLights(spotlights_, s, v);
 
@@ -71,16 +72,17 @@ void Context::run()
 
 void Context::loadResources()
 {
-    //START TEST CODE (FIX MEMORY LEAKS...)
     //Light Representation
     std::cout << "Loading Resources!\n" << std::endl;
-    ecs::ECSManager::get().addSystem(1, &renderingSystem_); //TODO: Rethink this...
+
+    ecs::ECSManager::get().addSystem(1, std::make_shared<ecs::RenderingSystem>());
+
     if(enableShadows_)
     {
-        ecs::ECSManager::get().addSystem(2, &shadowSystem_); //TODO: Rethink this...
+        ecs::ECSManager::get().addSystem(2, std::make_shared<ecs::ShadowSystem>());
     }
 
-    shaderManager_.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs");
+    //shaderManager_.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs"); //unused
     shaderManager_.loadShader("Shadow", "resources/shaders/shadow.vs", "resources/shaders/shadow.fs");
 
     shaderManager_.loadShader("BasicShader", "resources/shaders/basic.vs", "resources/shaders/basic.fs");
@@ -92,13 +94,14 @@ void Context::loadResources()
     textureManager_.load("dirt", "resources/images/dirt.tif");
 
     textureManager_.submitTexture(std::make_unique<Texture>("Shadows", 1024, 1024));
-    shadowEntity_ = new ecs::ShadowEntity(shaderManager_.getShader("Shadow"), textureManager_.find("Shadows"));
+    shadowEntity_ = std::make_shared<ecs::ShadowEntity>(shaderManager_.getShader("Shadow"), textureManager_.find("Shadows"));
     ecs::ECSManager::get().addEntity(shadowEntity_);
 
     soundManager_.loadSound("rain", "resources/sounds/rain.mp3");
 
+    // Light Representations/Lights
     {
-        auto m = new drawable::Model("resources/models/cube.obj", s);
+        auto m = std::make_shared<drawable::Model>("resources/models/cube.obj", s);
         m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,10,-5.5f)));
         ecs::ECSManager::get().addEntity(m);
 
@@ -109,7 +112,7 @@ void Context::loadResources()
         plight.pos_w = glm::vec3(-1,10,-5);
         pointlights_.push_back(plight);
 
-        auto m4 = new drawable::Model("resources/models/cube.obj", s);
+        auto m4 = std::make_shared<drawable::Model>("resources/models/cube.obj", s);
         m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.f,-.5f,-10.5f)));
         m4->setColor(glm::vec4(1,0,1,1));
         ecs::ECSManager::get().addEntity(m4);
@@ -126,7 +129,7 @@ void Context::loadResources()
 
     //Model 1 - teapot
     {
-        auto m2 = new drawable::Model("resources/models/teapot.obj", s);
+        auto m2 = std::make_shared<drawable::Model>("resources/models/teapot.obj", s);
         m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,-1,-10.f)));
         m2->calculateNormals();
         ecs::ECSManager::get().addEntity(m2);
@@ -134,7 +137,7 @@ void Context::loadResources()
 
     // Model 2 - suzanne
     {
-        auto m3 = new drawable::Model("resources/models/monkey.obj", s);
+        auto m3 = std::make_shared<drawable::Model>("resources/models/monkey.obj", s);
         m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,1,-5.f)));
         ecs::ECSManager::get().addEntity(m3);
     }
@@ -177,23 +180,22 @@ void Context::loadResources()
 
     // Textured Faces
     {
-        drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), s);
+        auto r = std::make_shared<drawable::Rectangle>(glm::vec3(0,0,0), s);
         r->setTexture(textureManager_.find("smile"));
         r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
         ecs::ECSManager::get().addEntity(r);
 
-        drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
+        auto r2 = std::make_shared<drawable::Rectangle>(glm::vec3(0,0,0), s);
         r2->setTexture(textureManager_.find("smile2"));
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
         ecs::ECSManager::get().addEntity(r2);
 
         // Shadow Map
-        drawable::Rectangle* r3 = new drawable::Rectangle(glm::vec3(0,0,0), s);
+        auto r3 = std::make_shared<drawable::Rectangle>(glm::vec3(0,0,0), s);
         r3->setTexture(textureManager_.find("Shadows"));
         r3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.5f,0,0)));
         ecs::ECSManager::get().addEntity(r3);
     }
-    //END TEST CODE
 
     std::cout << "Finished Loading Resources!\n" << std::endl;
     soundManager_.playSound("rain");

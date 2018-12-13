@@ -6,10 +6,10 @@
 namespace ecs
 {
 
-class RendererSystem : public ISystem
+class RenderingSystem : public ISystem
 {
 public:
-    RendererSystem();
+    RenderingSystem();
     void update(std::vector<COMP_TYPE> componentsToUse, float, void** component) override;
 };
 

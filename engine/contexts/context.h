@@ -34,9 +34,6 @@ private:
     std::vector<lights::PointLight> pointlights_;
     std::vector<lights::SpotLight> spotlights_;
 
-    ecs::RendererSystem renderingSystem_;
-    ecs::ShadowSystem shadowSystem_;
-
-    ecs::ShadowEntity* shadowEntity_;
+    std::shared_ptr<ecs::ShadowEntity> shadowEntity_ {nullptr};
     bool enableShadows_ {true};
 };

@@ -13,10 +13,13 @@ void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
     std::vector<std::vector<void*>> componentsToUpdate;
     for(auto& entity : entities_)
     {
+        auto entityRaw = reinterpret_cast<IEntity*>(entity.get());
+
+
         bool isValid = true;
         for(auto& component : ComponentsToUse)
         {
-            if(entity->NumComponentsForType(component) == 0)
+            if(entityRaw->NumComponentsForType(component) == 0)
             {
                 isValid = false;
                 break;
@@ -28,7 +31,7 @@ void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
             std::vector<void*> componentUpdateVector;
             for(auto& component : ComponentsToUse)
             {
-                componentUpdateVector.push_back(entity->GetComponentByTypeAndIndex(component, 0));
+                componentUpdateVector.push_back(entityRaw->GetComponentByTypeAndIndex(component, 0));
             }
             componentsToUpdate.push_back(componentUpdateVector);
         }
@@ -57,7 +60,7 @@ void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
     }
 }
 
-void ECSManager::addSystem(const size_t& SystemID, ISystem* system)
+void ECSManager::addSystem(const size_t& SystemID, std::shared_ptr<ISystem> system)
 {
     removeSystem(SystemID);
     systems_[SystemID] = system;
@@ -68,27 +71,9 @@ void ECSManager::removeSystem(const size_t& SystemID)
     systems_.erase(SystemID);
 }
 
-void ECSManager::addEntity(IEntity* entity)
+void ECSManager::addEntity(std::shared_ptr<IEntity> entity)
 {
-    if(!containsEntity(entity))
-    {
-        entities_.push_back(entity);
-    }
+    entities_.emplace_back(entity);
 }
 
-void ECSManager::removeEntity(IEntity* entity)
-{
-    auto iter = std::find_if(entities_.begin(), entities_.end(), [entity](IEntity* curEntity){ return curEntity == entity; });
-    if(iter != entities_.end())
-    {
-        *iter = entities_.back();
-        entities_.pop_back();
-    }
-}
-
-bool ECSManager::containsEntity(IEntity* entity)
-{
-    auto iter = std::find_if(entities_.begin(), entities_.end(), [entity](IEntity* curEntity){ return curEntity == entity; });
-    return iter != entities_.end();
-}
 }
