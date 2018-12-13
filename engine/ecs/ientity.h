@@ -49,7 +49,7 @@ public:
     void* GetComponentByTypeAndIndex(const COMP_TYPE& type, size_t index)
     {
         auto numComponents = NumComponentsForType(type);
-        if(numComponents == 0 || index > NumComponentsForType(type))
+        if(numComponents == 0 || index >= numComponents)
         {
             return nullptr;
         }

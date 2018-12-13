@@ -1,10 +1,13 @@
-#include "drawableobject.h"
+#include "drawableentity.h"
 
 #include <algorithm>
 
+#include "ecs/components/batchedcomponent.h"
+#include "ecs/components/instancedcomponent.h"
+
 namespace drawable
 {
-DrawableObject::DrawableObject(Shader* shader)
+DrawableEntity::DrawableEntity(Shader* shader)
 {
     ShaderComponent shaderComp;
     shaderComp.shader = shader;
@@ -46,7 +49,7 @@ DrawableObject::DrawableObject(Shader* shader)
     }
 }
 
-void DrawableObject::setTransform(glm::mat4 transform)
+void DrawableEntity::setTransform(glm::mat4 transform)
 {
     m_transform = transform;
     for(int i=0 ; i<numVerts(); i++)
@@ -56,7 +59,7 @@ void DrawableObject::setTransform(glm::mat4 transform)
     update();
 }
 
-void DrawableObject::setTextureId(const int& id)
+void DrawableEntity::setTextureId(const int& id)
 {
     for(int i=0 ; i<numVerts(); i++)
     {
@@ -65,7 +68,7 @@ void DrawableObject::setTextureId(const int& id)
     update();
 }
 
-void DrawableObject::setColor(const glm::vec4& color)
+void DrawableEntity::setColor(const glm::vec4& color)
 {
     for(int i=0 ; i<numVerts(); i++)
     {
@@ -74,12 +77,12 @@ void DrawableObject::setColor(const glm::vec4& color)
     update();
 }
 
-void DrawableObject::setUpdateFunc(std::function<void()> fn)
+void DrawableEntity::setUpdateFunc(std::function<void()> fn)
 {
     m_updateFunc = fn;
 }
 
-void DrawableObject::update()
+void DrawableEntity::update()
 {
     if(m_updateFunc)
     {
@@ -91,7 +94,7 @@ void DrawableObject::update()
     }
 }
 
-const bbox& DrawableObject::calculateBBox()
+const bbox& DrawableEntity::calculateBBox()
 {
     for(int i=0 ; i<numVerts(); i++)
     {
@@ -106,7 +109,7 @@ const bbox& DrawableObject::calculateBBox()
     return m_bbox;
 }
 
-void DrawableObject::calculateNormals()
+void DrawableEntity::calculateNormals()
 {
     for(size_t i = 0; i<m_indices.size(); i+=3)
     {
@@ -125,8 +128,11 @@ void DrawableObject::calculateNormals()
     }
 }
 
-void DrawableObject::setInstanced()
+void DrawableEntity::setInstanced()
 {
+    InstancedComponent instanced;
+    AddComponentOfType(InstancedComponent::Type, &instanced);
+
     auto shaderComp = reinterpret_cast<ShaderComponent*>(GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
     if(shaderComp == nullptr)
     {
@@ -142,6 +148,12 @@ void DrawableObject::setInstanced()
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 2), 4, GL_FLOAT, false, sizeof(VertexComponent), 2 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
         m_vertexBuffer.useVertexAttrib(static_cast<uint32_t>(model + 3), 4, GL_FLOAT, false, sizeof(VertexComponent), 3 * sizeof(glm::vec4) + offsetof(VertexComponent, model), true);
     }
+}
+
+void DrawableEntity::setBatched()
+{
+    BatchedComponent batched;
+    AddComponentOfType(BatchedComponent::Type, &batched);
 }
 
 }

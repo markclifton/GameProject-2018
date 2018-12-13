@@ -1,4 +1,15 @@
-#include "renderer.h"
+#include "renderingsystem.h"
+
+#include "glm/matrix.hpp"
+
+#include <algorithm>
+#include <iostream>
+
+#include "shaders/shader.h"
+
+#include "ecs/entities/drawableentity.h"
+#include "ecs/components/batchedcomponent.h"
+#include "ecs/components/instancedcomponent.h"
 
 namespace ecs
 {
@@ -10,10 +21,11 @@ RendererSystem::RendererSystem()
 
 void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void** component)
 {
-    auto vertComponent = reinterpret_cast<VertexComponent*>(*component);
-    auto entity = reinterpret_cast<drawable::DrawableObject*>(vertComponent->entityHandle);
-
-    if(entity == nullptr)
+    auto baseComponent = reinterpret_cast<BaseComponent*>(*component);
+    auto entity = reinterpret_cast<drawable::DrawableEntity*>(baseComponent->entityHandle);
+    if( entity == nullptr
+            || entity->GetComponentByTypeAndIndex(BatchedComponent::Type, 0)
+            || entity->GetComponentByTypeAndIndex(InstancedComponent::Type, 0) )
     {
         return;
     }
@@ -26,11 +38,14 @@ void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void*
     {
         shaderComponent->shader->bind();
         shaderComponent->shader->setUniform("transform", glm::mat4(1.f));
-    }
 
-    if(entity->m_texture)
-    {
-        entity->m_texture->bind(1);
+
+        if(entity->m_texture)
+        {
+            std::vector<int> data {0};
+            shaderComponent->shader->setUniform("textures", static_cast<int>(data.size()), &data.front());
+            entity->m_texture->bind(0);
+        }
     }
 
     entity->m_indicesBuffer.bind();

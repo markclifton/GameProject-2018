@@ -8,7 +8,7 @@
 namespace drawable
 {
 Triangle::Triangle(glm::vec3 center, Shader* shader)
-    : DrawableObject (shader)
+    : DrawableEntity (shader)
 {
     m_indices.push_back(0);
     m_indices.push_back(2);

@@ -66,7 +66,7 @@ void Batch::submit(const int& numVerts, VertexComponent* vertices, const int& nu
     }
 }
 
-bool Batch::submit(DrawableObject* object)
+bool Batch::submit(DrawableEntity* object)
 {
     Texture* objectTexture = object->getTexture();
     if(objectTexture)

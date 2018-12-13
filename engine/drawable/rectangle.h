@@ -1,10 +1,10 @@
 #pragma once
 
-#include "drawableobject.h"
+#include "ecs/entities/drawableentity.h"
 
 namespace drawable
 {
-class Rectangle : public DrawableObject
+class Rectangle : public DrawableEntity
 {
 public:
     Rectangle(glm::vec3 center, Shader* shader);

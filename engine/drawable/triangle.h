@@ -3,11 +3,11 @@
 #include "glad/gl.h"
 #include <glm/vec3.hpp>
 
-#include "drawableobject.h"
+#include "ecs/entities/drawableentity.h"
 
 namespace drawable
 {
-class Triangle : public DrawableObject
+class Triangle : public DrawableEntity
 {
 public:
     Triangle(glm::vec3 center, Shader* shader);

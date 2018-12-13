@@ -24,7 +24,8 @@ void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
         }
 
         if(isValid)
-        {                std::vector<void*> componentUpdateVector;
+        {
+            std::vector<void*> componentUpdateVector;
             for(auto& component : ComponentsToUse)
             {
                 componentUpdateVector.push_back(entity->GetComponentByTypeAndIndex(component, 0));

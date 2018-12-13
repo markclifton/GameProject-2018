@@ -5,10 +5,10 @@
 
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffer.h"
-#include "drawable.h"
 #include "textures/texture.h"
 
 #include "ecs/ientity.h"
+#include "ecs/entities/drawableentity.h"
 #include "ecs/components/shadercomponent.h"
 #include "ecs/components/vertexcomponent.h"
 
@@ -20,13 +20,13 @@ struct bbox
     glm::vec3 max {0};
 };
 
-class DrawableObject : public ecs::IEntity
+class DrawableEntity : public ecs::IEntity
 {
 public:
-    DrawableObject(Shader* shader);
+    DrawableEntity(Shader* shader);
 
     void setTextureId(const int& id);
-    void setTexture( Texture* texture ) { m_texture = texture; setTextureId(0); }
+    void setTexture( Texture* texture ) { m_texture = texture; setTextureId(1); }
     Texture* getTexture() { return m_texture; }
 
     VertexComponent* verts() { return reinterpret_cast<VertexComponent*>(GetComponentByTypeAndIndex(VertexComponent::Type, 0)); }
@@ -44,6 +44,7 @@ public:
     void calculateNormals();
 
     void setInstanced();
+    void setBatched();
 
     inline void addVertex(VertexComponent& vertex) { AddComponentOfType(VertexComponent::Type, VertexComponent::CreationFN(this, &vertex)); }
     inline void setShader(ShaderComponent& shader) { AddComponentOfType(ShaderComponent::Type, ShaderComponent::CreationFN(this, &shader)); }

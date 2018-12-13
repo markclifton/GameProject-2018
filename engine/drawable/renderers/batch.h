@@ -9,7 +9,7 @@
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffer.h"
 #include "drawable/drawable.h"
-#include "drawable/drawableobject.h"
+#include "ecs/entities/drawableentity.h"
 
 //TODO: Broken (This is to become the Batch Rendering System)
 
@@ -23,7 +23,7 @@ public:
     Batch(Shader *shader, glm::mat4 transform = glm::mat4(1.f));
 
     void submit(const int& numVerts,  VertexComponent* vertices, const int& numIndices, GLint* indices);
-    bool submit(DrawableObject* object);
+    bool submit(DrawableEntity* object);
     void draw(glm::mat4 transform = glm::mat4(1.f)) override;
 
     inline const std::vector<Texture*>& getTextures() { return m_textures; }
@@ -32,7 +32,7 @@ private:
     std::vector<VertexComponent> m_vertices;
     std::vector<GLint> m_indices;
 
-    std::vector<std::pair<DrawableObject*, size_t>> m_objects; //TODO: Enable remove of objects
+    std::vector<std::pair<DrawableEntity*, size_t>> m_objects; //TODO: Enable remove of objects
     std::vector<Texture*> m_textures;
 
     buffers::VertexBuffer m_vbo;

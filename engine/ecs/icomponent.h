@@ -45,6 +45,8 @@ public:
     ENTITY_HANDLE entityHandle {nullptr};
 private:
     static std::vector<RAWCOMP> availableComponents_;
+    static std::mutex registerMutex_;
+    static COMP_TYPE nextType_;
 };
 
 template <typename Component>

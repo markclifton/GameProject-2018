@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "drawableobject.h"
+#include "ecs/entities/drawableentity.h"
 
 namespace drawable
 {
-class Model : public DrawableObject
+class Model : public DrawableEntity
 {
 public:
     Model(const std::string& path, Shader* shader);

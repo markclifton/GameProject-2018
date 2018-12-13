@@ -23,7 +23,7 @@ std::vector<std::string> split(const std::string& s, char seperator)
 namespace drawable
 {
 Model::Model(const std::string& path, Shader* shader)
-    : DrawableObject(shader)
+    : DrawableEntity(shader)
     , m_path(path)
 {
     loadModel();

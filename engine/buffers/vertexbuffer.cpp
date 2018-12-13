@@ -1,7 +1,5 @@
 #include "vertexbuffer.h"
 
-#include "drawable/drawableobject.h"
-
 namespace buffers
 {
 VertexBuffer::VertexBuffer()

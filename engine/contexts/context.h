@@ -11,7 +11,7 @@
 #include "lights/spot.h"
 
 #include "ecs/ecsmanager.h"
-#include "ecs/systems/renderer.h"
+#include "ecs/systems/renderingsystem.h"
 
 class Context
 {

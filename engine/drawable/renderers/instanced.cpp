@@ -71,7 +71,7 @@ void Instanced::submit(const int& numVerts, VertexComponent* vertices, const int
     }
 }
 
-bool Instanced::submit(DrawableObject* object)
+bool Instanced::submit(DrawableEntity* object)
 {
     Texture* objectTexture = object->getTexture();
     if(objectTexture)
