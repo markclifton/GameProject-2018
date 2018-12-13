@@ -30,7 +30,6 @@ void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void*
         return;
     }
 
-    size_t numVerts = static_cast<size_t>(entity->NumComponentsForType(VertexComponent::Type));
 
     auto useShader = (std::find(componentsToUse.begin(), componentsToUse.end(), ShaderComponent::Type) != componentsToUse.end());
     auto shaderComponent = reinterpret_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
@@ -38,7 +37,6 @@ void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void*
     {
         shaderComponent->shader->bind();
         shaderComponent->shader->setUniform("transform", glm::mat4(1.f));
-
 
         auto textureComp = reinterpret_cast<TextureComponent*>(entity->GetComponentByTypeAndIndex(TextureComponent::Type, 0));
         if( textureComp )
@@ -56,6 +54,8 @@ void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void*
     {
         entity->m_changed = false;
         entity->m_indicesBuffer.buffer(static_cast<long>(entity->m_indices.size()*sizeof(GLint)), reinterpret_cast<void*>(&entity->m_indices.front()));
+
+        size_t numVerts = static_cast<size_t>(entity->NumComponentsForType(VertexComponent::Type));
         entity->m_vertexBuffer.buffer(static_cast<long>(numVerts*sizeof(VertexComponent)), entity->verts());
     }
 
