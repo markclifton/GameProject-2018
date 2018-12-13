@@ -11,6 +11,10 @@
 
 #include "drawable/renderers/instanced.h"
 
+#include "ecs/components/cameracomponent.h"
+#include "ecs/components/shadercomponent.h"
+#include "ecs/components/texturecomponent.h"
+
 Context::Context(managers::SoundManager& soundManager, managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager)
     : soundManager_(soundManager)
     , shaderManager_(shaderManager)
@@ -27,31 +31,21 @@ Context::Context(managers::SoundManager& soundManager, managers::ShaderManager& 
 void Context::run()
 {
     // Shadow Pass
+    ecs::ECSManager::get().updateSystems({CameraComponent::Type, ShaderComponent::Type, TextureComponent::Type});
+
     glm::mat4 pS, vS;
-    shadowCamera_.Update();
-    shadowCamera_.GetMatricies(pS, vS);
+    shadowEntity_->cameraComponent.camera->GetMatricies(pS, vS);
     pS = glm::ortho<float>(-10, 10, -10, 10, 1, 100);
-    {
-        shadowTexture_->setAsRenderTarget();
-
-        Shader* s = shaderManager_.getShader("Shadow");
-        s->bind();
-        s->setUniform("projection", pS);
-        s->setUniform("view", vS);
-
-        stack_.draw();
-        ecsManager_.updateSystems({VertexComponent::Type});
-
-        windowManager_.setAsRenderTarget();
-    }
 
     // Regular Pass
     {
+        windowManager_.setAsRenderTarget();
+
         glm::mat4 p, v;
         m_camera.Update();
         m_camera.GetMatricies(p, v);
 
-        shadowTexture_->bind(0);
+        textureManager_.find("Shadows")->bind(0);
 
         Shader* s = shaderManager_.getShader("BasicShader");
         s->bind();
@@ -72,13 +66,17 @@ void Context::run()
         lights::setLights(spotlights_, s, v);
 
         stack_.draw();
-        ecsManager_.updateSystems({VertexComponent::Type, ShaderComponent::Type});
+        ecs::ECSManager::get().updateSystems({VertexComponent::Type, ShaderComponent::Type});
     }
 }
 
 void Context::loadResources()
 {
+    //START TEST CODE (FIX MEMORY LEAKS...)
+    //Light Representation
     std::cout << "Loading Resources!\n" << std::endl;
+    ecs::ECSManager::get().addSystem(1, &renderingSystem_); //TODO: Rethink this...
+    ecs::ECSManager::get().addSystem(2, &shadowSystem_); //TODO: Rethink this...
 
     shaderManager_.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs");
     shaderManager_.loadShader("Shadow", "resources/shaders/shadow.vs", "resources/shaders/shadow.fs");
@@ -87,27 +85,20 @@ void Context::loadResources()
     Shader* s = shaderManager_.getShader("BasicShader");
     s->bind();
 
-    shadowCamera_.Update(true);
-    shadowCamera_.setPosition(glm::vec3(1.5, 10, 5.5));
-    shadowCamera_.setPitch(glm::radians(-89.f));
-
     textureManager_.load("smile", "resources/images/smile.tif");
     textureManager_.load("smile2", "resources/images/smile2.tif");
     textureManager_.load("dirt", "resources/images/dirt.tif");
 
     textureManager_.submitTexture(std::make_unique<Texture>("Shadows", 1024, 1024));
-    shadowTexture_ = textureManager_.find("Shadows");
+    shadowEntity_ = new ecs::ShadowEntity(shaderManager_.getShader("Shadow"), textureManager_.find("Shadows"));
+    ecs::ECSManager::get().addEntity(shadowEntity_);
 
     soundManager_.loadSound("rain", "resources/sounds/rain.mp3");
 
-    ecsManager_.addSystem(1, &renderingSystem_);
-
-    //START TEST CODE
-    //Light Representation
     {
         auto m = new drawable::Model("resources/models/cube.obj", s);
         m->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-1.5f,10,-5.5f)));
-        ecsManager_.addEntity(m);
+        ecs::ECSManager::get().addEntity(m);
 
         lights::PointLight plight;
         plight.color = glm::vec3(1,1,1);
@@ -119,7 +110,7 @@ void Context::loadResources()
         auto m4 = new drawable::Model("resources/models/cube.obj", s);
         m4->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.f,-.5f,-10.5f)));
         m4->setColor(glm::vec4(1,0,1,1));
-        ecsManager_.addEntity(m4);
+        ecs::ECSManager::get().addEntity(m4);
 
         lights::SpotLight slight;
         slight.color = glm::vec3(1,0,1);
@@ -136,14 +127,14 @@ void Context::loadResources()
         auto m2 = new drawable::Model("resources/models/teapot.obj", s);
         m2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-3.1f,-1,-10.f)));
         m2->calculateNormals();
-        ecsManager_.addEntity(m2);
+        ecs::ECSManager::get().addEntity(m2);
     }
 
     // Model 2 - suzanne
     {
         auto m3 = new drawable::Model("resources/models/monkey.obj", s);
         m3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-5.f,1,-5.f)));
-        ecsManager_.addEntity(m3);
+        ecs::ECSManager::get().addEntity(m3);
     }
 
     // Floor
@@ -187,18 +178,18 @@ void Context::loadResources()
         drawable::Rectangle* r = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r->setTexture(textureManager_.find("smile"));
         r->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(-.5f,0,0)));
-        ecsManager_.addEntity(r);
+        ecs::ECSManager::get().addEntity(r);
 
         drawable::Rectangle* r2 = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r2->setTexture(textureManager_.find("smile2"));
         r2->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(1.5f,0,0)));
-        ecsManager_.addEntity(r2);
+        ecs::ECSManager::get().addEntity(r2);
 
         // Shadow Map
         drawable::Rectangle* r3 = new drawable::Rectangle(glm::vec3(0,0,0), s);
         r3->setTexture(textureManager_.find("Shadows"));
         r3->setTransform(glm::translate(glm::mat4(1.f), glm::vec3(3.5f,0,0)));
-        ecsManager_.addEntity(r3);
+        ecs::ECSManager::get().addEntity(r3);
     }
     //END TEST CODE
 

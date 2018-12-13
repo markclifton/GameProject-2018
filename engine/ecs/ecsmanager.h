@@ -13,6 +13,12 @@ namespace ecs
 class ECSManager
 {
 public:
+    static ECSManager& get()
+    {
+        static ECSManager manager;
+        return manager;
+    }
+
     void updateSystems(std::vector<COMP_TYPE> ComponentsToUse);
     void addSystem(const size_t& SystemID, ISystem* system);
     void removeSystem(const size_t& SystemID);

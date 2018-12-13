@@ -6,5 +6,5 @@
 
 struct TextureComponent : public ecs::IComponent<TextureComponent>
 {
-    Texture* shader;
+    Texture* texture;
 };

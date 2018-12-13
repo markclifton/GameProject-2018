@@ -12,6 +12,8 @@
 
 #include "ecs/ecsmanager.h"
 #include "ecs/systems/renderingsystem.h"
+#include "ecs/systems/shadowsystem.h"
+#include "ecs/entities/shadowentity.h"
 
 class Context
 {
@@ -33,8 +35,8 @@ private:
     std::vector<lights::PointLight> pointlights_;
     std::vector<lights::SpotLight> spotlights_;
 
-    Texture* shadowTexture_ {nullptr};
-
-    ecs::ECSManager ecsManager_;
     ecs::RendererSystem renderingSystem_;
+    ecs::ShadowSystem shadowSystem_;
+
+    ecs::ShadowEntity* shadowEntity_;
 };
