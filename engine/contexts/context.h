@@ -39,4 +39,5 @@ private:
     ecs::ShadowSystem shadowSystem_;
 
     ecs::ShadowEntity* shadowEntity_;
+    bool enableShadows_ {true};
 };

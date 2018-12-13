@@ -76,7 +76,10 @@ void Context::loadResources()
     //Light Representation
     std::cout << "Loading Resources!\n" << std::endl;
     ecs::ECSManager::get().addSystem(1, &renderingSystem_); //TODO: Rethink this...
-    ecs::ECSManager::get().addSystem(2, &shadowSystem_); //TODO: Rethink this...
+    if(enableShadows_)
+    {
+        ecs::ECSManager::get().addSystem(2, &shadowSystem_); //TODO: Rethink this...
+    }
 
     shaderManager_.loadShader("FBO", "resources/shaders/fbo.vs", "resources/shaders/fbo.fs");
     shaderManager_.loadShader("Shadow", "resources/shaders/shadow.vs", "resources/shaders/shadow.fs");
