@@ -10,6 +10,7 @@
 #include "ecs/ientity.h"
 #include "ecs/entities/drawableentity.h"
 #include "ecs/components/shadercomponent.h"
+#include "ecs/components/texturecomponent.h"
 #include "ecs/components/vertexcomponent.h"
 
 namespace drawable
@@ -26,8 +27,14 @@ public:
     DrawableEntity(Shader* shader);
 
     void setTextureId(const int& id);
-    void setTexture( Texture* texture ) { m_texture = texture; setTextureId(1); }
-    Texture* getTexture() { return m_texture; }
+    void setTexture( Texture* texture )
+    {
+        TextureComponent texComp;
+        texComp.texture = texture;
+        AddComponentOfType(TextureComponent::Type, TextureComponent::CreationFN(this, &texComp));
+        setTextureId(1);
+    }
+    Texture* getTexture() { return reinterpret_cast<TextureComponent*>(GetComponentByTypeAndIndex(TextureComponent::Type, 0))->texture; }
 
     VertexComponent* verts() { return reinterpret_cast<VertexComponent*>(GetComponentByTypeAndIndex(VertexComponent::Type, 0)); }
     int numVerts() { return static_cast<int>(NumComponentsForType(VertexComponent::Type)); }
@@ -53,7 +60,6 @@ public:
 
 public:
     std::vector<GLint> m_indices;
-    Texture* m_texture {nullptr};
     glm::mat4 m_transform {1.f};
 
     buffers::VertexBuffer m_vertexBuffer;

@@ -40,11 +40,12 @@ void RendererSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void*
         shaderComponent->shader->setUniform("transform", glm::mat4(1.f));
 
 
-        if(entity->m_texture)
+        auto textureComp = reinterpret_cast<TextureComponent*>(entity->GetComponentByTypeAndIndex(TextureComponent::Type, 0));
+        if( textureComp )
         {
             std::vector<int> data {0};
             shaderComponent->shader->setUniform("textures", static_cast<int>(data.size()), &data.front());
-            entity->m_texture->bind(0);
+            textureComp->texture->bind(0);
         }
     }
 
