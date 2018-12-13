@@ -30,7 +30,6 @@ private:
     drawable::renderer::Layer stack_;
 
     Camera3D m_camera;
-    Camera3D shadowCamera_;
 
     std::vector<lights::PointLight> pointlights_;
     std::vector<lights::SpotLight> spotlights_;

@@ -6,6 +6,7 @@ namespace ecs
 ShadowEntity::ShadowEntity(Shader* shader, Texture* texture)
 {
     cameraComponent.camera = new Camera3D();
+    cameraComponent.camera->SetViewport(0, 0, 1024, 1024);
     cameraComponent.camera->Update(true);
     cameraComponent.camera->setPosition(glm::vec3(1.5, 10, 5.5));
     cameraComponent.camera->setPitch(glm::radians(-89.f));

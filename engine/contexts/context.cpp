@@ -23,7 +23,6 @@ Context::Context(managers::SoundManager& soundManager, managers::ShaderManager& 
     , stack_(shaderManager, textureManager)
 {
     m_camera.SetViewport(0, 0, 1280, 720);
-    shadowCamera_.SetViewport(0, 0, 1024, 1024);
     windowManager_.registerHandler(&m_camera);
     loadResources();
 }
