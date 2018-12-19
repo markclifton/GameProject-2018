@@ -15,25 +15,19 @@
 #include "ecs/systems/shadowsystem.h"
 #include "ecs/entities/shadowentity.h"
 
-class Context
+namespace ps
+{
+class ContextBase
 {
 public:
-    Context(managers::SoundManager& soundManager, managers::ShaderManager& shaderManager, managers::TextureManager& textureManager, managers::WindowManager& windowManager);
-    void run();
-    void loadResources();
+    ContextBase();
+    virtual void run();
+    virtual void loadResources();
 
-private:
+protected:
     managers::SoundManager& soundManager_;
     managers::ShaderManager& shaderManager_;
     managers::TextureManager& textureManager_;
     managers::WindowManager& windowManager_;
-    drawable::renderer::Layer stack_;
-
-    Camera3D m_camera;
-
-    std::vector<lights::PointLight> pointlights_;
-    std::vector<lights::SpotLight> spotlights_;
-
-    std::shared_ptr<ecs::ShadowEntity> shadowEntity_ {nullptr};
-    bool enableShadows_ {true};
 };
+}

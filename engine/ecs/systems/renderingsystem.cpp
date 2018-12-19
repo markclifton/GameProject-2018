@@ -11,6 +11,8 @@
 #include "ecs/components/batchedcomponent.h"
 #include "ecs/components/instancedcomponent.h"
 
+namespace ps
+{
 namespace ecs
 {
 RenderingSystem::RenderingSystem()
@@ -61,6 +63,5 @@ void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void
 
     glDrawElements(GL_TRIANGLES, static_cast<int>(entity->m_indices.size()), GL_UNSIGNED_INT, nullptr);
 }
-
-
+}
 }

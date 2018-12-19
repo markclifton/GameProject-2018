@@ -9,6 +9,8 @@
 #include "ientity.h"
 #include "isystem.h"
 
+namespace ps
+{
 namespace ecs
 {
 class ECSManager
@@ -31,4 +33,5 @@ private:
     std::vector<std::shared_ptr<IEntity>> entities_;
 
 };
+}
 }

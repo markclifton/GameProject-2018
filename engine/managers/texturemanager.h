@@ -14,13 +14,21 @@
 
 #include "textures/texture.h"
 
+namespace ps
+{
 namespace managers
 {
 // TODO: not thread-safe
 class TextureManager
 {
-public:
     TextureManager();
+public:
+    static TextureManager& Get()
+    {
+        static TextureManager manager;
+        return manager;
+    }
+
     virtual ~TextureManager();
 
     //TODO: Make name a uuid or some other identifier, string is horrible.
@@ -46,4 +54,5 @@ protected:
 
     std::vector<std::unique_ptr<Texture>> m_textures;
 };
+}
 }

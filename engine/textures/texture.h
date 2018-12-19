@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+namespace ps
+{
 class Texture
 {
 public:
@@ -31,3 +33,4 @@ private:
     int  m_width {0};
     int  m_height {0};
 };
+}

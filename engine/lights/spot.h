@@ -4,6 +4,8 @@
 
 #include "shaders/shader.h"
 
+namespace ps
+{
 namespace lights
 {
 struct SpotLight
@@ -17,4 +19,5 @@ struct SpotLight
 };
 
 void setLights(const std::vector<SpotLight>& lights, Shader* shader, glm::mat4 view);
+}
 }

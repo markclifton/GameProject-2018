@@ -1,5 +1,7 @@
 #include "shadermanager.h"
 
+namespace ps
+{
 namespace managers
 {
 ShaderManager::ShaderManager()
@@ -31,5 +33,6 @@ Shader* ShaderManager::getShader(const std::string& name)
 void ShaderManager::reset()
 {
     m_shaders.clear();
+}
 }
 }

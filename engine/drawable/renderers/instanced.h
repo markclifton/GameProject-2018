@@ -10,6 +10,8 @@
 
 //TODO: Broken (This is to become the Instanced Rendering System)
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -43,5 +45,6 @@ private:
     bool m_changed { true };
 };
 
+}
 }
 }

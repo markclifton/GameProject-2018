@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+namespace ps
+{
 Texture::Texture(const std::string& name, const std::string& filename, GLenum image_format, GLint internal_format, GLint level, GLint border)
     : m_name(name)
 {
@@ -103,4 +105,5 @@ void Texture::bind(const uint32_t& index)
 {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
+}
 }

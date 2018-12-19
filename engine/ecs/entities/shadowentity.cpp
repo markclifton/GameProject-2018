@@ -1,8 +1,9 @@
 #include "shadowentity.h"
 
+namespace ps
+{
 namespace ecs
 {
-
 ShadowEntity::ShadowEntity(Shader* shader, Texture* texture)
 {
     cameraComponent.camera = new Camera3D();
@@ -21,5 +22,5 @@ ShadowEntity::ShadowEntity(Shader* shader, Texture* texture)
     AddComponentOfType(ShaderComponent::Type, ShaderComponent::CreationFN(this, &shaderComponent));
     AddComponentOfType(TextureComponent::Type, TextureComponent::CreationFN(this, &textureComponent));
 }
-
+}
 }

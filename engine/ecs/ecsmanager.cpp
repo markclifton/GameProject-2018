@@ -1,5 +1,7 @@
 #include "ecsmanager.h"
 
+namespace ps
+{
 namespace ecs
 {
 void ECSManager::updateSystems(std::vector<COMP_TYPE> ComponentsToUse)
@@ -76,4 +78,5 @@ void ECSManager::addEntity(std::shared_ptr<IEntity> entity)
     entities_.emplace_back(entity);
 }
 
+}
 }

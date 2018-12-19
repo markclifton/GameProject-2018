@@ -6,6 +6,8 @@
 #include "ecs/components/shadercomponent.h"
 #include "ecs/components/texturecomponent.h"
 
+namespace ps
+{
 namespace ecs
 {
 class ShadowEntity : public ecs::IEntity
@@ -15,4 +17,5 @@ public:
 
     CameraComponent cameraComponent;
 };
+}
 }

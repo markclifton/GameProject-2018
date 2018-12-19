@@ -13,6 +13,8 @@
 
 //TODO: Broken (This is to become the Batch Rendering System)
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -41,5 +43,6 @@ private:
     glm::mat4 m_tranform {1.f};
     bool m_changed { true };
 };
+}
 }
 }

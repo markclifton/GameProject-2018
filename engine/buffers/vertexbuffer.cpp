@@ -1,5 +1,7 @@
 #include "vertexbuffer.h"
 
+namespace ps
+{
 namespace buffers
 {
 VertexBuffer::VertexBuffer()
@@ -79,4 +81,5 @@ void VertexBuffer::useVertexAttribDivisor(uint32_t vertexPosition)
     m_vertexAttribDivisors.push_back(vertexPosition);
 }
 
+}
 }

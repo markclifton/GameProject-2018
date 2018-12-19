@@ -3,6 +3,8 @@
 #include <map>
 #include <mutex>
 
+namespace ps
+{
 typedef unsigned long MemoryHandle;
 typedef unsigned char* MemoryBlock;
 
@@ -21,4 +23,5 @@ private:
     std::mutex mutex_;
     std::map<MemoryHandle, MemoryBlock> allocatedMemoryMap_;
 };
+}
 }

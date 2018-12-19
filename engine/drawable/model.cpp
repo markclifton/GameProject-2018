@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+namespace ps
+{
 namespace
 {
 std::vector<std::string> split(const std::string& s, char seperator)
@@ -118,5 +120,6 @@ void Model::loadModel()
     {
         //Failed to open
     }
+}
 }
 }

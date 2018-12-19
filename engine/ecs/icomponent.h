@@ -6,6 +6,8 @@
 
 #include "managers/memorymanager.h"
 
+namespace ps
+{
 namespace ecs
 {
 class BaseComponent;
@@ -79,5 +81,5 @@ MemoryBlock IComponent<Component>::componentZero(managers::MemoryManager::Get().
 
 template <typename Component>
 unsigned long IComponent<Component>::componentTotalOffset(0);
-
+}
 }

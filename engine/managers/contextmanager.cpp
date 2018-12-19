@@ -2,6 +2,8 @@
 
 #include <memory>
 
+namespace ps
+{
 namespace managers
 {
 ContextManager::ContextManager()
@@ -12,7 +14,7 @@ ContextManager::~ContextManager()
 {
 }
 
-Context* ContextManager::find(const std::string& name)
+ContextBase* ContextManager::find(const std::string& name)
 {
     for(auto& contextpair : m_contexts)
     {
@@ -35,7 +37,7 @@ bool ContextManager::setContext(const std::string& name)
     return false;
 }
 
-bool ContextManager::addContext(const std::string& name, std::unique_ptr<Context> state)
+bool ContextManager::addContext(const std::string& name, std::unique_ptr<ContextBase> state)
 {
     auto context = find(name);
     if(context == nullptr)
@@ -57,7 +59,6 @@ bool ContextManager::removeContext(const std::string& name)
                 return false;
             }
 
-            //TODO: fix me, gross...
             m_contexts[i].first = m_contexts.back().first;
             m_contexts[i].second = std::move(m_contexts.back().second);
             m_contexts.pop_back();
@@ -77,7 +78,8 @@ void ContextManager::run()
 
 void ContextManager::reset()
 {
-    m_activeContext = nullptr; //TODO: not thread-safe
+    m_activeContext = nullptr;
     m_contexts.clear();
+}
 }
 }

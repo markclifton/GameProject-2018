@@ -2,6 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
+namespace ps
+{
 void Camera3D::Update(bool force) {
     if(!force)
     {
@@ -180,4 +182,4 @@ void Camera3D::process(int key, int /*scancode*/, int action, int /*mods*/)
         break;
     }
 }
-
+}

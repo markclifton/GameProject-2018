@@ -2,6 +2,8 @@
 
 #include "glad/gl.h"
 
+namespace ps
+{
 namespace buffers
 {
 class IndexBuffer
@@ -16,4 +18,5 @@ public:
 private:
     GLuint m_ibo;
 };
+}
 }

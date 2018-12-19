@@ -5,6 +5,8 @@
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffer.h"
 
+namespace ps
+{
 namespace drawable
 {
 Triangle::Triangle(glm::vec3 center, Shader* shader)
@@ -31,5 +33,6 @@ Triangle::Triangle(glm::vec3 center, Shader* shader)
     addVertex(v1);
     addVertex(v2);
     addVertex(v3);
+}
 }
 }

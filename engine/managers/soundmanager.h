@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+namespace ps
+{
 struct irrKlangDeleter
 {
     void operator()(irrklang::ISoundEngine* ptr){
@@ -21,10 +23,16 @@ namespace managers
 {
 class SoundManager
 {
-public:
     SoundManager()
         : soundEngine_(irrklang::createIrrKlangDevice())
     {
+    }
+public:
+
+    static SoundManager& Get()
+    {
+        static SoundManager manager;
+        return manager;
     }
 
     //TODO: Load sounds into a common file...
@@ -60,4 +68,5 @@ private:
     std::map<std::string, std::string> soundMap_;
     std::map<std::string, irrklang::ISound*> activeSoundMap_;
 };
+}
 }

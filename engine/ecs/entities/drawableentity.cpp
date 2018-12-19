@@ -5,6 +5,8 @@
 #include "ecs/components/batchedcomponent.h"
 #include "ecs/components/instancedcomponent.h"
 
+namespace ps
+{
 namespace drawable
 {
 DrawableEntity::DrawableEntity(Shader* shader)
@@ -161,4 +163,5 @@ void DrawableEntity::setBatched()
     AddComponentOfType(BatchedComponent::Type, &batched);
 }
 
+}
 }

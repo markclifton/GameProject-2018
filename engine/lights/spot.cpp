@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace ps
+{
 namespace lights
 {
 void setLights(const std::vector<SpotLight>& lights, Shader* shader, glm::mat4 view)
@@ -27,5 +29,6 @@ void setLights(const std::vector<SpotLight>& lights, Shader* shader, glm::mat4 v
         shader->setUniform(uniformNameBase + "direction", glm::vec3(dir.x, dir.y, dir.z));
         shader->setUniform(uniformNameBase + "cutoff", lights[i].cutoff);
     }
+}
 }
 }

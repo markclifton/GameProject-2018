@@ -6,21 +6,21 @@
 #include "managers/texturemanager.h"
 #include "managers/windowmanager.h"
 
+namespace ps
+{
 class Game
 {
 public:
     Game();
     virtual ~Game();
 
-    void run();
-
 protected:
+    inline void toggleFPSCounter() { fpsCounter_ = !fpsCounter_; }
     virtual void setup();
+    managers::ContextManager contextManager_;
 
 private:
-    managers::ContextManager m_contextManager;
-    managers::SoundManager m_soundManager;
-    managers::ShaderManager m_shaderManager;
-    managers::TextureManager m_textureManager;
-    managers::WindowManager m_windowManager;
+    void run();
+    bool fpsCounter_ {false};
 };
+}

@@ -14,6 +14,8 @@
 #include "ecs/components/texturecomponent.h"
 #include "ecs/components/vertexcomponent.h"
 
+namespace ps
+{
 namespace drawable
 {
 class DrawableEntity : public ecs::IEntity
@@ -63,4 +65,5 @@ public:
 
     std::function<void()> m_updateFunc;
 };
+}
 }

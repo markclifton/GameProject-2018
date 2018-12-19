@@ -1,5 +1,7 @@
 #include "layer.h"
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -38,6 +40,7 @@ void Layer::draw(glm::mat4 transform)
 void Layer::submit(Drawable* drawable, bool ownThis)
 {
     m_allChildren[ownThis ? 1 : 0].push_back(drawable);
+}
 }
 }
 }

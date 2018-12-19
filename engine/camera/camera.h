@@ -13,6 +13,8 @@
 
 //TODO: Connect Camera to a timer, Movement occurs every frame otherwise
 
+namespace ps
+{
 class Camera3D : public utils::KeyHandler
 {
 public:
@@ -73,3 +75,4 @@ private:
     double m_speedModifier = 1;
     utils::Timer m_timer;
 };
+}

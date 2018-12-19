@@ -6,8 +6,8 @@
 
 #include "icomponent.h"
 
-//manager of entities?
-
+namespace ps
+{
 namespace
 {
 unsigned long GetUniqueID()
@@ -60,4 +60,5 @@ private:
     const unsigned long id_;
     std::map<COMP_TYPE, std::vector<void*>> componentsMap_;
 };
+}
 }

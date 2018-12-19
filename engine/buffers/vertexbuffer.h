@@ -4,6 +4,8 @@
 
 #include <vector>
 
+namespace ps
+{
 namespace buffers
 {
 struct VertexAttrib
@@ -35,4 +37,5 @@ private:
     std::vector<VertexAttrib> m_vertexAttribs;
     std::vector<uint32_t> m_vertexAttribDivisors;
 };
+}
 }

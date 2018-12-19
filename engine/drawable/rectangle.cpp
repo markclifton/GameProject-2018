@@ -5,6 +5,8 @@
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexbuffer.h"
 
+namespace ps
+{
 namespace drawable
 {
 Rectangle::Rectangle(glm::vec3 center, Shader* shader)
@@ -39,5 +41,6 @@ Rectangle::Rectangle(glm::vec3 center, Shader* shader)
     addVertex(v2);
     addVertex(v3);
     addVertex(v4);
+}
 }
 }

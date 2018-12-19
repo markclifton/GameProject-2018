@@ -4,6 +4,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -124,7 +126,7 @@ void Batch::draw(glm::mat4 transform)
 {
     if(m_shader != nullptr)
     {
-       // m_shader->bind();
+        // m_shader->bind();
         m_shader->setUniform("transform", transform * m_transform);
     }
 
@@ -152,6 +154,7 @@ void Batch::draw(glm::mat4 transform)
     m_vbo.bind();
 
     glDrawElements(m_drawType, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, nullptr);
+}
 }
 }
 }

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace ps
+{
 namespace ecs
 {
 COMP_TYPE BaseComponent::RegisterComponent(COMP_SIZE size, COMP_CTOR ctor, COMP_DTOR dtor)
@@ -44,4 +46,5 @@ const std::vector<RAWCOMP>& BaseComponent::GetAllComponents()
 std::mutex BaseComponent::registerMutex_;
 COMP_TYPE BaseComponent::nextType_ = 0;
 std::vector<RAWCOMP> BaseComponent::availableComponents_;
+}
 }

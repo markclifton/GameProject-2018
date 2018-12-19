@@ -4,9 +4,10 @@
 
 #include "shaders/shader.h"
 
+namespace ps
+{
 namespace lights
 {
-
 struct PointLight
 {
     glm::vec3 color;
@@ -16,4 +17,5 @@ struct PointLight
 };
 
 void setLights(const std::vector<PointLight>& lights, Shader* shader, glm::mat4 view);
+}
 }

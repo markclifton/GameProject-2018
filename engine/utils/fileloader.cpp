@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+namespace ps
+{
 namespace utils
 {
 std::string loadFile(const std::string& path)
@@ -24,5 +26,6 @@ std::string loadFile(const std::string& path)
         std::cerr << "Failed to open file: " << path << std::endl;
     }
     return result;
+}
 }
 }

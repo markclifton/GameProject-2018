@@ -9,6 +9,8 @@
 #include "ecs/ecsmanager.h"
 #include "ecs/entities/shadowentity.h"
 
+namespace ps
+{
 namespace ecs
 {
 ShadowSystem::ShadowSystem()
@@ -40,6 +42,5 @@ void ShadowSystem::update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*de
 
     ecs::ECSManager::get().updateSystems({VertexComponent::Type});
 }
-
-
+}
 }

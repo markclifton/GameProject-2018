@@ -6,6 +6,8 @@
 #include "managers/shadermanager.h"
 #include "managers/texturemanager.h"
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -25,5 +27,6 @@ private:
     managers::ShaderManager& m_sm;
     managers::TextureManager& m_tm;
 };
+}
 }
 }

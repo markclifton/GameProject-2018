@@ -5,6 +5,8 @@
 #include "utils/keyhandler.h"
 #include "utils/mousehandler.h"
 
+namespace ps
+{
 namespace
 {
 void key_forwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -155,4 +157,6 @@ bool WindowManager::create()
     //glEnable(GL_DEPTH_CLAMP);
 
     return true;
-}}
+}
+}
+}

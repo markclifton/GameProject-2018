@@ -6,6 +6,8 @@
 
 #include "icomponent.h"
 
+namespace ps
+{
 namespace ecs
 {
 class ISystem
@@ -24,4 +26,5 @@ protected:
     std::vector<COMP_TYPE> components_;
 
 };
+}
 }

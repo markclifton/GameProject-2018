@@ -9,6 +9,8 @@
 
 #include "utils/timer.h"
 
+namespace ps
+{
 namespace utils
 {
 class KeyHandler;
@@ -27,8 +29,14 @@ namespace managers
 {
 class WindowManager
 {
-public:
     WindowManager();
+public:
+    static WindowManager& Get()
+    {
+        static WindowManager manager;
+        return manager;
+    }
+
     ~WindowManager();
 
     inline GLFWwindow* getWindow() { return m_window.get(); }
@@ -66,4 +74,5 @@ private:
     utils::Timer m_timer;
     GLuint m_vao;
 };
+}
 }

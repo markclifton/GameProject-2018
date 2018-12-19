@@ -4,6 +4,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+namespace ps
+{
 namespace drawable
 {
 namespace renderer
@@ -150,5 +152,6 @@ void Instanced::submit(const glm::mat4& transform)
     m_changed = true;
 }
 
+}
 }
 }

@@ -7,6 +7,8 @@
 
 #include "utils/fileloader.h"
 
+namespace ps
+{
 Shader::Shader(const std::string& vs, const std::string& fs)
 {
     if( !compile(vs, fs) )
@@ -154,4 +156,5 @@ void Shader::create(const GLuint& vert, const GLuint& frag)
     glAttachShader(m_program, frag);
 
     glLinkProgram(m_program);
+}
 }

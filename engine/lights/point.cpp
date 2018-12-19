@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace ps
+{
 namespace lights
 {
 void setLights(const std::vector<PointLight>& lights, Shader* shader, glm::mat4 view)
@@ -23,5 +25,6 @@ void setLights(const std::vector<PointLight>& lights, Shader* shader, glm::mat4 
         glm::vec4 pos = view * glm::vec4(lights[i].pos_w, 1);
         shader->setUniform(uniformNameBase + "pos_w", glm::vec3(pos.x, pos.y, pos.z));
     }
+}
 }
 }

@@ -4,6 +4,8 @@
 
 #include "ecs/entities/drawableentity.h"
 
+namespace ps
+{
 namespace drawable
 {
 class Model : public DrawableEntity
@@ -15,4 +17,5 @@ private:
     void loadModel();
     std::string m_path {""};
 };
+}
 }

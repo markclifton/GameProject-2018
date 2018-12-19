@@ -14,10 +14,10 @@ file(GLOB SOURCES
     engine/**/**/*.h
     engine/**/**/*.cpp
     dependencies/independent/glad/gl.cpp
-    main.cpp
     )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+#add_executable(${PROJECT_NAME} ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${SOURCES} )
 
 include_directories(${CMAKE_SOURCE_DIR}/engine)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/independent)

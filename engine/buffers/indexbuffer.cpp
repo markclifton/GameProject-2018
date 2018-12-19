@@ -1,5 +1,7 @@
 #include "indexbuffer.h"
 
+namespace ps
+{
 namespace buffers
 {
 IndexBuffer::IndexBuffer()
@@ -21,5 +23,6 @@ void IndexBuffer::buffer(const long& totalSize, void* indices, const unsigned in
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, totalSize, indices, type);
+}
 }
 }

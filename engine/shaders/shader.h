@@ -5,6 +5,8 @@
 
 #include <string>
 
+namespace ps
+{
 class Shader
 {
 public:
@@ -28,3 +30,4 @@ private:
 
     GLuint m_program;
 };
+}

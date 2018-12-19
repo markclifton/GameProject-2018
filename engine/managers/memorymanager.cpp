@@ -1,5 +1,7 @@
 #include "memorymanager.h"
 
+namespace ps
+{
 namespace managers
 {
 MemoryManager& MemoryManager::Get()
@@ -39,5 +41,6 @@ void MemoryManager::ReleaseMemory(const MemoryHandle& handle)
         delete [] allocatedMemoryMap_[handle];
         allocatedMemoryMap_.erase(handle);
     }
+}
 }
 }

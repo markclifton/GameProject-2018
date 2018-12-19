@@ -1,5 +1,7 @@
 #include "timer.h"
 
+namespace ps
+{
 namespace utils
 {
 Timer::Timer()
@@ -20,4 +22,5 @@ double Timer::get()
     return time.count();
 }
 
+}
 }
