@@ -2,24 +2,39 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+#set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(ProjectSane)
 
 file(GLOB SOURCES
-    engine/*.h
-    engine/*.cpp
-    engine/**/*.h
-    engine/**/*.cpp
-    engine/**/**/*.h
-    engine/**/**/*.cpp
+    ps/*.h
+    ps/*.cpp
+    ps/**/*.h
+    ps/**/*.cpp
+    ps/**/**/*.h
+    ps/**/**/*.cpp
     dependencies/independent/glad/gl.cpp
-    )
+)
+
+file(GLOB HEADERS
+    ps/*.h
+    ps/**/*.h
+    ps/**/**/*.h
+)
 
 #add_executable(${PROJECT_NAME} ${SOURCES})
 add_library(${PROJECT_NAME} STATIC ${SOURCES} )
 
-include_directories(${CMAKE_SOURCE_DIR}/engine)
+INSTALL(TARGETS ${PROJECT_NAME}
+    DESTINATION ProjectSane/lib
+)
+
+INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/ps/
+    DESTINATION ProjectSane/includes/ps
+    FILES_MATCHING PATTERN "*.h*"
+)
+
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/independent)
 
 IF (WIN32)
