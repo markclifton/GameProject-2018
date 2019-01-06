@@ -26,6 +26,7 @@ void* CreateComp(ENTITY_HANDLE handle, BaseComponent* component)
     Component* newComponent = new(Component::componentZero + Component::componentTotalOffset) Component(*reinterpret_cast<Component*>(component));
     Component::componentTotalOffset += Component::Size;
     newComponent->entityHandle = handle;
+    return newComponent;
 }
 
 template <typename Component>
@@ -77,7 +78,7 @@ template <typename Component>
 const COMP_DTOR IComponent<Component>::ReleaseFN(ReleaseComp<Component>);
 
 template <typename Component>
-MemoryBlock IComponent<Component>::componentZero(managers::MemoryManager::Get().AllocateMemory(Type, 1e9));
+MemoryBlock IComponent<Component>::componentZero(managers::MemoryManager::Get().AllocateMemory(Type, static_cast<unsigned long>(1e9)));
 
 template <typename Component>
 unsigned long IComponent<Component>::componentTotalOffset(0);

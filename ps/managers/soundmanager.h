@@ -11,59 +11,29 @@
 
 namespace ps
 {
-struct irrKlangDeleter
-{
-    void operator()(irrklang::ISoundEngine* ptr){
-        ptr->drop();
-    }
-};
 
 //TODO: This class is basic and will need further development
 namespace managers
 {
 class SoundManager
 {
-    SoundManager()
-        : soundEngine_(irrklang::createIrrKlangDevice())
+    struct irrKlangDeleter
     {
-    }
+        void operator()(irrklang::ISoundEngine* ptr){
+            ptr->drop();
+        }
+    };
 public:
-
-    static SoundManager& Get()
-    {
-        static SoundManager manager;
-        return manager;
-    }
+    static SoundManager& Get();
 
     //TODO: Load sounds into a common file...
     //TODO: This doesn't really load the file into memory yet...
-    void loadSound(const std::string& name, const std::string& path)
-    {
-        if(soundMap_.find(name) == soundMap_.end())
-        {
-            soundMap_[name] = path;
-        }
-    }
-    void playSound(const std::string& name)
-    {
-        if(soundMap_.find(name) != soundMap_.end())
-        {
-            stopSound(name);
-            activeSoundMap_[name] = soundEngine_->play2D(soundMap_[name].c_str(), false, false, true);
-        }
-    }
-
-    void stopSound(const std::string& name)
-    {
-        if(activeSoundMap_.find(name) != activeSoundMap_.end())
-        {
-            activeSoundMap_[name]->stop();
-            activeSoundMap_[name]->drop();
-            activeSoundMap_.erase(name);
-        }
-    }
+    void loadSound(const std::string& name, const std::string& path);
+    void playSound(const std::string& name);
+    void stopSound(const std::string& name);
 
 private:
+    SoundManager();
     SoundManager(SoundManager const&) = delete;
     void operator=(SoundManager const&) = delete;
 
