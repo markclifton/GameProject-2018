@@ -54,7 +54,10 @@ ELSEIF(APPLE)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/glfw/include)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/freeimage/include)
 
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/glfw3.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/glfw/lib/libglfw.3.3.dylib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/irrKlang/libirrklang.dylib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/freeimage/lib/libfreeimage.a)
+
 ELSE()
     target_link_libraries(${PROJECT_NAME} glfw3)
     target_link_libraries(${PROJECT_NAME} GLU)
