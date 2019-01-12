@@ -49,6 +49,12 @@ IF (WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/dependencies/Windows/freeimage/FreeImage.dll"
         $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+ELSEIF(APPLE)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/glm/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/glfw/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/freeimage/include)
+
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/glfw3.lib)
 ELSE()
     target_link_libraries(${PROJECT_NAME} glfw3)
     target_link_libraries(${PROJECT_NAME} GLU)

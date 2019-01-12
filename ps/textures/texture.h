@@ -5,6 +5,8 @@
 #include "freeimage/FreeImage.h"
 #elif __linux__
 #include <FreeImage.h>
+#elif __APPLE__
+#include "FreeImage.h"
 #endif
 
 #include <string>
