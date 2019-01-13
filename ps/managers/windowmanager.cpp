@@ -153,7 +153,7 @@ bool WindowManager::create()
     glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
 
     glfwMakeContextCurrent(m_window.get());
-    glfwSwapInterval( 1 );
+    glfwSwapInterval( 0 );
 
     if (!gladLoadGL(glfwGetProcAddress)) {
         return false;

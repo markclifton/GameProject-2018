@@ -78,7 +78,7 @@ template <typename Component>
 const COMP_DTOR IComponent<Component>::ReleaseFN(ReleaseComp<Component>);
 
 template <typename Component>
-MemoryBlock IComponent<Component>::componentZero(MemoryManager::Get().AllocateMemory(Type, static_cast<unsigned long>(1e9)));
+MemoryBlock IComponent<Component>::componentZero(MemoryManager::Get().AllocateMemory(Type, static_cast<unsigned long>(1e8)));
 
 template <typename Component>
 unsigned long IComponent<Component>::componentTotalOffset(0);
