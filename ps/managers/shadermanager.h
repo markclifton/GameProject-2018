@@ -7,8 +7,6 @@
 
 namespace ps
 {
-namespace managers
-{
 class ShaderManager
 {
     ShaderManager();
@@ -30,5 +28,4 @@ private:
 
     std::vector<std::pair<std::string, std::unique_ptr<Shader>>> m_shaders; //Vector for efficiency
 };
-}
 }

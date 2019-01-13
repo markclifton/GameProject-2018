@@ -16,9 +16,6 @@
 
 namespace ps
 {
-namespace managers
-{
-// TODO: not thread-safe
 class TextureManager
 {
     TextureManager();
@@ -54,5 +51,4 @@ protected:
 
     std::vector<std::unique_ptr<Texture>> m_textures;
 };
-}
 }

@@ -4,8 +4,6 @@
 
 namespace ps
 {
-namespace managers
-{
 ContextManager::ContextManager()
 {
 }
@@ -80,6 +78,5 @@ void ContextManager::reset()
 {
     m_activeContext = nullptr;
     m_contexts.clear();
-}
 }
 }

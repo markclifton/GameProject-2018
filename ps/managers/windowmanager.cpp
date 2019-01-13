@@ -11,34 +11,39 @@ namespace
 {
 void key_forwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
+    WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
     windowManager->keyHandler(key, scancode, action, mods);
 }
 
 void cursor_forwarder(GLFWwindow* window, double xpos, double ypos)
 {
-    managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
+    WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
     windowManager->mouseHandler(xpos,ypos);
 }
 
 void mouse_forwarder(GLFWwindow* window, int button, int action, int mods)
 {
-    managers::WindowManager* windowManager = static_cast<managers::WindowManager*>(glfwGetWindowUserPointer(window));
+    WindowManager* windowManager = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
     windowManager->mouseHandler(button, action, mods);
 }
 }
 
-namespace managers
-{
 WindowManager::WindowManager()
 {
     if( !create() )
     {
-        std::cout << "Failed to create window\n";
+        std::cerr << "Failed to create window\n";
         return;
     }
 
     glGenVertexArrays(1, &m_vao);
+
+    if(m_vao == 0)
+    {
+        std::cerr << "OpenGL isn't working correctly\n";
+        abort();
+    }
+
     glBindVertexArray(m_vao);
 }
 
@@ -164,6 +169,5 @@ bool WindowManager::create()
     //glEnable(GL_DEPTH_CLAMP);
 
     return true;
-}
 }
 }

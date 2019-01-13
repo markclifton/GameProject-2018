@@ -42,7 +42,7 @@ void ShadowSystem::update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*de
     shaderComponent->shader->setUniform("projection", pS);
     shaderComponent->shader->setUniform("view", vS);
 
-    ecs::ECSManager::get().updateSystems(entity->getContext(), {VertexComponent::Type});
+    ECSManager::get().updateSystems(entity->getContext(), {VertexComponent::Type});
 }
 }
 }

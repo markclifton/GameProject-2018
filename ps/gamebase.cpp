@@ -22,16 +22,16 @@ GameBase::~GameBase()
 void GameBase::run()
 {
     int ticks = 0;
-    while( !managers::WindowManager::Get().shouldClose() )
+    while( !WindowManager::Get().shouldClose() )
     {
         if( fpsCounter_ && ticks++ > 500)
         {
-            fps_ = static_cast<int>(1.0/(managers::WindowManager::Get().latency()*1000));
+            fps_ = static_cast<int>(1.0/(WindowManager::Get().latency()*1000));
             ticks = 0;
         }
 
         contextManager_.run();
-        managers::WindowManager::Get().refresh();
+        WindowManager::Get().refresh();
     }
 }
 }

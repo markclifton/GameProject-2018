@@ -2,9 +2,7 @@
 
 namespace ps
 {
-namespace ecs
-{
-void ECSManager::updateSystems(const std::string& context, std::vector<COMP_TYPE> ComponentsToUse)
+void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP_TYPE> ComponentsToUse)
 {
     if(ComponentsToUse.size() == 0)
     {
@@ -15,7 +13,7 @@ void ECSManager::updateSystems(const std::string& context, std::vector<COMP_TYPE
     std::vector<std::vector<void*>> componentsToUpdate;
     for(auto& entity : entities_)
     {
-        auto entityRaw = reinterpret_cast<IEntity*>(entity.get());
+        auto entityRaw = reinterpret_cast<ecs::IEntity*>(entity.get());
         if(entityRaw->getContext() != context)
         {
             continue;
@@ -65,7 +63,7 @@ void ECSManager::updateSystems(const std::string& context, std::vector<COMP_TYPE
     }
 }
 
-void ECSManager::addSystem(const size_t& SystemID, std::shared_ptr<ISystem> system)
+void ECSManager::addSystem(const size_t& SystemID, std::shared_ptr<ecs::ISystem> system)
 {
     removeSystem(SystemID);
     systems_[SystemID] = system;
@@ -76,10 +74,8 @@ void ECSManager::removeSystem(const size_t& SystemID)
     systems_.erase(SystemID);
 }
 
-void ECSManager::addEntity(std::shared_ptr<IEntity> entity)
+void ECSManager::addEntity(std::shared_ptr<ecs::IEntity> entity)
 {
     entities_.emplace_back(entity);
-}
-
 }
 }

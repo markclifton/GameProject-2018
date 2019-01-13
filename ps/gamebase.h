@@ -16,7 +16,7 @@ public:
 
 protected:
     inline void toggleFPSCounter() { fpsCounter_ = !fpsCounter_; }
-    managers::ContextManager contextManager_;
+    ContextManager contextManager_;
 
 private:
     bool fpsCounter_ {false};

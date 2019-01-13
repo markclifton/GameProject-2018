@@ -13,8 +13,6 @@ namespace ps
 {
 
 //TODO: This class is basic and will need further development
-namespace managers
-{
 class SoundManager
 {
     struct irrKlangDeleter
@@ -41,5 +39,4 @@ private:
     std::map<std::string, std::string> soundMap_;
     std::map<std::string, irrklang::ISound*> activeSoundMap_;
 };
-}
 }

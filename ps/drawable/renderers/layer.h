@@ -15,7 +15,7 @@ namespace renderer
 class Layer
 {
 public:
-    Layer(managers::ShaderManager& sm, managers::TextureManager& tm);
+    Layer(ShaderManager& sm, TextureManager& tm);
     ~Layer();
 
     void draw(glm::mat4 transform = glm::mat4(1.f));
@@ -24,8 +24,8 @@ public:
 private:
     std::vector<std::vector<Drawable*>> m_allChildren;
 
-    managers::ShaderManager& m_sm;
-    managers::TextureManager& m_tm;
+    ShaderManager& m_sm;
+    TextureManager& m_tm;
 };
 }
 }

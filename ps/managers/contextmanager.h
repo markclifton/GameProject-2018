@@ -8,8 +8,6 @@
 
 namespace ps
 {
-namespace managers
-{
 class ContextManager
 {
 public:
@@ -33,5 +31,4 @@ private:
     ContextBase* m_activeContext {nullptr};
 
 };
-}
 }

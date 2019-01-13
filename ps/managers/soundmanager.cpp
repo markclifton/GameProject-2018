@@ -2,8 +2,6 @@
 
 namespace ps
 {
-namespace managers
-{
 SoundManager::SoundManager()
     : soundEngine_(irrklang::createIrrKlangDevice())
 {
@@ -39,6 +37,5 @@ void SoundManager::stopSound(const std::string& name)
         activeSoundMap_[name]->drop();
         activeSoundMap_.erase(name);
     }
-}
 }
 }

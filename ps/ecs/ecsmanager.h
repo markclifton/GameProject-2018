@@ -11,8 +11,6 @@
 
 namespace ps
 {
-namespace ecs
-{
 class ECSManager
 {
     ECSManager() {}
@@ -23,10 +21,10 @@ public:
         return manager;
     }
 
-    void updateSystems(const std::string& context, std::vector<COMP_TYPE> ComponentsToUse);
-    void addSystem(const size_t& SystemID, std::shared_ptr<ISystem> system);
+    void updateSystems(const std::string& context, std::vector<ecs::COMP_TYPE> ComponentsToUse);
+    void addSystem(const size_t& SystemID, std::shared_ptr<ecs::ISystem> system);
     void removeSystem(const size_t& SystemID);
-    void addEntity(std::shared_ptr<IEntity> entity);
+    void addEntity(std::shared_ptr<ecs::IEntity> entity);
 
     inline void reset()
     {
@@ -39,9 +37,8 @@ private:
     ECSManager(ECSManager const&) = delete;
     void operator=(ECSManager const&) = delete;
 
-    std::map<size_t, std::shared_ptr<ISystem>> systems_;
-    std::vector<std::shared_ptr<IEntity>> entities_;
+    std::map<size_t, std::shared_ptr<ecs::ISystem>> systems_;
+    std::vector<std::shared_ptr<ecs::IEntity>> entities_;
 
 };
-}
 }

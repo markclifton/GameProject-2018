@@ -6,7 +6,7 @@ namespace drawable
 {
 namespace renderer
 {
-Layer::Layer(managers::ShaderManager& sm, managers::TextureManager& tm)
+Layer::Layer(ShaderManager& sm, TextureManager& tm)
     : m_sm(sm), m_tm(tm)
 {
     m_allChildren.emplace_back();

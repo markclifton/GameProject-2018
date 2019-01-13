@@ -4,8 +4,6 @@
 
 namespace ps
 {
-namespace managers
-{
 TextureManager::TextureManager()
 {
 }
@@ -79,6 +77,5 @@ bool TextureManager::unload(const std::string& name)
         }
     }
     return false;
-}
 }
 }

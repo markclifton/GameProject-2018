@@ -17,6 +17,8 @@ class KeyHandler;
 class MouseHandler;
 }
 
+namespace
+{
 struct glfwWindowDeleter
 {
     void operator()(GLFWwindow* ptr){
@@ -24,9 +26,8 @@ struct glfwWindowDeleter
         glfwDestroyWindow(ptr);
     }
 };
+}
 
-namespace managers
-{
 class WindowManager
 {
     WindowManager();
@@ -77,5 +78,4 @@ private:
     utils::Timer m_timer;
     GLuint m_vao;
 };
-}
 }

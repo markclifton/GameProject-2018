@@ -2,8 +2,6 @@
 
 namespace ps
 {
-namespace managers
-{
 ShaderManager::ShaderManager()
 {
 }
@@ -34,5 +32,5 @@ void ShaderManager::reset()
 {
     m_shaders.clear();
 }
-}
+
 }

@@ -8,8 +8,6 @@ namespace ps
 typedef unsigned long MemoryHandle;
 typedef unsigned char* MemoryBlock;
 
-namespace managers
-{
 class MemoryManager
 {
     MemoryManager() {}
@@ -27,5 +25,4 @@ private:
     std::mutex mutex_;
     std::map<MemoryHandle, MemoryBlock> allocatedMemoryMap_;
 };
-}
 }
