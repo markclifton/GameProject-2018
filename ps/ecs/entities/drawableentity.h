@@ -54,6 +54,7 @@ public:
     inline void setShader(ShaderComponent& shader) { AddComponentOfType(ShaderComponent::Type, ShaderComponent::CreationFN(this, &shader)); }
 
     void setTransform(glm::mat4 transform);
+    glm::mat4 getTransform() { return m_transform; }
 
 public:
     std::vector<GLint> m_indices;

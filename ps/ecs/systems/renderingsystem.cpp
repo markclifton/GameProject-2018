@@ -33,7 +33,7 @@ void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void
     }
 
 
-    auto useShader = (std::find(componentsToUse.begin(), componentsToUse.end(), ShaderComponent::Type) != componentsToUse.end());
+    bool useShader = (std::find(componentsToUse.begin(), componentsToUse.end(), ShaderComponent::Type) != componentsToUse.end());
     auto shaderComponent = reinterpret_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
     if(shaderComponent != nullptr && useShader)
     {
