@@ -37,7 +37,6 @@ WindowManager::WindowManager()
     }
 
     glGenVertexArrays(1, &m_vao);
-
     if(m_vao == 0)
     {
         std::cerr << "OpenGL isn't working correctly\n";
@@ -78,7 +77,6 @@ bool WindowManager::shouldClose()
 
 void WindowManager::refresh()
 {
-    //glClearColor(.2f,.3f,.8f,0.f);
     glfwSwapBuffers(m_window.get());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
@@ -153,7 +151,7 @@ bool WindowManager::create()
     glfwSetMouseButtonCallback(m_window.get(), mouse_forwarder);
 
     glfwMakeContextCurrent(m_window.get());
-    glfwSwapInterval( 0 );
+    glfwSwapInterval( 1 );
 
     if (!gladLoadGL(glfwGetProcAddress)) {
         return false;

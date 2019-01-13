@@ -11,15 +11,14 @@ Timer::Timer()
 
 double Timer::reset()
 {
-    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - m_lastTick;
+    auto time = get();
     m_lastTick = std::chrono::high_resolution_clock::now();
-    return time.count();
+    return time;
 }
 
 double Timer::get()
 {
-    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - m_lastTick;
-    return time.count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - m_lastTick).count();
 }
 
 }
