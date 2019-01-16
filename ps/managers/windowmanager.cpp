@@ -81,6 +81,7 @@ void WindowManager::refresh()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
     m_latency = (9*m_latency+m_timer.reset())/10.;
+    glfwSetWindowTitle(m_window.get(), std::to_string(1000./m_latency).c_str());
 }
 
 void WindowManager::registerHandler(utils::KeyHandler* handler)

@@ -6,10 +6,10 @@ namespace ps
 {
 namespace ecs
 {
-class ShadowSystem : public ISystem
+class InteractionSystem : public ISystem
 {
 public:
-    ShadowSystem();
+    InteractionSystem();
     void update(std::vector<COMP_TYPE> componentsToUse, float, void** component) override;
 };
 }

@@ -1,5 +1,7 @@
 #include "ecsmanager.h"
 
+#include <thread>
+
 namespace ps
 {
 void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP_TYPE> ComponentsToUse)

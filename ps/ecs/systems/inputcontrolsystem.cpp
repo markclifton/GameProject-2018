@@ -35,41 +35,41 @@ void InputControlSystem::process(int key, int /*scancode*/, int action, int /*mo
     case GLFW_KEY_W:
         if(action == GLFW_PRESS)
         {
-            keyboardMovement_.y += .001f;
+            keyboardMovement_.y += .005f;
         }
         else if(action == GLFW_RELEASE)
         {
-            keyboardMovement_.y -= .001f;
+            keyboardMovement_.y -= .005f;
         }
         break;
     case GLFW_KEY_S:
         if(action == GLFW_PRESS)
         {
-            keyboardMovement_.y -= .001f;
+            keyboardMovement_.y -= .005f;
         }
         else if(action == GLFW_RELEASE)
         {
-            keyboardMovement_.y += .001f;
+            keyboardMovement_.y += .005f;
         }
         break;
     case GLFW_KEY_A:
         if(action == GLFW_PRESS)
         {
-            keyboardMovement_.x -= .001f;
+            keyboardMovement_.x -= .005f;
         }
         else if(action == GLFW_RELEASE)
         {
-            keyboardMovement_.x += .001f;
+            keyboardMovement_.x += .005f;
         }
         break;
     case GLFW_KEY_D:
         if(action == GLFW_PRESS)
         {
-            keyboardMovement_.x += .001f;
+            keyboardMovement_.x += .005f;
         }
         else if(action == GLFW_RELEASE)
         {
-            keyboardMovement_.x -= .001f;
+            keyboardMovement_.x -= .005f;
         }
         break;
     }

@@ -9,11 +9,15 @@
 #include "ientity.h"
 #include "isystem.h"
 
+#include "ps/ecs/systems/interactionsystem.h"
+#include "ps/utils/threadpool.h"
+
 namespace ps
 {
 class ECSManager
 {
-    ECSManager() {}
+    friend class ecs::InteractionSystem;
+    ECSManager() : threadPool{12} {}
 public:
     static ECSManager& get()
     {
@@ -40,5 +44,6 @@ private:
     std::map<size_t, std::shared_ptr<ecs::ISystem>> systems_;
     std::vector<std::shared_ptr<ecs::IEntity>> entities_;
 
+    ThreadPool threadPool;
 };
 }

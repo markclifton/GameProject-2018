@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "ps/ecs/components/vertexcomponent.h"
 #include "ps/ecs/isystem.h"
 
