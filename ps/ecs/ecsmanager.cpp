@@ -43,6 +43,7 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
     }
 
     //Process Components
+    ThreadPool tPool(10);
     for(auto& system : systems_)
     {
         bool validSystem = true;
@@ -59,7 +60,19 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
         {
             for(auto& component : componentsToUpdate)
             {
-                system.second->update(ComponentsToUse, 0, &component.front());
+                if(system.second->multithreaded())
+                {
+                    auto front = &component.front();
+                    auto f = [system, ComponentsToUse, front](){
+                        system.second->update(ComponentsToUse, 0, front);
+                    };
+
+                    tPool.enqueue(f);
+                }
+                else
+                {
+                    system.second->update(ComponentsToUse, 0, &component.front());
+                }
             }
         }
     }

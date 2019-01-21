@@ -14,8 +14,8 @@ namespace ecs
 {
 MovementSystem::MovementSystem()
 {
-    components_.push_back(VertexComponent::Type);
     components_.push_back(MovementComponent::Type);
+    multithreaded_ = true;
 }
 
 void MovementSystem::update(std::vector<COMP_TYPE>, float, void** component)

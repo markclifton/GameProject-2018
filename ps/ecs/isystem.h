@@ -22,8 +22,11 @@ public:
         return iter != components_.end();
     }
 
+    inline bool multithreaded() { return multithreaded_; }
+
 protected:
     std::vector<COMP_TYPE> components_;
+    bool multithreaded_ { false };
 };
 }
 }

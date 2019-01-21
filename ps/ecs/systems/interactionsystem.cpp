@@ -13,9 +13,8 @@ namespace ecs
 {
 InteractionSystem::InteractionSystem()
 {
-    components_.push_back(VertexComponent::Type);
-    components_.push_back(MovementComponent::Type);
     components_.push_back(InteractionComponent::Type);
+    multithreaded_ = true;
 }
 
 void InteractionSystem::update(std::vector<COMP_TYPE>, float, void** component)

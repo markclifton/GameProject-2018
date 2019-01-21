@@ -13,8 +13,8 @@ namespace ecs
 {
 InputControlSystem::InputControlSystem()
 {
-    components_.push_back(InputComponent::Type);
-    components_.push_back(MovementComponent::Type);
+    components_.push_back(InputComponent::Type);;
+    multithreaded_ = true;
 
     WindowManager::Get().registerHandler(this);
 }
