@@ -14,7 +14,7 @@ public:
     double get();
 
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTick;
+    std::chrono::time_point<std::chrono::steady_clock> m_lastTick;
 };
 }
 }

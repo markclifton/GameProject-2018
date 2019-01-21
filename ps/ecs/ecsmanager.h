@@ -17,7 +17,7 @@ namespace ps
 class ECSManager
 {
     friend class ecs::InteractionSystem;
-    ECSManager() : threadPool{12} {}
+    ECSManager() : threadPool_{12} {}
 public:
     static ECSManager& get()
     {
@@ -44,6 +44,6 @@ private:
     std::map<size_t, std::shared_ptr<ecs::ISystem>> systems_;
     std::vector<std::shared_ptr<ecs::IEntity>> entities_;
 
-    ThreadPool threadPool;
+    ThreadPool threadPool_;
 };
 }

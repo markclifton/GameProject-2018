@@ -14,7 +14,7 @@ namespace ecs
 InputControlSystem::InputControlSystem()
 {
     components_.push_back(InputComponent::Type);;
-    multithreaded_ = true;
+    multithreaded_ = false;
 
     WindowManager::Get().registerHandler(this);
 }

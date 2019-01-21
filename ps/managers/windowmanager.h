@@ -17,19 +17,16 @@ class KeyHandler;
 class MouseHandler;
 }
 
-namespace
-{
-struct glfwWindowDeleter
-{
-    void operator()(GLFWwindow* ptr){
-        glfwTerminate();
-        glfwDestroyWindow(ptr);
-    }
-};
-}
-
 class WindowManager
 {
+    struct glfwWindowDeleter
+    {
+        void operator()(GLFWwindow* ptr){
+            glfwTerminate();
+            glfwDestroyWindow(ptr);
+        }
+    };
+
     WindowManager();
 public:
     static WindowManager& Get()

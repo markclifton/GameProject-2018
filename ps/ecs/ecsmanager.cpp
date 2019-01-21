@@ -43,7 +43,6 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
     }
 
     //Process Components
-    ThreadPool tPool(10);
     for(auto& system : systems_)
     {
         bool validSystem = true;
@@ -56,24 +55,40 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
             }
         }
 
+        int runningCount = 0;
         if(validSystem)
         {
+            std::mutex systemMutex;
             for(auto& component : componentsToUpdate)
             {
                 if(system.second->multithreaded())
                 {
                     auto front = &component.front();
-                    auto f = [system, ComponentsToUse, front](){
+                    auto f = [&systemMutex, &runningCount, system, ComponentsToUse, front](){
+                        {
+                            std::lock_guard<std::mutex> lock(systemMutex);
+                            runningCount++;
+                        }
                         system.second->update(ComponentsToUse, 0, front);
+                        {
+                            std::lock_guard<std::mutex> lock(systemMutex);
+                            runningCount--;
+                        }
                     };
 
-                    tPool.enqueue(f);
+                    threadPool_.enqueue(f);
                 }
                 else
                 {
                     system.second->update(ComponentsToUse, 0, &component.front());
                 }
             }
+        }
+
+        using namespace std::chrono_literals;
+        while(runningCount > 0)
+        {
+            std::this_thread::sleep_for(20ns);
         }
     }
 }
