@@ -8,8 +8,7 @@
 #include "ps/shaders/shader.h"
 
 #include "ps/ecs/entities/drawableentity.h"
-#include "ps/ecs/components/batchedcomponent.h"
-#include "ps/ecs/components/instancedcomponent.h"
+#include "ps/ecs/components/renderingcomponent.h"
 
 namespace ps
 {
@@ -17,17 +16,14 @@ namespace ecs
 {
 RenderingSystem::RenderingSystem()
 {
-    components_.push_back(VertexComponent::Type);
-    components_.push_back(ShaderComponent::Type);
+    components_.push_back(RenderingComponent::Type);
 }
 
 void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void** component)
 {
     auto baseComponent = reinterpret_cast<BaseComponent*>(*component);
     auto entity = reinterpret_cast<drawable::DrawableEntity*>(baseComponent->entityHandle);
-    if( entity == nullptr
-            || entity->GetComponentByTypeAndIndex(BatchedComponent::Type, 0)
-            || entity->GetComponentByTypeAndIndex(InstancedComponent::Type, 0) )
+    if( entity == nullptr)
     {
         return;
     }
