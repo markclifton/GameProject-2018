@@ -1,11 +1,9 @@
 #pragma once
 
-#include "glad/gl.h"
+#include "ps/glad/gl.h"
 #ifdef _WIN32
 #include "freeimage/FreeImage.h"
-#elif __linux__
-#include <FreeImage.h>
-#elif __APPLE__
+#else
 #include "FreeImage.h"
 #endif
 

@@ -3,6 +3,7 @@
 #ifdef _WIN32
 #pragma comment(lib, "irrKlang.lib")
 #endif
+
 #include "irrKlang/irrKlang.h"
 
 #include <map>

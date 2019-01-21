@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glad/gl.h"
-#include <glm/vec3.hpp>
+#include "ps/glad/gl.h"
+#include "glm/vec3.hpp"
 
 #include "ps/ecs/entities/drawableentity.h"
 

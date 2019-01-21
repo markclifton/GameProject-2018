@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glad/gl.h"
+#include "ps/glad/gl.h"
 #include "GLFW/glfw3.h"
 
 #include <memory>

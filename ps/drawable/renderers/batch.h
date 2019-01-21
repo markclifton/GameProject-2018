@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glad/gl.h"
+#include "ps/glad/gl.h"
 #include "glm/matrix.hpp"
 
 #include <functional>

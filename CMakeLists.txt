@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(ProjectSane)
 
@@ -13,7 +12,6 @@ file(GLOB SOURCES
     ps/**/*.cpp
     ps/**/**/*.h
     ps/**/**/*.cpp
-    dependencies/independent/glad/gl.cpp
 )
 
 file(GLOB HEADERS
@@ -40,10 +38,12 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/independent)
 IF (WIN32)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows/freeimage/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/windows/irrKlang/include)
 
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/glfw3.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glfw3/lib/glfw3.lib)
     target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/glm/libs/glm_static.lib)
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/freeimage/FreeImage.lib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/windows/freeimage/lib/FreeImage.lib)
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -53,12 +53,20 @@ ELSEIF(APPLE)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/glm/include)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/glfw/include)
     include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/freeimage/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/mac/irrKlang/include)
 
     target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/glfw/lib/libglfw.3.3.dylib)
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/irrKlang/libirrklang.dylib)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/irrKlang/lib/libirrklang.dylib)
     target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/mac/freeimage/lib/libfreeimage.a)
 
 ELSE()
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/linux/glm/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/linux/GLFW/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/linux/freeimage/include)
+    include_directories(${CMAKE_SOURCE_DIR}/dependencies/linux/irrKlang/include)
+
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/linux/irrKlang/lib/libIrrKlang.so)
+
     target_link_libraries(${PROJECT_NAME} glfw3)
     target_link_libraries(${PROJECT_NAME} GLU)
     target_link_libraries(${PROJECT_NAME} GL)
@@ -72,5 +80,4 @@ ELSE()
     target_link_libraries(${PROJECT_NAME} pthread)
     target_link_libraries(${PROJECT_NAME} dl)
     target_link_libraries(${PROJECT_NAME} freeimage)
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/dependencies/linux/irrKlang/libIrrKlang.so)
 ENDIF()
