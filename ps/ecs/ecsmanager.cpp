@@ -55,40 +55,25 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
             }
         }
 
-        int runningCount = 0;
         if(validSystem)
         {
-            std::mutex systemMutex;
+            ThreadPool threadPool (24);
             for(auto& component : componentsToUpdate)
             {
                 if(system.second->multithreaded())
                 {
                     auto front = &component.front();
-                    auto f = [&systemMutex, &runningCount, system, ComponentsToUse, front](){
-                        {
-                            std::lock_guard<std::mutex> lock(systemMutex);
-                            runningCount++;
-                        }
+                    auto f = [system, ComponentsToUse, front](){
                         system.second->update(ComponentsToUse, 0, front);
-                        {
-                            std::lock_guard<std::mutex> lock(systemMutex);
-                            runningCount--;
-                        }
                     };
 
-                    threadPool_.enqueue(f);
+                    threadPool.enqueue(f);
                 }
                 else
                 {
                     system.second->update(ComponentsToUse, 0, &component.front());
                 }
             }
-        }
-
-        using namespace std::chrono_literals;
-        while(runningCount > 0)
-        {
-            std::this_thread::sleep_for(20ns);
         }
     }
 }
