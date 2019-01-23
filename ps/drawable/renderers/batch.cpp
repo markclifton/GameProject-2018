@@ -145,8 +145,8 @@ void Batch::draw(glm::mat4 transform)
 
     if(m_changed)
     {
-        m_ibo.buffer(static_cast<long>(m_indices.size() * sizeof(GLint)), reinterpret_cast<void*>(&m_indices.front()));
-        m_vbo.buffer(static_cast<long>(m_vertices.size() * sizeof(VertexComponent)), reinterpret_cast<void*>(&m_vertices.front()));
+        m_ibo.buffer(static_cast<long>(m_indices.size() * sizeof(GLint)), static_cast<void*>(&m_indices.front()));
+        m_vbo.buffer(static_cast<long>(m_vertices.size() * sizeof(VertexComponent)), static_cast<void*>(&m_vertices.front()));
         m_changed = false;
     }
 

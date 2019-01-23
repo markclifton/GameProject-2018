@@ -14,7 +14,7 @@ class ISystem
 {
 public:
     virtual ~ISystem() = default;
-    inline virtual void update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*timeDelta*/, void** /*components*/) = 0;
+    inline virtual void update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*timeDelta*/, void* /*components*/) = 0;
 
     inline bool containsComponent(const COMP_TYPE& type)
     {

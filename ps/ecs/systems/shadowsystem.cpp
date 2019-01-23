@@ -22,22 +22,22 @@ ShadowSystem::ShadowSystem()
     components_.push_back(TextureComponent::Type);
 }
 
-void ShadowSystem::update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*delta*/, void** component)
+void ShadowSystem::update(std::vector<COMP_TYPE> /*componentsToUse*/, float /*delta*/, void* component)
 {
-    auto baseComponent = reinterpret_cast<BaseComponent*>(*component);
-    auto entity = reinterpret_cast<ShadowEntity*>(baseComponent->entityHandle);
+    auto baseComponent = static_cast<BaseComponent*>(component);
+    auto entity = static_cast<ShadowEntity*>(baseComponent->entityHandle);
 
-    auto cameraComponent = reinterpret_cast<CameraComponent*>(entity->GetComponentByTypeAndIndex(CameraComponent::Type, 0));
+    auto cameraComponent = static_cast<CameraComponent*>(entity->GetComponentByTypeAndIndex(CameraComponent::Type, 0));
 
     glm::mat4 pS, vS;
     cameraComponent->camera->Update();
     cameraComponent->camera->GetMatricies(pS, vS);
     pS = glm::ortho<float>(-10, 10, -10, 10, 1, 100);
 
-    auto textureComponent = reinterpret_cast<TextureComponent*>(entity->GetComponentByTypeAndIndex(TextureComponent::Type, 0));
+    auto textureComponent = static_cast<TextureComponent*>(entity->GetComponentByTypeAndIndex(TextureComponent::Type, 0));
     textureComponent->texture->setAsRenderTarget();
 
-    auto shaderComponent = reinterpret_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
+    auto shaderComponent = static_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
     shaderComponent->shader->bind();
     shaderComponent->shader->setUniform("projection", pS);
     shaderComponent->shader->setUniform("view", vS);

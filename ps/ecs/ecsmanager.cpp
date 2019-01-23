@@ -57,22 +57,28 @@ void ECSManager::updateSystems(const std::string& context, std::vector<ecs::COMP
 
         if(validSystem)
         {
-            ThreadPool threadPool (24);
             for(auto& component : componentsToUpdate)
             {
                 if(system.second->multithreaded())
                 {
-                    auto front = &component.front();
-                    auto f = [system, ComponentsToUse, front](){
-                        system.second->update(ComponentsToUse, 0, front);
+                    auto task = [this, system, ComponentsToUse, component](){
+                        threadActive();
+                        system.second->update(ComponentsToUse, 0, component[0]);
+                        threadInactive();
                     };
 
-                    threadPool.enqueue(f);
+                    threadPool_.enqueue(task);
                 }
                 else
                 {
-                    system.second->update(ComponentsToUse, 0, &component.front());
+                    system.second->update(ComponentsToUse, 0, component[0]);
                 }
+            }
+
+            while(activeThreads_ != 0)
+            {
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(10ns);
             }
         }
     }
@@ -91,6 +97,6 @@ void ECSManager::removeSystem(const size_t& SystemID)
 
 void ECSManager::addEntity(std::shared_ptr<ecs::IEntity> entity)
 {
-    entities_.emplace_back(entity);
+    entities_.push_back(entity);
 }
 }

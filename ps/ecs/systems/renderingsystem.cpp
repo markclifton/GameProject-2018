@@ -17,20 +17,16 @@ namespace ecs
 RenderingSystem::RenderingSystem()
 {
     components_.push_back(RenderingComponent::Type);
+    multithreaded_ = false;
 }
 
-void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void** component)
+void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void* component)
 {
-    auto baseComponent = reinterpret_cast<BaseComponent*>(*component);
-    auto entity = reinterpret_cast<drawable::DrawableEntity*>(baseComponent->entityHandle);
-    if( entity == nullptr)
-    {
-        return;
-    }
-
+    auto baseComponent = static_cast<BaseComponent*>(component);
+    auto entity = static_cast<drawable::DrawableEntity*>(baseComponent->entityHandle);
 
     bool useShader = (std::find(componentsToUse.begin(), componentsToUse.end(), ShaderComponent::Type) != componentsToUse.end());
-    auto shaderComponent = reinterpret_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
+    auto shaderComponent = static_cast<ShaderComponent*>(entity->GetComponentByTypeAndIndex(ShaderComponent::Type, 0));
     if(shaderComponent != nullptr && useShader)
     {
         shaderComponent->shader->bind();
@@ -51,7 +47,7 @@ void RenderingSystem::update(std::vector<COMP_TYPE> componentsToUse, float, void
     if(entity->m_changed)
     {
         entity->m_changed = false;
-        entity->m_indicesBuffer.buffer(static_cast<long>(entity->m_indices.size()*sizeof(GLint)), reinterpret_cast<void*>(&entity->m_indices.front()));
+        entity->m_indicesBuffer.buffer(static_cast<long>(entity->m_indices.size()*sizeof(GLint)), static_cast<void*>(&entity->m_indices.front()));
 
         size_t numVerts = static_cast<size_t>(entity->NumComponentsForType(VertexComponent::Type));
         entity->m_vertexBuffer.buffer(static_cast<long>(numVerts*sizeof(VertexComponent)), entity->verts());

@@ -11,7 +11,7 @@ class RenderingSystem : public ISystem
 {
 public:
     RenderingSystem();
-    void update(std::vector<COMP_TYPE> componentsToUse, float, void** component) override;
+    void update(std::vector<COMP_TYPE> componentsToUse, float, void* component) override;
 };
 }
 }

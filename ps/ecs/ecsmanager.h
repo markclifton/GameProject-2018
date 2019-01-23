@@ -41,5 +41,17 @@ public:
 private:
     ECSManager(ECSManager const&) = delete;
     void operator=(ECSManager const&) = delete;
+
+    ThreadPool threadPool_ {12};
+    std::atomic_int activeThreads_ {0};
+    inline void threadActive()
+    {
+        activeThreads_++;
+    }
+
+    inline void threadInactive()
+    {
+        activeThreads_--;
+    }
 };
 }
